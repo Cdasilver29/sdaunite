@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
 import PageHeader from "@/components/PageHeader";
 import { User, Phone, Mail, CheckCircle } from "lucide-react";
+import ProfilePhotoUpload from "@/components/ProfilePhotoUpload";
 
 const Profile = () => {
   const { user, profile, roles, refreshProfile } = useAuth();
@@ -107,6 +108,9 @@ const Profile = () => {
           </div>
 
           <form onSubmit={handleSave} className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sda">
+            <div className="flex justify-center">
+              <ProfilePhotoUpload />
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="flex items-center gap-2"><User className="h-3.5 w-3.5" /> Full Name</Label>
