@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,13 +36,14 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="container flex items-center justify-center py-16 md:py-24">
-        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground">Welcome Back</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Sign in to your SDA Unite account</p>
-          </div>
 
+      <PageHeader
+        title="Welcome Back"
+        subtitle="Sign in to your SDA Unite account"
+      />
+
+      <div className="container flex items-center justify-center py-12 md:py-16">
+        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>

@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { User, Phone, Mail, CheckCircle } from "lucide-react";
 
 const Profile = () => {
@@ -75,17 +76,21 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+
+      <PageHeader
+        title="My Profile"
+        subtitle={
+          isNewProfile
+            ? "Complete your profile to unlock event details and ticket purchasing"
+            : "Manage your SDA Unite account details"
+        }
+        icon={<User className="h-6 w-6 text-primary-foreground" />}
+      />
+
       <div className="container py-10 md:py-16">
         <div className="mx-auto max-w-2xl">
-          <h1 className="text-2xl font-bold text-foreground">My Profile</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {isNewProfile
-              ? "Complete your profile to unlock event details and ticket purchasing"
-              : "Manage your SDA Unite account details"}
-          </p>
-
           {isNewProfile && (
-            <div className="mt-4 flex items-start gap-3 rounded-xl border border-accent/40 bg-accent/10 p-4">
+            <div className="mb-6 flex items-start gap-3 rounded-xl border border-accent/40 bg-accent/10 p-4">
               <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
               <div>
                 <p className="text-sm font-semibold text-foreground">Almost there!</p>
@@ -96,13 +101,13 @@ const Profile = () => {
             </div>
           )}
 
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-6">
             {roles.map((r) => (
               <span key={r} className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary capitalize">{r}</span>
             ))}
           </div>
 
-          <form onSubmit={handleSave} className="mt-8 space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sda">
+          <form onSubmit={handleSave} className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sda">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="flex items-center gap-2"><User className="h-3.5 w-3.5" /> Full Name</Label>

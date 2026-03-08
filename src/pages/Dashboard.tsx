@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOrganizerEvents } from "@/hooks/useEvents";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Users, Eye, Edit } from "lucide-react";
+import { Plus, Calendar, Users, Eye, Edit, LayoutDashboard } from "lucide-react";
 
 const Dashboard = () => {
   const { user, profile, roles } = useAuth();
@@ -17,25 +18,26 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+
+      <PageHeader
+        title={`Welcome, ${profile?.full_name || "Organizer"}`}
+        subtitle="Manage your events and registrations"
+        icon={<LayoutDashboard className="h-6 w-6 text-primary-foreground" />}
+      />
+
       <div className="container py-10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Welcome, {profile?.full_name || "Organizer"}
-            </h1>
-            <p className="text-sm text-muted-foreground">Manage your events and registrations</p>
-          </div>
-          {isOrganizer && (
+        {isOrganizer && (
+          <div className="mb-6 flex justify-end">
             <Button asChild className="bg-sda-gradient text-primary-foreground hover:opacity-90 gap-2">
               <Link to="/dashboard/create-event">
                 <Plus className="h-4 w-4" /> Create Event
               </Link>
             </Button>
-          )}
-        </div>
+          </div>
+        )}
 
         {!isOrganizer && (
-          <div className="mt-8 rounded-xl border border-border bg-card p-8 text-center shadow-sda">
+          <div className="rounded-xl border border-border bg-card p-8 text-center shadow-sda">
             <h2 className="text-lg font-semibold text-foreground">Want to organize events?</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Contact your church administrator to be granted organizer privileges.
@@ -44,7 +46,7 @@ const Dashboard = () => {
         )}
 
         {isOrganizer && (
-          <div className="mt-8">
+          <div>
             <h2 className="text-lg font-bold text-foreground mb-4">Your Events</h2>
 
             {isLoading ? (

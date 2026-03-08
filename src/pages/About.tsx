@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { Heart, BookOpen, Users, Globe } from "lucide-react";
 
 const VALUES = [
@@ -33,17 +34,10 @@ const About = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
 
-    {/* Hero */}
-    <section className="bg-sda-gradient py-16 md:py-24">
-      <div className="container max-w-3xl text-center">
-        <h1 className="text-3xl font-bold text-primary-foreground md:text-5xl">
-          About SDA Unite
-        </h1>
-        <p className="mt-4 text-lg text-primary-foreground/80 leading-relaxed">
-          A Christ-centered platform connecting Seventh-day Adventist youth through fellowship, service, outdoor adventures, and spiritual growth events.
-        </p>
-      </div>
-    </section>
+    <PageHeader
+      title="About SDA Unite"
+      subtitle="A Christ-centered platform connecting Seventh-day Adventist youth through fellowship, service, outdoor adventures, and spiritual growth events."
+    />
 
     {/* Mission */}
     <section className="py-16">

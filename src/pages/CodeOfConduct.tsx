@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { BookOpen, Shirt, Heart, Sun, Shield } from "lucide-react";
 
 const sections = [
@@ -45,20 +46,14 @@ const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
 
-    <section className="bg-sda-gradient py-16">
-      <div className="container text-center">
-        <BookOpen className="mx-auto h-10 w-10 text-accent" />
-        <h1 className="mt-4 text-3xl font-bold text-primary-foreground md:text-4xl">
-          Code of Conduct
-        </h1>
-        <p className="mt-3 text-primary-foreground/70 max-w-lg mx-auto">
-          All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct.
-        </p>
-      </div>
-    </section>
+    <PageHeader
+      title="Code of Conduct"
+      subtitle="All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct."
+      icon={<BookOpen className="h-6 w-6 text-accent" />}
+    />
 
     <div className="container py-12">
-      <blockquote className="mx-auto max-w-2xl rounded-xl border border-accent/30 bg-sda-warm-light p-6 text-center">
+      <blockquote className="mx-auto max-w-2xl rounded-xl border border-accent/30 bg-accent/10 p-6 text-center">
         <p className="text-base italic text-foreground">
           "Whether you eat or drink or whatever you do, do it all for the glory of God."
         </p>
