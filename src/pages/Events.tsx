@@ -94,7 +94,10 @@ const Events = () => {
         )}
       </div>
 
-      
+      {/* Floating social share (desktop) */}
+      <div className="hidden lg:block">
+        <SocialShareBar variant="floating" />
+      </div>
     </div>
   );
 };
