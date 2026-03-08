@@ -42,7 +42,7 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <div className="container flex items-center justify-center py-16 md:py-24">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
           <div className="text-center">
