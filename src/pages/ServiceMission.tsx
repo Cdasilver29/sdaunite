@@ -12,7 +12,7 @@ const ServiceMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Service & Mission"
