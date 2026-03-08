@@ -16,6 +16,7 @@ const ServiceMission = () => {
         title="Service & Mission"
         subtitle="Hospital visits, children's home outreaches, community clean-ups, and more. Put your faith into action."
         icon={<Heart className="h-6 w-6 text-primary-foreground" />}
+        backgroundImage="/images/sda-service-mission.jpg"
       />
 
       {/* Why serve — with background image */}

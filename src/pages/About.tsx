@@ -35,6 +35,7 @@ const About = () => (
     <PageHeader
       title="About SDA Unite"
       subtitle="A Christ-centered platform connecting Seventh-day Adventist youth through fellowship, service, outdoor adventures, and spiritual growth events."
+      backgroundImage="/images/sda-about.jpg"
     />
 
     {/* Mission */}
