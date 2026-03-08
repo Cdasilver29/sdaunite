@@ -64,7 +64,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" as const }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/85 md:text-xl drop-shadow-sm"
+            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl [text-shadow:_0_1px_12px_rgb(0_0_0_/_30%)]"
           >
             Discover SDA youth events, retreats, service missions, and fellowship
             gatherings. Register, connect, and strengthen your walk with Christ.
