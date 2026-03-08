@@ -38,7 +38,7 @@ const MyTickets = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="My Tickets"
