@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, LayoutDashboard, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,11 +29,19 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile, roles, signOut } = useAuth();
 
   const isOrganizer = roles.includes("organizer") || roles.includes("admin");
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();
@@ -44,15 +52,21 @@ const Navbar = () => {
     href === "/" ? location.pathname === "/" : location.pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-lg">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 border-b ${
+        scrolled
+          ? "bg-[hsl(202,100%,18%)]/95 border-white/10 shadow-lg shadow-primary/10"
+          : "bg-[hsl(202,100%,18%)]/80 border-white/5"
+      } backdrop-blur-xl`}
+    >
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sda-gradient">
-            <span className="text-sm font-bold text-primary-foreground">SU</span>
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-accent">
+            <span className="text-sm font-bold text-white">SU</span>
           </div>
-          <span className="text-lg font-bold text-foreground">
-            SDA <span className="text-secondary">Unite</span>
+          <span className="text-lg font-bold text-white">
+            SDA <span className="text-[hsl(var(--accent))]">Unite</span>
           </span>
         </Link>
 
@@ -62,8 +76,8 @@ const Navbar = () => {
             <Link
               key={link.href}
               to={link.href}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted ${
-                isActive(link.href) ? "text-primary" : "text-muted-foreground"
+              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white ${
+                isActive(link.href) ? "text-white bg-white/10" : "text-white/70"
               }`}
             >
               {link.label}
@@ -77,7 +91,7 @@ const Navbar = () => {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm" className="gap-2 text-white/90 hover:text-white hover:bg-white/10 border border-white/15">
                   <User className="h-4 w-4" />
                   {profile?.full_name || "Account"}
                 </Button>
@@ -105,10 +119,10 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="ghost" size="sm" className="text-white/90 hover:text-white hover:bg-white/10" asChild>
                 <Link to="/login">Sign In</Link>
               </Button>
-              <Button size="sm" className="bg-sda-gradient text-primary-foreground hover:opacity-90" asChild>
+              <Button size="sm" className="bg-gradient-to-r from-secondary to-accent text-white hover:opacity-90 border-0" asChild>
                 <Link to="/signup">Join Fellowship</Link>
               </Button>
             </>
@@ -120,16 +134,16 @@ const Navbar = () => {
           <ThemeToggle />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="text-foreground p-2" aria-label="Open menu">
+              <button className="text-white p-2 rounded-md hover:bg-white/10 transition-colors" aria-label="Open menu">
                 {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-72 p-0">
-              <SheetHeader className="border-b border-border px-5 py-4">
+            <SheetContent side="right" className="w-72 p-0 bg-[hsl(202,100%,14%)] border-l border-white/10">
+              <SheetHeader className="border-b border-white/10 px-5 py-4">
                 <SheetTitle className="text-left">
-                  <span className="text-foreground">SDA </span>
-                  <span className="text-secondary">Unite</span>
+                  <span className="text-white">SDA </span>
+                  <span className="text-[hsl(var(--accent))]">Unite</span>
                 </SheetTitle>
               </SheetHeader>
 
@@ -141,8 +155,8 @@ const Navbar = () => {
                     onClick={() => setOpen(false)}
                     className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                       isActive(link.href)
-                        ? "bg-muted text-primary"
-                        : "text-muted-foreground hover:bg-muted/60"
+                        ? "bg-white/10 text-white"
+                        : "text-white/60 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     {link.label}
@@ -151,14 +165,14 @@ const Navbar = () => {
 
                 {user && (
                   <>
-                    <div className="my-2 border-t border-border" />
+                    <div className="my-2 border-t border-white/10" />
                     <Link
                       to="/my-tickets"
                       onClick={() => setOpen(false)}
                       className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                         isActive("/my-tickets")
-                          ? "bg-muted text-primary"
-                          : "text-muted-foreground hover:bg-muted/60"
+                          ? "bg-white/10 text-white"
+                          : "text-white/60 hover:bg-white/5 hover:text-white"
                       }`}
                     >
                       <Ticket className="h-4 w-4" /> My Tickets
@@ -168,8 +182,8 @@ const Navbar = () => {
                       onClick={() => setOpen(false)}
                       className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                         isActive("/profile")
-                          ? "bg-muted text-primary"
-                          : "text-muted-foreground hover:bg-muted/60"
+                          ? "bg-white/10 text-white"
+                          : "text-white/60 hover:bg-white/5 hover:text-white"
                       }`}
                     >
                       <User className="h-4 w-4" /> My Profile
@@ -178,11 +192,7 @@ const Navbar = () => {
                       <Link
                         to="/dashboard"
                         onClick={() => setOpen(false)}
-                        className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                          isActive("/dashboard")
-                            ? "bg-muted text-primary"
-                            : "text-muted-foreground hover:bg-muted/60"
-                        }`}
+                        className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-[hsl(var(--accent))] transition-colors hover:bg-white/5"
                       >
                         <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
                       </Link>
@@ -204,14 +214,14 @@ const Navbar = () => {
                     </Button>
                   ) : (
                     <>
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="ghost" size="sm" className="text-white/90 hover:text-white hover:bg-white/10 border border-white/15" asChild>
                         <Link to="/login" onClick={() => setOpen(false)}>
                           Sign In
                         </Link>
                       </Button>
                       <Button
                         size="sm"
-                        className="bg-sda-gradient text-primary-foreground"
+                        className="bg-gradient-to-r from-secondary to-accent text-white border-0"
                         asChild
                       >
                         <Link to="/signup" onClick={() => setOpen(false)}>
