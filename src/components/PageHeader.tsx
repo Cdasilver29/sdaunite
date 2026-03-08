@@ -19,7 +19,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.40)] via-[hsl(202,100%,14%/0.30)] to-[hsl(var(--background)/0.95)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,8%/0.60)] via-[hsl(202,100%,10%/0.45)] to-[hsl(var(--background)/0.95)]" />
         </>
       ) : (
         <div className="absolute inset-0 page-header-gradient" />
@@ -54,7 +54,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" as const }}
-          className="text-3xl font-bold text-primary-foreground md:text-5xl drop-shadow-lg"
+          className="text-3xl font-bold text-primary-foreground md:text-5xl [text-shadow:_0_2px_16px_rgb(0_0_0_/_40%)]"
         >
           {title}
         </motion.h1>
@@ -63,7 +63,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-4 text-lg text-primary-foreground/80 leading-relaxed drop-shadow-sm"
+            className="mt-4 text-lg text-primary-foreground/90 leading-relaxed [text-shadow:_0_1px_10px_rgb(0_0_0_/_25%)]"
           >
             {subtitle}
           </motion.p>

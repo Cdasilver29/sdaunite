@@ -3,6 +3,7 @@ import { ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import SocialShareBar from "./SocialShareBar";
 
 const HeroSection = () => {
   const [search, setSearch] = useState("");
@@ -25,8 +26,8 @@ const HeroSection = () => {
         style={{ backgroundImage: "url('/images/sda-hero.jpg')" }}
       />
 
-      {/* Dark blue overlay for text readability — 20% opacity so image is 80% visible */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.35)] via-[hsl(202,100%,14%/0.25)] to-[hsl(202,100%,10%/0.55)]" />
+      {/* Dark overlay for strong text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,8%/0.65)] via-[hsl(202,100%,10%/0.50)] to-[hsl(202,100%,6%/0.80)]" />
 
       {/* Subtle animated orbs on top */}
       <div className="hero-orb hero-orb--1 opacity-[0.08]" />
@@ -51,7 +52,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-8 text-5xl font-extrabold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] drop-shadow-lg"
+            className="mt-8 text-5xl font-bold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] [text-shadow:_0_2px_20px_rgb(0_0_0_/_40%)]"
           >
             Unite in Faith.
             <br />
@@ -63,7 +64,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" as const }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/85 md:text-xl drop-shadow-sm"
+            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl [text-shadow:_0_1px_12px_rgb(0_0_0_/_30%)]"
           >
             Discover SDA youth events, retreats, service missions, and fellowship
             gatherings. Register, connect, and strengthen your walk with Christ.
@@ -121,7 +122,15 @@ const HeroSection = () => {
               </div>
             ))}
           </motion.div>
+
+          {/* Social share */}
+          <SocialShareBar className="mt-10 justify-center" />
         </div>
+      </div>
+
+      {/* Floating social on right side (desktop only) */}
+      <div className="hidden lg:block">
+        <SocialShareBar variant="floating" />
       </div>
 
       {/* Bottom gradient fade into next section */}
