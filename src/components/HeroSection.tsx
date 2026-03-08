@@ -19,23 +19,18 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-      {/* Animated breathing gradient */}
-      <div className="absolute inset-0 hero-gradient-bg" />
-
-      {/* Floating ambient orbs */}
-      <div className="hero-orb hero-orb--1" />
-      <div className="hero-orb hero-orb--2" />
-      <div className="hero-orb hero-orb--3" />
-
-      {/* Subtle dot grid */}
+      {/* Background image */}
       <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, hsl(var(--primary-foreground)) 1px, transparent 0)",
-          backgroundSize: "48px 48px",
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/sda-hero.jpg')" }}
       />
+
+      {/* Dark blue overlay for text readability — 20% opacity so image is 80% visible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.35)] via-[hsl(202,100%,14%/0.25)] to-[hsl(202,100%,10%/0.55)]" />
+
+      {/* Subtle animated orbs on top */}
+      <div className="hero-orb hero-orb--1 opacity-[0.08]" />
+      <div className="hero-orb hero-orb--3 opacity-[0.06]" />
 
       <div className="container relative z-10 py-20 md:py-32">
         <div className="mx-auto max-w-4xl text-center">
@@ -56,11 +51,11 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-8 text-5xl font-extrabold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]"
+            className="mt-8 text-5xl font-extrabold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] drop-shadow-lg"
           >
             Unite in Faith.
             <br />
-            <span className="text-accent">Grow Together.</span>
+            <span className="text-accent drop-shadow-md">Grow Together.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -68,7 +63,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" as const }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/70 md:text-xl"
+            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-foreground/85 md:text-xl drop-shadow-sm"
           >
             Discover SDA youth events, retreats, service missions, and fellowship
             gatherings. Register, connect, and strengthen your walk with Christ.
@@ -108,7 +103,7 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-8 text-primary-foreground/50"
+            className="mt-14 flex flex-wrap items-center justify-center gap-8 text-primary-foreground/60"
           >
             {[
               { value: "2,400+", label: "Members" },
@@ -116,9 +111,9 @@ const HeroSection = () => {
               { value: "45+", label: "Churches" },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-center gap-3">
-                {i > 0 && <div className="h-8 w-px bg-primary-foreground/15 -ml-4 mr-0" />}
+                {i > 0 && <div className="h-8 w-px bg-primary-foreground/20 -ml-4 mr-0" />}
                 <div className="text-center">
-                  <span className="block text-2xl font-bold text-primary-foreground md:text-3xl">
+                  <span className="block text-2xl font-bold text-primary-foreground md:text-3xl drop-shadow-sm">
                     {stat.value}
                   </span>
                   <span className="text-xs uppercase tracking-wider">{stat.label}</span>

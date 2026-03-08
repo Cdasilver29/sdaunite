@@ -12,26 +12,30 @@ const ServiceMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
       <PageHeader
         title="Service & Mission"
         subtitle="Hospital visits, children's home outreaches, community clean-ups, and more. Put your faith into action."
         icon={<Heart className="h-6 w-6 text-primary-foreground" />}
       />
 
-      {/* Why serve */}
-      <section className="border-b border-border py-12">
-        <div className="container max-w-3xl text-center">
+      {/* Why serve — with background image */}
+      <section className="relative border-b border-border py-16 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/sda-service-mission.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.45)] via-[hsl(202,100%,14%/0.35)] to-[hsl(var(--background)/0.95)]" />
+
+        <div className="container relative z-10 max-w-3xl text-center">
           <blockquote>
-            <p className="text-lg italic text-muted-foreground">
+            <p className="text-lg italic text-primary-foreground/90 drop-shadow-sm">
               "I was sick and you looked after me, I was in prison and you came to visit me."
             </p>
-            <cite className="mt-2 block text-sm font-semibold text-secondary">
+            <cite className="mt-2 block text-sm font-semibold text-accent drop-shadow-sm">
               — Matthew 25:36
             </cite>
           </blockquote>
-          <p className="mt-6 text-muted-foreground leading-relaxed">
+          <p className="mt-6 text-primary-foreground/80 leading-relaxed drop-shadow-sm">
             As Adventists, service is at the heart of our faith. These outreach events are opportunities to be the hands and feet of Jesus in your community. Browse upcoming mission events below and sign up to make a difference.
           </p>
         </div>
@@ -65,8 +69,6 @@ const ServiceMission = () => {
           )}
         </div>
       </section>
-
-      
     </div>
   );
 };

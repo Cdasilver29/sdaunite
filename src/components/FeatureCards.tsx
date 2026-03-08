@@ -12,6 +12,7 @@ const FEATURES = [
     linkLabel: "Browse Youth Events",
     accent: "bg-secondary/10 text-secondary",
     borderAccent: "group-hover:border-secondary/30",
+    bgImage: "/images/sda-retreats-hikes.jpg",
   },
   {
     icon: Heart,
@@ -22,6 +23,7 @@ const FEATURES = [
     linkLabel: "Explore Fellowship",
     accent: "bg-accent/15 text-accent-foreground",
     borderAccent: "group-hover:border-accent/40",
+    bgImage: "/images/sda-hero.jpg",
   },
   {
     icon: Church,
@@ -32,6 +34,7 @@ const FEATURES = [
     linkLabel: "Learn More",
     accent: "bg-primary/10 text-primary",
     borderAccent: "group-hover:border-primary/30",
+    bgImage: "/images/sda-sports.jpg",
   },
 ];
 
@@ -75,26 +78,35 @@ const FeatureCards = () => {
                 delay: i * 0.12,
                 ease: "easeOut" as const,
               }}
-              className={`card-glow group relative rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:shadow-sda-lg hover:-translate-y-1.5 ${feature.borderAccent}`}
+              className={`card-glow group relative rounded-2xl border border-border overflow-hidden shadow-sm transition-all duration-300 hover:shadow-sda-lg hover:-translate-y-1.5 ${feature.borderAccent}`}
             >
+              {/* Card background image */}
               <div
-                className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.accent} transition-transform duration-300 group-hover:scale-110`}
-              >
-                <feature.icon className="h-6 w-6" />
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: `url('${feature.bgImage}')` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--card))] via-[hsl(var(--card)/0.85)] to-[hsl(var(--card)/0.6)]" />
+
+              <div className="relative z-10 p-8">
+                <div
+                  className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl ${feature.accent} transition-transform duration-300 group-hover:scale-110`}
+                >
+                  <feature.icon className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </p>
+                <Link
+                  to={feature.link}
+                  className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+                >
+                  {feature.linkLabel}
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
-              <h3 className="text-lg font-bold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {feature.description}
-              </p>
-              <Link
-                to={feature.link}
-                className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-secondary transition-colors hover:text-primary"
-              >
-                {feature.linkLabel}
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
             </motion.div>
           ))}
         </div>
