@@ -95,7 +95,7 @@ const EventDetail = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Bible verse */}
             {event.bible_verse && (
-              <blockquote className="rounded-xl border border-accent/30 bg-sda-warm-light p-6">
+              <blockquote className="rounded-xl border border-accent/30 bg-accent/10 p-6">
                 <BookOpen className="mb-2 h-5 w-5 text-secondary" />
                 <p className="text-base italic text-foreground">"{event.bible_verse}"</p>
                 <cite className="mt-2 block text-sm font-semibold text-secondary">
