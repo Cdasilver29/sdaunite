@@ -54,7 +54,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage, useProfi
       />
 
       {!isCoverOnly && (
-        <div className="relative z-10 w-full px-4 pb-10 md:pb-14">
+        <div className="relative z-10 w-full px-4 pb-8 md:pb-12">
           <div className="mx-auto max-w-3xl text-center">
             {icon && (
               <motion.div
