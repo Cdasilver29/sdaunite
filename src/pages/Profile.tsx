@@ -74,22 +74,22 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
       <PageHeader
-        title="My Profile"
-        subtitle={
-          isNewProfile
-            ? "Complete your profile to unlock event details and ticket purchasing"
-            : "Manage your SDA Unite account details"
-        }
-        icon={<User className="h-6 w-6 text-primary-foreground" />}
         backgroundImage="/images/sda-profile.jpg"
         useProfileCover
       />
 
       <div className="container py-10 md:py-16">
         <div className="mx-auto max-w-2xl">
+          {/* Profile heading moved here for a clean cover photo */}
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold text-foreground md:text-3xl">My Profile</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isNewProfile
+                ? "Complete your profile to unlock event details and ticket purchasing"
+                : "Manage your SDA Unite account details"}
+            </p>
+          </div>
           {isNewProfile && (
             <div className="mb-6 flex items-start gap-3 rounded-xl border border-accent/40 bg-accent/10 p-4">
               <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
