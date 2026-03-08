@@ -4,9 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useChurches } from "@/hooks/useChurches";
+import ChurchCombobox from "@/components/ChurchCombobox";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -15,10 +14,12 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [churchId, setChurchId] = useState("");
+  const [customChurchName, setCustomChurchName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data: churches } = useChurches();
+
+  const churchValue = churchId || customChurchName.trim();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,17 +27,34 @@ const Signup = () => {
       toast({ variant: "destructive", title: "Password too short", description: "Use at least 6 characters." });
       return;
     }
-    if (!churchId) {
-      toast({ variant: "destructive", title: "Church required", description: "Please select your home church." });
+    if (!churchValue) {
+      toast({ variant: "destructive", title: "Church required", description: "Please select or type your home church." });
       return;
     }
     setLoading(true);
+
+    // If custom church name, create it first
+    let finalChurchId = churchId;
+    if (!churchId && customChurchName.trim()) {
+      const { data: newChurch, error: churchError } = await supabase
+        .from("churches")
+        .insert({ church_name: customChurchName.trim(), city: "Nairobi" })
+        .select("id")
+        .single();
+
+      if (churchError) {
+        // Church creation might fail due to RLS — proceed without church_id
+        console.warn("Could not create custom church:", churchError.message);
+      } else {
+        finalChurchId = newChurch.id;
+      }
+    }
 
     const { data: authData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName },
+        data: { full_name: fullName, custom_church_name: !finalChurchId ? customChurchName.trim() : undefined },
         emailRedirectTo: window.location.origin,
       },
     });
@@ -47,11 +65,10 @@ const Signup = () => {
       return;
     }
 
-    // Update profile with church if selected
-    if (authData.user && churchId) {
+    if (authData.user && finalChurchId) {
       await supabase
         .from("profiles")
-        .update({ church_id: churchId })
+        .update({ church_id: finalChurchId })
         .eq("user_id", authData.user.id);
     }
 
@@ -76,67 +93,32 @@ const Signup = () => {
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                placeholder="John Doe"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                maxLength={100}
-              />
+              <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} required maxLength={100} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="At least 6 characters"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
+              <Input id="password" type="password" placeholder="At least 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
             </div>
-            <div className="space-y-2">
-              <Label>Home Church *</Label>
-              <Select value={churchId} onValueChange={setChurchId} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your church" />
-                </SelectTrigger>
-                <SelectContent>
-                  {churches?.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.church_name} — {c.city}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-sda-gradient text-primary-foreground hover:opacity-90"
-            >
+            <ChurchCombobox
+              churchId={churchId}
+              customChurchName={customChurchName}
+              onChurchIdChange={setChurchId}
+              onCustomChurchNameChange={setCustomChurchName}
+              required
+              label="Home Church"
+            />
+            <Button type="submit" disabled={loading} className="w-full bg-sda-gradient text-primary-foreground hover:opacity-90">
               {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/login" className="font-semibold text-secondary hover:underline">
-              Sign In
-            </Link>
+            <Link to="/login" className="font-semibold text-secondary hover:underline">Sign In</Link>
           </p>
         </div>
       </div>

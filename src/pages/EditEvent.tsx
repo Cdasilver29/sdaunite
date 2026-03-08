@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import EventImageUpload from "@/components/EventImageUpload";
 import { CATEGORIES } from "@/lib/events-data";
 import { Plus, Trash2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -48,6 +49,7 @@ const EditEvent = () => {
   const [ageGroup, setAgeGroup] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [tiers, setTiers] = useState<TicketTierForm[]>([emptyTier()]);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (event) {
@@ -66,6 +68,7 @@ const EditEvent = () => {
       setBibleReference(event.bible_reference || "");
       setAgeGroup(event.age_group || "");
       setStatus(event.event_status as "draft" | "published");
+      setImageUrl(event.image_url || null);
       if (event.ticket_types && event.ticket_types.length > 0) {
         setTiers(
           event.ticket_types.map((t) => ({
@@ -108,6 +111,7 @@ const EditEvent = () => {
         bible_verse: bibleVerse.trim() || null,
         bible_reference: bibleReference.trim() || null,
         age_group: ageGroup.trim() || null,
+        image_url: imageUrl,
       })
       .eq("id", id);
 
@@ -117,7 +121,6 @@ const EditEvent = () => {
       return;
     }
 
-    // Delete existing ticket types and re-insert
     await supabase.from("ticket_types").delete().eq("event_id", id);
 
     const validTiers = tiers.filter((t) => t.name.trim());
@@ -132,7 +135,6 @@ const EditEvent = () => {
           quantity_available: parseInt(t.quantity) || 100,
         }))
       );
-
       if (tierError) {
         toast({ variant: "destructive", title: "Event updated but ticket tiers failed", description: tierError.message });
       }
@@ -162,9 +164,7 @@ const EditEvent = () => {
         <Navbar />
         <div className="container py-20 text-center">
           <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
-          <Button variant="outline" className="mt-4" onClick={() => navigate("/dashboard")}>
-            Back to Dashboard
-          </Button>
+          <Button variant="outline" className="mt-4" onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
         </div>
         <Footer />
       </div>
@@ -180,6 +180,11 @@ const EditEvent = () => {
           <p className="mt-1 text-sm text-muted-foreground">Update the details for "{event.title}"</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+            {/* Banner Image */}
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sda">
+              <EventImageUpload imageUrl={imageUrl} onImageUrlChange={setImageUrl} />
+            </div>
+
             {/* Basic Info */}
             <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-sda">
               <h2 className="text-lg font-semibold text-foreground">Event Details</h2>
@@ -318,9 +323,7 @@ const EditEvent = () => {
               <Button type="submit" disabled={saving} className="bg-sda-gradient text-primary-foreground hover:opacity-90">
                 {saving ? "Saving..." : "Save Changes"}
               </Button>
-              <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
-                Cancel
-              </Button>
+              <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>Cancel</Button>
             </div>
           </form>
         </div>
