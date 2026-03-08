@@ -127,8 +127,6 @@ const HeroSection = () => {
             ))}
           </motion.div>
 
-          {/* Social share */}
-          <SocialShareBar className="mt-10 justify-center" />
         </div>
       </div>
 

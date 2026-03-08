@@ -96,7 +96,12 @@ const Events = () => {
 
       {/* Floating social share (desktop) */}
       <div className="hidden lg:block">
-        <SocialShareBar variant="floating" />
+        <SocialShareBar variant="floating" url={window.location.href} text="Check out these SDA events!" />
+      </div>
+
+      {/* Mobile share bar */}
+      <div className="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40">
+        <SocialShareBar variant="top-bar" url={window.location.href} text="Check out these SDA events!" />
       </div>
     </div>
   );
