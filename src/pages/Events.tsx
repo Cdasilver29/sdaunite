@@ -24,7 +24,7 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Discover SDA Events"
