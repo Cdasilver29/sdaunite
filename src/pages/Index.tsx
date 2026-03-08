@@ -1,36 +1,54 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import ScrollingChips from "@/components/ScrollingChips";
+import FeatureCards from "@/components/FeatureCards";
 import CategorySection from "@/components/CategorySection";
 import FeaturedEvents from "@/components/FeaturedEvents";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+      <ScrollingChips />
+      <FeatureCards />
       <CategorySection />
       <FeaturedEvents />
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-28">
         <div className="container">
-          <div className="mx-auto max-w-2xl rounded-2xl bg-sda-gradient p-8 text-center shadow-sda-lg md:p-12">
-            <h2 className="text-2xl font-bold text-primary-foreground md:text-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-3xl rounded-3xl bg-sda-gradient p-10 text-center shadow-sda-lg md:p-14"
+          >
+            <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">
               Ready to Grow in Faith Together?
             </h2>
-            <p className="mt-3 text-primary-foreground/80">
+            <p className="mt-4 text-primary-foreground/75 md:text-lg">
               Join thousands of Adventist youth discovering fellowship, service, and spiritual growth.
             </p>
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <button className="rounded-lg bg-accent px-8 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90">
-                Join Fellowship
-              </button>
-              <button className="rounded-lg border border-primary-foreground/30 px-8 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-foreground/10">
-                Learn More
-              </button>
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 rounded-xl">
+                <Link to="/signup">Join Fellowship</Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold rounded-xl"
+              >
+                <Link to="/about">Learn More</Link>
+              </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
