@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -33,7 +34,6 @@ const Signup = () => {
     }
     setLoading(true);
 
-    // If custom church name, create it first
     let finalChurchId = churchId;
     if (!churchId && customChurchName.trim()) {
       const { data: newChurch, error: churchError } = await supabase
@@ -43,7 +43,6 @@ const Signup = () => {
         .single();
 
       if (churchError) {
-        // Church creation might fail due to RLS — proceed without church_id
         console.warn("Could not create custom church:", churchError.message);
       } else {
         finalChurchId = newChurch.id;
@@ -83,13 +82,14 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="container flex items-center justify-center py-16 md:py-24">
-        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground">Join Fellowship</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Create your SDA Unite account</p>
-          </div>
 
+      <PageHeader
+        title="Join Fellowship"
+        subtitle="Create your SDA Unite account"
+      />
+
+      <div className="container flex items-center justify-center py-12 md:py-16">
+        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -33,15 +34,14 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="container flex items-center justify-center py-16 md:py-24">
-        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground">Reset Password</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {sent ? "Check your email for a reset link." : "Enter your email to receive a reset link."}
-            </p>
-          </div>
 
+      <PageHeader
+        title="Reset Password"
+        subtitle={sent ? "Check your email for a reset link." : "Enter your email to receive a reset link."}
+      />
+
+      <div className="container flex items-center justify-center py-12 md:py-16">
+        <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
           {!sent && (
             <form onSubmit={handleReset} className="space-y-4">
               <div className="space-y-2">
