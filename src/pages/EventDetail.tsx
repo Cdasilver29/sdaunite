@@ -34,7 +34,6 @@ const EventDetail = () => {
             <Link to="/events">Back to Events</Link>
           </Button>
         </div>
-        <Footer />
       </div>
     );
   }
