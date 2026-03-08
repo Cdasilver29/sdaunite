@@ -281,10 +281,12 @@ export type Database = {
           amount: number
           currency: string
           id: string
+          mpesa_checkout_request_id: string | null
           paid_at: string | null
           payment_method: Database["public"]["Enums"]["payment_method"]
           payment_provider_reference: string | null
           payment_status: Database["public"]["Enums"]["payment_status"]
+          phone_number: string | null
           ticket_id: string | null
           user_id: string
         }
@@ -292,10 +294,12 @@ export type Database = {
           amount: number
           currency?: string
           id?: string
+          mpesa_checkout_request_id?: string | null
           paid_at?: string | null
           payment_method: Database["public"]["Enums"]["payment_method"]
           payment_provider_reference?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"]
+          phone_number?: string | null
           ticket_id?: string | null
           user_id: string
         }
@@ -303,10 +307,12 @@ export type Database = {
           amount?: number
           currency?: string
           id?: string
+          mpesa_checkout_request_id?: string | null
           paid_at?: string | null
           payment_method?: Database["public"]["Enums"]["payment_method"]
           payment_provider_reference?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"]
+          phone_number?: string | null
           ticket_id?: string | null
           user_id?: string
         }
