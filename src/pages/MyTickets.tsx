@@ -1,6 +1,4 @@
 import { useAuth } from "@/contexts/AuthContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,7 +38,7 @@ const MyTickets = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="My Tickets"
@@ -127,7 +125,7 @@ const MyTickets = () => {
         </div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 };

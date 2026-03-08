@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
@@ -14,7 +12,7 @@ const ServiceMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Service & Mission"
@@ -68,7 +66,7 @@ const ServiceMission = () => {
         </div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 };

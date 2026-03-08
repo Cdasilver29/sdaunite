@@ -2,8 +2,6 @@ import { useParams, Link } from "react-router-dom";
 import { Calendar, MapPin, Users, BadgeCheck, ArrowLeft, BookOpen, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import EventDetailTicketPanel from "@/components/EventDetailTicketPanel";
 import EventShareButton from "@/components/EventShareButton";
 import { useEventById } from "@/hooks/useEvents";
@@ -20,11 +18,9 @@ const EventDetail = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="container flex items-center justify-center py-20">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -32,14 +28,12 @@ const EventDetail = () => {
   if (!event) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="container py-20 text-center">
           <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
           <Button asChild variant="outline" className="mt-4">
             <Link to="/events">Back to Events</Link>
           </Button>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -51,7 +45,7 @@ const EventDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       {/* Hero */}
       <div className="relative h-64 md:h-96">
@@ -166,7 +160,7 @@ const EventDetail = () => {
         </div>
       </div>
 
-      <Footer />
+      
     </div>
   );
 };

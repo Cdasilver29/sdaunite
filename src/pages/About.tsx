@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { Heart, BookOpen, Users, Globe } from "lucide-react";
 
@@ -32,7 +30,7 @@ const VALUES = [
 
 const About = () => (
   <div className="min-h-screen bg-background">
-    <Navbar />
+    
 
     <PageHeader
       title="About SDA Unite"
@@ -94,7 +92,7 @@ const About = () => (
       </div>
     </section>
 
-    <Footer />
+    
   </div>
 );
 

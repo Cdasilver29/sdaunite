@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { User, Phone, Mail, CheckCircle } from "lucide-react";
 
@@ -75,7 +73,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="My Profile"
@@ -158,7 +156,7 @@ const Profile = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

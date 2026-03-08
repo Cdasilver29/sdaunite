@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 
 const ForgotPassword = () => {
@@ -33,7 +31,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Reset Password"
@@ -67,7 +65,7 @@ const ForgotPassword = () => {
           </p>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

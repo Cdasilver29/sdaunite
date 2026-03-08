@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 
 const Login = () => {
@@ -35,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Welcome Back"
@@ -89,7 +87,7 @@ const Login = () => {
           </p>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

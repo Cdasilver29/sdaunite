@@ -9,8 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import EventImageUpload from "@/components/EventImageUpload";
 import { CATEGORIES } from "@/lib/events-data";
 import { Plus, Trash2 } from "lucide-react";
@@ -112,7 +110,7 @@ const CreateEvent = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <div className="container py-10">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-2xl font-bold text-foreground">Create New Event</h1>
@@ -267,7 +265,7 @@ const CreateEvent = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

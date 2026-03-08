@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { BookOpen, Shirt, Heart, Sun, Shield } from "lucide-react";
 
@@ -44,7 +42,7 @@ const sections = [
 
 const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
-    <Navbar />
+    
 
     <PageHeader
       title="Code of Conduct"
@@ -84,7 +82,7 @@ const CodeOfConduct = () => (
       </div>
     </div>
 
-    <Footer />
+    
   </div>
 );
 

@@ -10,8 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import EventImageUpload from "@/components/EventImageUpload";
 import { CATEGORIES } from "@/lib/events-data";
 import { Plus, Trash2 } from "lucide-react";
@@ -149,11 +147,9 @@ const EditEvent = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="container flex items-center justify-center py-20">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -161,19 +157,17 @@ const EditEvent = () => {
   if (!event) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="container py-20 text-center">
           <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
           <Button variant="outline" className="mt-4" onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <div className="container py-10">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-2xl font-bold text-foreground">Edit Event</h1>
@@ -328,7 +322,7 @@ const EditEvent = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
