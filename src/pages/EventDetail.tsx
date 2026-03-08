@@ -28,7 +28,6 @@ const EventDetail = () => {
   if (!event) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="container py-20 text-center">
           <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
           <Button asChild variant="outline" className="mt-4">
