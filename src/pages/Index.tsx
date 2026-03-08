@@ -12,7 +12,7 @@ import { ArrowRight } from "lucide-react";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <HeroSection />
       <ScrollingChips />
       <FeatureCards />
