@@ -3,6 +3,7 @@ import { ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import SocialShareBar from "./SocialShareBar";
 
 const HeroSection = () => {
   const [search, setSearch] = useState("");
