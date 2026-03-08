@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventDetailTicketPanel from "@/components/EventDetailTicketPanel";
+import EventShareButton from "@/components/EventShareButton";
 import { useEventById } from "@/hooks/useEvents";
 import { useAuth } from "@/contexts/AuthContext";
 import { getEventImageUrl } from "@/lib/event-image";
