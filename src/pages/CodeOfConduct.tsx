@@ -42,7 +42,7 @@ const sections = [
 
 const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
-    <Navbar />
+    
 
     <PageHeader
       title="Code of Conduct"
