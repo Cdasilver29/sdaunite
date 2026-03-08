@@ -1,5 +1,16 @@
 import { Link } from "react-router-dom";
 
+const PLATFORM_LINKS = [
+  { to: "/events", label: "Events" },
+  { to: "/service-mission", label: "Service & Mission" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
+
+const LEGAL_LINKS = [
+  { to: "/code-of-conduct", label: "Code of Conduct" },
+];
+
 const Footer = () => (
   <footer className="border-t border-border bg-card py-12">
     <div className="container">
@@ -21,18 +32,28 @@ const Footer = () => (
         <div>
           <h4 className="text-sm font-semibold text-foreground">Platform</h4>
           <ul className="mt-3 flex flex-col gap-2">
-            <li><Link to="/events" className="text-sm text-muted-foreground hover:text-foreground">Events</Link></li>
-            <li><Link to="/code-of-conduct" className="text-sm text-muted-foreground hover:text-foreground">Code of Conduct</Link></li>
+            {PLATFORM_LINKS.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-foreground">Categories</h4>
+          <h4 className="text-sm font-semibold text-foreground">Legal & Info</h4>
           <ul className="mt-3 flex flex-col gap-2">
-            <li><span className="text-sm text-muted-foreground">Fellowship</span></li>
-            <li><span className="text-sm text-muted-foreground">Outdoor & Nature</span></li>
-            <li><span className="text-sm text-muted-foreground">Service & Mission</span></li>
-            <li><span className="text-sm text-muted-foreground">Sports & Health</span></li>
+            {LEGAL_LINKS.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+            <li><span className="text-sm text-muted-foreground">Privacy Policy</span></li>
+            <li><span className="text-sm text-muted-foreground">Terms of Service</span></li>
           </ul>
         </div>
 
