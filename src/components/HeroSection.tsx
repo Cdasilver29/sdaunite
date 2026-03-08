@@ -36,6 +36,9 @@ const HeroSection = () => {
       {/* Layer 4: Content */}
       <div className="relative z-10 w-full px-4 py-24 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
+          {/* Social share bar at top */}
+          <SocialShareBar variant="top-bar" className="justify-center mb-6" />
+
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
