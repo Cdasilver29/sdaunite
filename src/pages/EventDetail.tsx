@@ -45,7 +45,7 @@ const EventDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       {/* Hero */}
       <div className="relative h-64 md:h-96">
