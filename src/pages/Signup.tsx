@@ -105,10 +105,10 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Home Church</Label>
-              <Select value={churchId} onValueChange={setChurchId}>
+              <Label>Home Church *</Label>
+              <Select value={churchId} onValueChange={setChurchId} required>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select your church (optional)" />
+                  <SelectValue placeholder="Select your church" />
                 </SelectTrigger>
                 <SelectContent>
                   {churches?.map((c) => (
