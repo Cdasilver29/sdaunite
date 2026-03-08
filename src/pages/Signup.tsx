@@ -26,6 +26,10 @@ const Signup = () => {
       toast({ variant: "destructive", title: "Password too short", description: "Use at least 6 characters." });
       return;
     }
+    if (!churchId) {
+      toast({ variant: "destructive", title: "Church required", description: "Please select your home church." });
+      return;
+    }
     setLoading(true);
 
     const { data: authData, error } = await supabase.auth.signUp({
@@ -105,10 +109,10 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Home Church</Label>
-              <Select value={churchId} onValueChange={setChurchId}>
+              <Label>Home Church *</Label>
+              <Select value={churchId} onValueChange={setChurchId} required>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select your church (optional)" />
+                  <SelectValue placeholder="Select your church" />
                 </SelectTrigger>
                 <SelectContent>
                   {churches?.map((c) => (
