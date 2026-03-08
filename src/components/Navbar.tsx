@@ -1,22 +1,103 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, User } from "lucide-react";
+import { Menu, X, LogOut, User, ChevronDown } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { CATEGORIES } from "@/lib/events-data";
 
-const NAV_LINKS = [
+type DropdownConfig = {
+  label: string;
+  items: { href: string; label: string; desc?: string }[];
+};
+
+const DROPDOWNS: Record<string, DropdownConfig> = {
+  Events: {
+    label: "Events",
+    items: [
+      { href: "/events", label: "All Events", desc: "Browse everything" },
+      ...CATEGORIES.map((c) => ({
+        href: `/events?category=${encodeURIComponent(c.label)}`,
+        label: c.label,
+        desc: c.description,
+      })),
+    ],
+  },
+  "Service & Mission": {
+    label: "Service & Mission",
+    items: [
+      { href: "/service-mission", label: "Overview", desc: "Our mission & outreach" },
+      { href: "/events?category=Service+%26+Mission", label: "Mission Events", desc: "Upcoming outreach events" },
+      { href: "/contact", label: "Get Involved", desc: "Volunteer or organize" },
+    ],
+  },
+  About: {
+    label: "About",
+    items: [
+      { href: "/about", label: "About SDA Unite", desc: "Our story & values" },
+      { href: "/code-of-conduct", label: "Code of Conduct", desc: "Community guidelines" },
+      { href: "/contact", label: "Contact Us", desc: "Reach out to the team" },
+    ],
+  },
+};
+
+const SIMPLE_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/events", label: "Events" },
-  { href: "/service-mission", label: "Service & Mission" },
-  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+const DropdownMenu = ({
+  config,
+  open,
+  onEnter,
+  onLeave,
+}: {
+  config: DropdownConfig;
+  open: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
+}) => {
+  return (
+    <div className="relative" onMouseEnter={onEnter} onMouseLeave={onLeave}>
+      <button
+        className={`flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
+          open ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+        }`}
+      >
+        {config.label}
+        <ChevronDown
+          className={`h-3 w-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 pt-2 min-w-[220px]">
+          <div className="rounded-lg border border-white/10 bg-[hsl(202,100%,14%)]/95 backdrop-blur-xl shadow-xl py-1.5">
+            {config.items.map((item) => (
+              <Link
+                key={item.href + item.label}
+                to={item.href}
+                className="flex flex-col px-4 py-2.5 hover:bg-white/10 transition-colors"
+              >
+                <span className="text-sm font-medium text-white/90">{item.label}</span>
+                {item.desc && (
+                  <span className="text-xs text-white/50 mt-0.5">{item.desc}</span>
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -25,10 +106,11 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
-  }, [location.pathname]);
+    setOpenDropdown(null);
+    setMobileExpanded(null);
+  }, [location.pathname, location.search]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -37,6 +119,62 @@ const Navbar = () => {
 
   const isActive = (href: string) =>
     href === "/" ? location.pathname === "/" : location.pathname.startsWith(href);
+
+  const handleDropdownEnter = (label: string) => {
+    clearTimeout(timeoutRef.current);
+    setOpenDropdown(label);
+  };
+
+  const handleDropdownLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
+  };
+
+  // Desktop nav order: Home, Events▼, Service & Mission▼, About▼, Contact
+  const desktopNav = (
+    <nav className="hidden items-center gap-0.5 lg:flex">
+      {/* Home */}
+      <Link
+        to="/"
+        className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
+          isActive("/") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+        }`}
+      >
+        Home
+      </Link>
+
+      {/* Dropdown menus */}
+      {Object.entries(DROPDOWNS).map(([key, config]) => (
+        <DropdownMenu
+          key={key}
+          config={config}
+          open={openDropdown === key}
+          onEnter={() => handleDropdownEnter(key)}
+          onLeave={handleDropdownLeave}
+        />
+      ))}
+
+      {/* Contact */}
+      <Link
+        to="/contact"
+        className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
+          isActive("/contact") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+        }`}
+      >
+        Contact
+      </Link>
+
+      {user && (
+        <Link
+          to="/my-tickets"
+          className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
+            isActive("/my-tickets") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+          }`}
+        >
+          My Tickets
+        </Link>
+      )}
+    </nav>
+  );
 
   return (
     <header
@@ -54,34 +192,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-                isActive(link.href)
-                  ? "text-white"
-                  : "text-white/70 hover:text-[hsl(var(--accent))]"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          {user && (
-            <Link
-              to="/my-tickets"
-              className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-                isActive("/my-tickets")
-                  ? "text-white"
-                  : "text-white/70 hover:text-[hsl(var(--accent))]"
-              }`}
-            >
-              My Tickets
-            </Link>
-          )}
-        </nav>
+        {desktopNav}
 
         {/* Desktop right */}
         <div className="hidden items-center gap-3 lg:flex">
@@ -125,19 +236,56 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="lg:hidden bg-[hsl(202,100%,18%)] border-t border-white/10">
           <nav className="flex flex-col px-5 py-4 gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
-                  isActive(link.href)
-                    ? "text-white bg-white/10"
-                    : "text-white/70 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {link.label}
-              </Link>
+            {/* Home */}
+            <Link
+              to="/"
+              className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
+                isActive("/") ? "text-white bg-white/10" : "text-white/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              Home
+            </Link>
+
+            {/* Mobile dropdowns as expandable sections */}
+            {Object.entries(DROPDOWNS).map(([key, config]) => (
+              <div key={key}>
+                <button
+                  onClick={() => setMobileExpanded(mobileExpanded === key ? null : key)}
+                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded transition-colors"
+                >
+                  {config.label}
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                      mobileExpanded === key ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {mobileExpanded === key && (
+                  <div className="ml-3 border-l border-white/10 pl-3 flex flex-col gap-0.5 mt-1 mb-1">
+                    {config.items.map((item) => (
+                      <Link
+                        key={item.href + item.label}
+                        to={item.href}
+                        className="px-3 py-1.5 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
+
+            {/* Contact */}
+            <Link
+              to="/contact"
+              className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
+                isActive("/contact") ? "text-white bg-white/10" : "text-white/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              Contact
+            </Link>
+
             {user && (
               <>
                 <Link
