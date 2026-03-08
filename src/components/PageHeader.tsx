@@ -11,14 +11,14 @@ interface PageHeaderProps {
 
 const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHeaderProps) => {
   return (
-    <section className="relative overflow-hidden py-16 md:py-24">
+    <section className="relative overflow-hidden min-h-[40vh] flex items-center">
       {/* Background: image or gradient */}
       {backgroundImage ? (
         <>
           <img
             src={backgroundImage}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover object-center"
           />
           {/* Animated gradient layer */}
           <div className="hero-animated-bg opacity-40" />

@@ -48,6 +48,7 @@ const CodeOfConduct = () => (
       title="Code of Conduct"
       subtitle="All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct."
       icon={<BookOpen className="h-6 w-6 text-accent" />}
+      backgroundImage="/images/sda-code-of-conduct.jpg"
     />
 
     <div className="container py-12">
