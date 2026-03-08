@@ -26,6 +26,10 @@ const Signup = () => {
       toast({ variant: "destructive", title: "Password too short", description: "Use at least 6 characters." });
       return;
     }
+    if (!churchId) {
+      toast({ variant: "destructive", title: "Church required", description: "Please select your home church." });
+      return;
+    }
     setLoading(true);
 
     const { data: authData, error } = await supabase.auth.signUp({
