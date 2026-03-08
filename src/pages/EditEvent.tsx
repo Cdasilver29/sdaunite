@@ -201,7 +201,7 @@ const EditEvent = () => {
                     <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                     <SelectContent>
                       {CATEGORIES.map((c) => (
-                        <SelectItem key={c.label} value={c.label}>{c.icon} {c.label}</SelectItem>
+                        <SelectItem key={c.label} value={c.label}><span className="flex items-center gap-2"><c.icon className="h-4 w-4" /> {c.label}</span></SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
