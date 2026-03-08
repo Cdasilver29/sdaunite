@@ -26,8 +26,8 @@ const HeroSection = () => {
         style={{ backgroundImage: "url('/images/sda-hero.jpg')" }}
       />
 
-      {/* Dark blue overlay for text readability — 20% opacity so image is 80% visible */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.35)] via-[hsl(202,100%,14%/0.25)] to-[hsl(202,100%,10%/0.55)]" />
+      {/* Dark overlay for strong text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,8%/0.65)] via-[hsl(202,100%,10%/0.50)] to-[hsl(202,100%,6%/0.80)]" />
 
       {/* Subtle animated orbs on top */}
       <div className="hero-orb hero-orb--1 opacity-[0.08]" />
