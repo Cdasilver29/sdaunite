@@ -25,7 +25,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Contact Us"
