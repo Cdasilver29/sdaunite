@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useChurches } from "@/hooks/useChurches";
+import ChurchCombobox from "@/components/ChurchCombobox";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { User, Phone, Mail } from "lucide-react";
@@ -14,12 +14,12 @@ import { User, Phone, Mail } from "lucide-react";
 const Profile = () => {
   const { user, profile, roles } = useAuth();
   const { toast } = useToast();
-  const { data: churches } = useChurches();
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [ageGroup, setAgeGroup] = useState("");
   const [churchId, setChurchId] = useState("");
+  const [customChurchName, setCustomChurchName] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -37,6 +37,16 @@ const Profile = () => {
     if (!user) return;
     setSaving(true);
 
+    let finalChurchId = churchId;
+    if (!churchId && customChurchName.trim()) {
+      const { data: newChurch } = await supabase
+        .from("churches")
+        .insert({ church_name: customChurchName.trim(), city: "Nairobi" })
+        .select("id")
+        .single();
+      if (newChurch) finalChurchId = newChurch.id;
+    }
+
     const { error } = await supabase
       .from("profiles")
       .update({
@@ -44,7 +54,7 @@ const Profile = () => {
         phone_number: phoneNumber.trim() || null,
         gender: (gender as "male" | "female") || null,
         age_group: ageGroup || null,
-        church_id: churchId || null,
+        church_id: finalChurchId || null,
       })
       .eq("user_id", user.id);
 
@@ -62,52 +72,28 @@ const Profile = () => {
       <div className="container py-10 md:py-16">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-2xl font-bold text-foreground">My Profile</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Manage your SDA Unite account details
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Manage your SDA Unite account details</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {roles.map((r) => (
-              <span key={r} className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary capitalize">
-                {r}
-              </span>
+              <span key={r} className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary capitalize">{r}</span>
             ))}
           </div>
 
           <form onSubmit={handleSave} className="mt-8 space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sda">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="flex items-center gap-2">
-                  <User className="h-3.5 w-3.5" /> Full Name
-                </Label>
-                <Input
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
-                  maxLength={100}
-                />
+                <Label htmlFor="fullName" className="flex items-center gap-2"><User className="h-3.5 w-3.5" /> Full Name</Label>
+                <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required maxLength={100} />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="h-3.5 w-3.5" /> Email
-                </Label>
+                <Label htmlFor="email" className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" /> Email</Label>
                 <Input id="email" value={user?.email || ""} disabled className="bg-muted" />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center gap-2">
-                  <Phone className="h-3.5 w-3.5" /> Phone Number
-                </Label>
-                <Input
-                  id="phone"
-                  placeholder="+254 712 345 678"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
+                <Label htmlFor="phone" className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" /> Phone Number</Label>
+                <Input id="phone" placeholder="+254 712 345 678" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
               </div>
-
               <div className="space-y-2">
                 <Label>Gender</Label>
                 <Select value={gender} onValueChange={setGender}>
@@ -118,7 +104,6 @@ const Profile = () => {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-2">
                 <Label>Age Group</Label>
                 <Select value={ageGroup} onValueChange={setAgeGroup}>
@@ -131,27 +116,16 @@ const Profile = () => {
                   </SelectContent>
                 </Select>
               </div>
-
-              <div className="space-y-2">
-                <Label>Home Church</Label>
-                <Select value={churchId} onValueChange={setChurchId}>
-                  <SelectTrigger><SelectValue placeholder="Select your church" /></SelectTrigger>
-                  <SelectContent>
-                    {churches?.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.church_name} — {c.city}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <ChurchCombobox
+                churchId={churchId}
+                customChurchName={customChurchName}
+                onChurchIdChange={setChurchId}
+                onCustomChurchNameChange={setCustomChurchName}
+                required
+                label="Home Church"
+              />
             </div>
-
-            <Button
-              type="submit"
-              disabled={saving}
-              className="bg-sda-gradient text-primary-foreground hover:opacity-90"
-            >
+            <Button type="submit" disabled={saving} className="bg-sda-gradient text-primary-foreground hover:opacity-90">
               {saving ? "Saving..." : "Save Changes"}
             </Button>
           </form>

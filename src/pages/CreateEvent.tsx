@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import EventImageUpload from "@/components/EventImageUpload";
 import { CATEGORIES } from "@/lib/events-data";
 import { Plus, Trash2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -45,6 +46,7 @@ const CreateEvent = () => {
   const [ageGroup, setAgeGroup] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [tiers, setTiers] = useState<TicketTierForm[]>([emptyTier()]);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const updateTier = (idx: number, field: keyof TicketTierForm, value: string) => {
     setTiers((prev) => prev.map((t, i) => (i === idx ? { ...t, [field]: value } : t)));
@@ -74,6 +76,7 @@ const CreateEvent = () => {
         bible_verse: bibleVerse.trim() || null,
         bible_reference: bibleReference.trim() || null,
         age_group: ageGroup.trim() || null,
+        image_url: imageUrl,
       })
       .select("id")
       .single();
@@ -96,7 +99,6 @@ const CreateEvent = () => {
           quantity_available: parseInt(t.quantity) || 100,
         }))
       );
-
       if (tierError) {
         toast({ variant: "destructive", title: "Event created but ticket tiers failed", description: tierError.message });
       }
@@ -117,6 +119,11 @@ const CreateEvent = () => {
           <p className="mt-1 text-sm text-muted-foreground">Fill in the details for your SDA event</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+            {/* Banner Image */}
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sda">
+              <EventImageUpload imageUrl={imageUrl} onImageUrlChange={setImageUrl} />
+            </div>
+
             {/* Basic Info */}
             <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-sda">
               <h2 className="text-lg font-semibold text-foreground">Event Details</h2>
@@ -255,9 +262,7 @@ const CreateEvent = () => {
               <Button type="submit" disabled={saving} className="bg-sda-gradient text-primary-foreground hover:opacity-90">
                 {saving ? "Creating..." : "Create Event"}
               </Button>
-              <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
-                Cancel
-              </Button>
+              <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>Cancel</Button>
             </div>
           </form>
         </div>
