@@ -30,7 +30,7 @@ const VALUES = [
 
 const About = () => (
   <div className="min-h-screen bg-background">
-    <Navbar />
+    
 
     <PageHeader
       title="About SDA Unite"
