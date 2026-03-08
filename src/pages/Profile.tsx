@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -9,11 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { User, Phone, Mail } from "lucide-react";
+import { User, Phone, Mail, CheckCircle } from "lucide-react";
 
 const Profile = () => {
-  const { user, profile, roles } = useAuth();
+  const { user, profile, roles, refreshProfile } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
@@ -21,6 +23,8 @@ const Profile = () => {
   const [churchId, setChurchId] = useState("");
   const [customChurchName, setCustomChurchName] = useState("");
   const [saving, setSaving] = useState(false);
+
+  const isNewProfile = !!profile && (!profile.church_id || !profile.phone_number);
 
   useEffect(() => {
     if (profile) {
@@ -61,7 +65,9 @@ const Profile = () => {
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
-      toast({ title: "Profile updated", description: "Your changes have been saved." });
+      await refreshProfile();
+      toast({ title: "Profile updated!", description: "Your changes have been saved. Redirecting..." });
+      setTimeout(() => navigate("/events"), 800);
     }
     setSaving(false);
   };
@@ -72,7 +78,23 @@ const Profile = () => {
       <div className="container py-10 md:py-16">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-2xl font-bold text-foreground">My Profile</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage your SDA Unite account details</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {isNewProfile
+              ? "Complete your profile to unlock event details and ticket purchasing"
+              : "Manage your SDA Unite account details"}
+          </p>
+
+          {isNewProfile && (
+            <div className="mt-4 flex items-start gap-3 rounded-xl border border-accent/40 bg-accent/10 p-4">
+              <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-secondary" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">Almost there!</p>
+                <p className="text-xs text-muted-foreground">
+                  Fill in your details below to access full event information, purchase tickets, and register for events.
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="mt-6 flex flex-wrap gap-2">
             {roles.map((r) => (
@@ -126,7 +148,7 @@ const Profile = () => {
               />
             </div>
             <Button type="submit" disabled={saving} className="bg-sda-gradient text-primary-foreground hover:opacity-90">
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? "Saving..." : isNewProfile ? "Complete Profile & Explore Events" : "Save Changes"}
             </Button>
           </form>
         </div>
