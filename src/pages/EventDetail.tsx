@@ -58,12 +58,18 @@ const EventDetail = () => {
         <img src={imgSrc} alt={event.title} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 to-transparent" />
         <div className="container absolute inset-x-0 bottom-6">
-          <Link
-            to="/events"
-            className="mb-3 inline-flex items-center gap-1 text-xs font-medium text-primary-foreground/80 hover:text-primary-foreground"
-          >
-            <ArrowLeft className="h-3 w-3" /> Back to Events
-          </Link>
+          <div className="mb-3 flex items-center justify-between">
+            <Link
+              to="/events"
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary-foreground/80 hover:text-primary-foreground"
+            >
+              <ArrowLeft className="h-3 w-3" /> Back to Events
+            </Link>
+            <EventShareButton
+              title={event.title}
+              url={window.location.href}
+            />
+          </div>
           <div className="flex flex-wrap gap-2">
             <Badge className="bg-accent text-accent-foreground border-0">{event.event_category}</Badge>
             {event.verified && churchName && (
