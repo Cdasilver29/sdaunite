@@ -2,18 +2,10 @@ import { Link } from "react-router-dom";
 import { Calendar, MapPin, Users, BadgeCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { DbEvent } from "@/hooks/useEvents";
-import heroSingles from "@/assets/hero-singles-fellowship.jpg";
-import heroHike from "@/assets/hero-youth-hike.jpg";
-import heroService from "@/assets/hero-service-mission.jpg";
-
-const IMAGE_MAP: Record<string, string> = {
-  "singles-fellowship": heroSingles,
-  "youth-hike": heroHike,
-  "service-mission": heroService,
-};
+import { getEventImageUrl } from "@/lib/event-image";
 
 const EventCard = ({ event }: { event: DbEvent }) => {
-  const imgSrc = (event.image_url && IMAGE_MAP[event.image_url]) || heroSingles;
+  const imgSrc = getEventImageUrl(event.image_url);
   const lowestPrice = event.ticket_types?.length
     ? Math.min(...event.ticket_types.map((t) => t.price))
     : 0;
