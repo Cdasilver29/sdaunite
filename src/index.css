@@ -138,7 +138,49 @@
   }
 }
 
-/* ===== HERO ANIMATED GRADIENT — soft breathing effect ===== */
+/* ===== HERO ANIMATED GRADIENT — layered radial gradient breathing ===== */
+.hero-animated-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, hsl(202 100% 18%) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, hsl(202 81% 33%) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, hsl(30 75% 70% / 0.35) 0%, transparent 60%);
+  background-size: 200% 200%, 200% 200%, 150% 150%;
+  animation: hero-gradient-breathe 24s ease-in-out infinite alternate;
+  will-change: background-position, opacity;
+}
+
+.dark .hero-animated-bg {
+  opacity: 0.35;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, hsl(202 80% 14%) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, hsl(202 65% 25%) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, hsl(30 70% 50% / 0.2) 0%, transparent 60%);
+}
+
+@keyframes hero-gradient-breathe {
+  0% {
+    background-position: 0% 0%, 100% 100%, 50% 50%;
+    opacity: 0.4;
+  }
+  33% {
+    background-position: 30% 50%, 70% 30%, 40% 60%;
+    opacity: 0.5;
+  }
+  66% {
+    background-position: 60% 20%, 40% 80%, 60% 40%;
+    opacity: 0.42;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%, 50% 50%;
+    opacity: 0.48;
+  }
+}
+
+/* Legacy class alias */
 .hero-gradient-bg {
   background: linear-gradient(
     135deg,

@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
 import PageHeader from "@/components/PageHeader";
 import { User, Phone, Mail, CheckCircle } from "lucide-react";
+import ProfilePhotoUpload from "@/components/ProfilePhotoUpload";
 
 const Profile = () => {
   const { user, profile, roles, refreshProfile } = useAuth();
