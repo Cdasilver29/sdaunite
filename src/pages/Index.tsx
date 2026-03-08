@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ScrollingChips from "@/components/ScrollingChips";
 import FeatureCards from "@/components/FeatureCards";
