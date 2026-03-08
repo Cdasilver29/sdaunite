@@ -90,36 +90,87 @@
   }
 }
 
-/* Animated hero gradient background */
+/* ===== HERO ANIMATED GRADIENT — soft breathing effect ===== */
 .hero-gradient-bg {
   background: linear-gradient(
     135deg,
-    hsl(202 100% 14%) 0%,
-    hsl(202 100% 18%) 25%,
-    hsl(202 81% 28%) 50%,
-    hsl(202 100% 18%) 75%,
-    hsl(202 100% 14%) 100%
+    hsl(202 100% 12%) 0%,
+    hsl(202 100% 18%) 30%,
+    hsl(202 81% 26%) 50%,
+    hsl(202 100% 20%) 70%,
+    hsl(202 100% 12%) 100%
   );
-  background-size: 400% 400%;
-  animation: gradient-drift 20s ease infinite;
+  background-size: 300% 300%;
+  animation: gradient-breathe 16s ease-in-out infinite;
 }
 
-@keyframes gradient-drift {
+@keyframes gradient-breathe {
   0%, 100% {
     background-position: 0% 50%;
   }
-  25% {
-    background-position: 100% 0%;
+  33% {
+    background-position: 100% 25%;
   }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
+  66% {
+    background-position: 50% 100%;
   }
 }
 
-/* Infinite scrolling chips */
+/* ===== FLOATING ORBS — ambient light blobs ===== */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-orb--1 {
+  width: 500px;
+  height: 500px;
+  background: hsl(202 81% 33%);
+  top: -15%;
+  right: -10%;
+  animation: orb-float-1 22s ease-in-out infinite;
+}
+
+.hero-orb--2 {
+  width: 400px;
+  height: 400px;
+  background: hsl(30 75% 70%);
+  bottom: -10%;
+  left: -8%;
+  animation: orb-float-2 26s ease-in-out infinite;
+}
+
+.hero-orb--3 {
+  width: 300px;
+  height: 300px;
+  background: hsl(202 100% 40%);
+  top: 40%;
+  left: 50%;
+  animation: orb-float-3 20s ease-in-out infinite;
+}
+
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 30px) scale(1.05); }
+  66% { transform: translate(20px, -20px) scale(0.95); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -25px) scale(1.08); }
+  66% { transform: translate(-15px, 15px) scale(0.92); }
+}
+
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+  50% { transform: translate(-30px, 20px) scale(1.1); opacity: 0.18; }
+}
+
+/* ===== INFINITE SCROLLING CHIPS ===== */
 @keyframes scroll-x {
   0% {
     transform: translateX(0);
@@ -130,9 +181,53 @@
 }
 
 .animate-scroll-x {
-  animation: scroll-x 30s linear infinite;
+  animation: scroll-x 35s linear infinite;
 }
 
 .animate-scroll-x:hover {
   animation-play-state: paused;
+}
+
+/* ===== GLASSMORPHISM UTILITY ===== */
+.glass {
+  background: hsl(0 0% 100% / 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsl(0 0% 100% / 0.1);
+}
+
+.glass-card {
+  background: hsl(0 0% 100% / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border));
+}
+
+/* ===== PREMIUM CARD HOVER GLOW ===== */
+.card-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--sda-gradient);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.card-glow:hover::before {
+  opacity: 0.04;
+}
+
+/* ===== SECTION DIVIDER LINE ===== */
+.section-line {
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--sda-gradient);
 }
