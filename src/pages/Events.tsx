@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
-import { FEATURED_EVENTS, CATEGORIES, type EventCategory } from "@/lib/events-data";
+import { usePublishedEvents } from "@/hooks/useEvents";
+import { CATEGORIES } from "@/lib/events-data";
 import { Search } from "lucide-react";
 
 const Events = () => {
@@ -11,13 +12,14 @@ const Events = () => {
   const initialCat = searchParams.get("category") || "";
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCat);
   const [search, setSearch] = useState("");
+  const { data: events, isLoading } = usePublishedEvents();
 
-  const filtered = FEATURED_EVENTS.filter((e) => {
-    const matchesCat = !selectedCategory || e.category === selectedCategory;
+  const filtered = (events ?? []).filter((e) => {
+    const matchesCat = !selectedCategory || e.event_category === selectedCategory;
     const matchesSearch =
       !search ||
       e.title.toLowerCase().includes(search.toLowerCase()) ||
-      e.location.toLowerCase().includes(search.toLowerCase());
+      e.location_name.toLowerCase().includes(search.toLowerCase());
     return matchesCat && matchesSearch;
   });
 
@@ -77,7 +79,13 @@ const Events = () => {
           ))}
         </div>
 
-        {filtered.length > 0 ? (
+        {isLoading ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-80 animate-pulse rounded-xl bg-muted" />
+            ))}
+          </div>
+        ) : filtered.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((event) => (
               <EventCard key={event.id} event={event} />

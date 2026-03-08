@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { FEATURED_EVENTS } from "@/lib/events-data";
+import { useEventById } from "@/hooks/useEvents";
 import heroSingles from "@/assets/hero-singles-fellowship.jpg";
 import heroHike from "@/assets/hero-youth-hike.jpg";
 import heroService from "@/assets/hero-service-mission.jpg";
@@ -19,9 +19,21 @@ const IMAGE_MAP: Record<string, string> = {
 
 const EventDetail = () => {
   const { id } = useParams();
-  const event = FEATURED_EVENTS.find((e) => e.id === id);
+  const { data: event, isLoading } = useEventById(id);
   const [selectedTier, setSelectedTier] = useState(0);
   const [conductAgreed, setConductAgreed] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container flex items-center justify-center py-20">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!event) {
     return (
@@ -38,9 +50,12 @@ const EventDetail = () => {
     );
   }
 
-  const imgSrc = IMAGE_MAP[event.image] || heroSingles;
-  const spotsLeft = event.capacity - event.registered;
-  const tier = event.ticketTiers[selectedTier];
+  const imgSrc = (event.image_url && IMAGE_MAP[event.image_url]) || heroSingles;
+  const ticketsSold = event.tickets?.length || 0;
+  const spotsLeft = event.event_capacity - ticketsSold;
+  const tiers = event.ticket_types || [];
+  const tier = tiers[selectedTier];
+  const churchName = event.churches?.church_name;
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,10 +73,10 @@ const EventDetail = () => {
             <ArrowLeft className="h-3 w-3" /> Back to Events
           </Link>
           <div className="flex flex-wrap gap-2">
-            <Badge className="bg-accent text-accent-foreground border-0">{event.category}</Badge>
-            {event.verified && (
+            <Badge className="bg-accent text-accent-foreground border-0">{event.event_category}</Badge>
+            {event.verified && churchName && (
               <Badge className="bg-primary text-primary-foreground border-0 gap-1">
-                <BadgeCheck className="h-3 w-3" /> Official SDA Church Event — {event.churchName}
+                <BadgeCheck className="h-3 w-3" /> Official SDA Church Event — {churchName}
               </Badge>
             )}
           </div>
@@ -79,12 +94,12 @@ const EventDetail = () => {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Bible verse */}
-            {event.bibleVerse && (
+            {event.bible_verse && (
               <blockquote className="rounded-xl border border-accent/30 bg-sda-warm-light p-6">
                 <BookOpen className="mb-2 h-5 w-5 text-secondary" />
-                <p className="text-base italic text-foreground">"{event.bibleVerse}"</p>
+                <p className="text-base italic text-foreground">"{event.bible_verse}"</p>
                 <cite className="mt-2 block text-sm font-semibold text-secondary">
-                  — {event.bibleReference}
+                  — {event.bible_reference}
                 </cite>
               </blockquote>
             )}
@@ -100,10 +115,10 @@ const EventDetail = () => {
             {/* Info grid */}
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Calendar, label: "Date", value: new Date(event.date).toLocaleDateString("en-KE", { dateStyle: "medium" }) },
-                { icon: Calendar, label: "Time", value: event.time },
-                { icon: MapPin, label: "Location", value: event.location },
-                { icon: Users, label: "Spots Left", value: `${spotsLeft} / ${event.capacity}` },
+                { icon: Calendar, label: "Date", value: new Date(event.start_datetime).toLocaleDateString("en-KE", { dateStyle: "medium" }) },
+                { icon: Calendar, label: "Time", value: `${new Date(event.start_datetime).toLocaleTimeString("en-KE", { timeStyle: "short" })} — ${new Date(event.end_datetime).toLocaleTimeString("en-KE", { timeStyle: "short" })}` },
+                { icon: MapPin, label: "Location", value: event.location_name },
+                { icon: Users, label: "Spots Left", value: `${spotsLeft} / ${event.event_capacity}` },
               ].map((item) => (
                 <div key={item.label} className="rounded-lg border border-border bg-card p-4">
                   <item.icon className="mb-1 h-4 w-4 text-secondary" />
@@ -114,13 +129,13 @@ const EventDetail = () => {
             </div>
 
             {/* Metadata */}
-            {(event.ministryFocus || event.ageGroup) && (
+            {(event.ministry_focus || event.age_group) && (
               <div className="flex flex-wrap gap-3">
-                {event.ministryFocus && (
-                  <Badge variant="secondary" className="text-xs">Ministry: {event.ministryFocus}</Badge>
+                {event.ministry_focus && (
+                  <Badge variant="secondary" className="text-xs">Ministry: {event.ministry_focus}</Badge>
                 )}
-                {event.ageGroup && (
-                  <Badge variant="secondary" className="text-xs">Ages: {event.ageGroup}</Badge>
+                {event.age_group && (
+                  <Badge variant="secondary" className="text-xs">Ages: {event.age_group}</Badge>
                 )}
               </div>
             )}
@@ -131,29 +146,33 @@ const EventDetail = () => {
             <div className="sticky top-20 rounded-xl border border-border bg-card p-6 shadow-sda">
               <h3 className="text-lg font-bold text-foreground">Secure Your Ticket</h3>
 
-              <div className="mt-4 space-y-2">
-                {event.ticketTiers.map((t, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedTier(i)}
-                    className={`w-full rounded-lg border p-3 text-left transition-colors ${
-                      selectedTier === i
-                        ? "border-secondary bg-secondary/5"
-                        : "border-border hover:border-muted-foreground/30"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-foreground">{t.name}</span>
-                      <span className="text-sm font-bold text-primary">
-                        {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`}
-                      </span>
-                    </div>
-                    {t.description && (
-                      <p className="mt-1 text-xs text-muted-foreground">{t.description}</p>
-                    )}
-                  </button>
-                ))}
-              </div>
+              {tiers.length > 0 ? (
+                <div className="mt-4 space-y-2">
+                  {tiers.map((t, i) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTier(i)}
+                      className={`w-full rounded-lg border p-3 text-left transition-colors ${
+                        selectedTier === i
+                          ? "border-secondary bg-secondary/5"
+                          : "border-border hover:border-muted-foreground/30"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-semibold text-foreground">{t.name}</span>
+                        <span className="text-sm font-bold text-primary">
+                          {t.price === 0 ? "Free" : `${t.currency} ${t.price.toLocaleString()}`}
+                        </span>
+                      </div>
+                      {t.description && (
+                        <p className="mt-1 text-xs text-muted-foreground">{t.description}</p>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-4 text-sm text-muted-foreground">No ticket types available yet.</p>
+              )}
 
               {/* Code of conduct checkbox */}
               <div className="mt-6 flex items-start gap-2">
@@ -173,11 +192,15 @@ const EventDetail = () => {
               </div>
 
               <Button
-                disabled={!conductAgreed}
+                disabled={!conductAgreed || tiers.length === 0}
                 className="mt-4 w-full bg-sda-gradient text-primary-foreground hover:opacity-90 font-semibold"
                 size="lg"
               >
-                {tier.price === 0 ? "Register for Free" : `Pay ${tier.currency} ${tier.price.toLocaleString()}`}
+                {tier?.price === 0
+                  ? "Register for Free"
+                  : tier
+                  ? `Pay ${tier.currency} ${tier.price.toLocaleString()}`
+                  : "No Tickets Available"}
               </Button>
 
               <p className="mt-3 text-center text-xs text-muted-foreground">
