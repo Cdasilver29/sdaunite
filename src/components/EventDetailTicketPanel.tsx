@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserCircle } from "lucide-react";
+import MpesaCheckout from "@/components/MpesaCheckout";
 import type { DbEvent } from "@/hooks/useEvents";
 
 const EventDetailTicketPanel = ({ event }: { event: DbEvent }) => {
   const { user, profile } = useAuth();
   const [selectedTier, setSelectedTier] = useState(0);
   const [conductAgreed, setConductAgreed] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const tiers = event.ticket_types || [];
   const tier = tiers[selectedTier];
@@ -54,7 +56,23 @@ const EventDetailTicketPanel = ({ event }: { event: DbEvent }) => {
     );
   }
 
-  // Full access
+  // Show M-Pesa checkout
+  if (showCheckout && tier) {
+    return (
+      <div className="sticky top-20 rounded-xl border border-border bg-card p-6 shadow-sda">
+        <MpesaCheckout
+          eventId={event.id}
+          ticketTypeId={tier.id}
+          ticketName={tier.name}
+          price={tier.price}
+          currency={tier.currency}
+          onBack={() => setShowCheckout(false)}
+        />
+      </div>
+    );
+  }
+
+  // Full access — ticket selection
   return (
     <div className="sticky top-20 rounded-xl border border-border bg-card p-6 shadow-sda">
       <h3 className="text-lg font-bold text-foreground">Secure Your Ticket</h3>
@@ -106,6 +124,7 @@ const EventDetailTicketPanel = ({ event }: { event: DbEvent }) => {
 
       <Button
         disabled={!conductAgreed || tiers.length === 0}
+        onClick={() => setShowCheckout(true)}
         className="mt-4 w-full bg-sda-gradient text-primary-foreground hover:opacity-90 font-semibold"
         size="lg"
       >
@@ -117,7 +136,7 @@ const EventDetailTicketPanel = ({ event }: { event: DbEvent }) => {
       </Button>
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
-        Payments via M-Pesa & Card
+        Payments via M-Pesa
       </p>
     </div>
   );
