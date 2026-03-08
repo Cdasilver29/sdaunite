@@ -85,6 +85,7 @@ const Profile = () => {
         }
         icon={<User className="h-6 w-6 text-primary-foreground" />}
         backgroundImage="/images/sda-profile.jpg"
+        useProfileCover
       />
 
       <div className="container py-10 md:py-16">
