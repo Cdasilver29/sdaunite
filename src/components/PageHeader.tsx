@@ -63,7 +63,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-4 text-lg text-primary-foreground/80 leading-relaxed drop-shadow-sm"
+            className="mt-4 text-lg text-primary-foreground/90 leading-relaxed [text-shadow:_0_1px_10px_rgb(0_0_0_/_25%)]"
           >
             {subtitle}
           </motion.p>
