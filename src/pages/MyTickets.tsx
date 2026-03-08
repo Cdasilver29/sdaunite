@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -10,8 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const STATUS_COLORS: Record<string, string> = {
-  valid: "bg-green-100 text-green-800",
-  checked_in: "bg-blue-100 text-blue-800",
+  valid: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+  checked_in: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
   cancelled: "bg-destructive/10 text-destructive",
   refunded: "bg-muted text-muted-foreground",
 };
@@ -41,16 +42,10 @@ const MyTickets = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="bg-sda-gradient py-12 md:py-16">
-        <div className="container max-w-3xl text-center">
-          <h1 className="text-3xl font-bold text-primary-foreground md:text-4xl">
-            My Tickets
-          </h1>
-          <p className="mt-2 text-primary-foreground/70">
-            Your event tickets and QR codes in one place.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="My Tickets"
+        subtitle="Your event tickets and QR codes in one place."
+      />
 
       <section className="py-12">
         <div className="container max-w-3xl">
@@ -90,7 +85,6 @@ const MyTickets = () => {
                   key={ticket.id}
                   className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-sda sm:flex-row sm:items-center"
                 >
-                  {/* QR placeholder */}
                   <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-muted">
                     <QrCode className="h-10 w-10 text-muted-foreground/60" />
                   </div>

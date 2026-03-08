@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
 import { Heart } from "lucide-react";
@@ -15,19 +16,11 @@ const ServiceMission = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="bg-sda-gradient py-16 md:py-24">
-        <div className="container max-w-3xl text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary-foreground/10">
-            <Heart className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <h1 className="text-3xl font-bold text-primary-foreground md:text-5xl">
-            Service & Mission
-          </h1>
-          <p className="mt-4 text-lg text-primary-foreground/80 leading-relaxed">
-            Hospital visits, children's home outreaches, community clean-ups, and more. Put your faith into action.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="Service & Mission"
+        subtitle="Hospital visits, children's home outreaches, community clean-ups, and more. Put your faith into action."
+        icon={<Heart className="h-6 w-6 text-primary-foreground" />}
+      />
 
       {/* Why serve */}
       <section className="border-b border-border py-12">

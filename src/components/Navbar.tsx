@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, LayoutDashboard, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,7 +72,8 @@ const Navbar = () => {
         </nav>
 
         {/* Desktop right */}
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <ThemeToggle />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -113,113 +115,116 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile hamburger — Sheet */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <button className="lg:hidden text-foreground" aria-label="Open menu">
-              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </SheetTrigger>
+        {/* Mobile right */}
+        <div className="flex items-center gap-1 lg:hidden">
+          <ThemeToggle />
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button className="text-foreground p-2" aria-label="Open menu">
+                {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </SheetTrigger>
 
-          <SheetContent side="right" className="w-72 p-0">
-            <SheetHeader className="border-b border-border px-5 py-4">
-              <SheetTitle className="text-left">
-                <span className="text-foreground">SDA </span>
-                <span className="text-secondary">Unite</span>
-              </SheetTitle>
-            </SheetHeader>
+            <SheetContent side="right" className="w-72 p-0">
+              <SheetHeader className="border-b border-border px-5 py-4">
+                <SheetTitle className="text-left">
+                  <span className="text-foreground">SDA </span>
+                  <span className="text-secondary">Unite</span>
+                </SheetTitle>
+              </SheetHeader>
 
-            <nav className="flex flex-col px-3 py-4">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setOpen(false)}
-                  className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive(link.href)
-                      ? "bg-muted text-primary"
-                      : "text-muted-foreground hover:bg-muted/60"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-
-              {user && (
-                <>
-                  <div className="my-2 border-t border-border" />
+              <nav className="flex flex-col px-3 py-4">
+                {NAV_LINKS.map((link) => (
                   <Link
-                    to="/my-tickets"
+                    key={link.href}
+                    to={link.href}
                     onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive("/my-tickets")
+                    className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                      isActive(link.href)
                         ? "bg-muted text-primary"
                         : "text-muted-foreground hover:bg-muted/60"
                     }`}
                   >
-                    <Ticket className="h-4 w-4" /> My Tickets
+                    {link.label}
                   </Link>
-                  <Link
-                    to="/profile"
-                    onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive("/profile")
-                        ? "bg-muted text-primary"
-                        : "text-muted-foreground hover:bg-muted/60"
-                    }`}
-                  >
-                    <User className="h-4 w-4" /> My Profile
-                  </Link>
-                  {isOrganizer && (
+                ))}
+
+                {user && (
+                  <>
+                    <div className="my-2 border-t border-border" />
                     <Link
-                      to="/dashboard"
+                      to="/my-tickets"
                       onClick={() => setOpen(false)}
                       className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                        isActive("/dashboard")
+                        isActive("/my-tickets")
                           ? "bg-muted text-primary"
                           : "text-muted-foreground hover:bg-muted/60"
                       }`}
                     >
-                      <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
+                      <Ticket className="h-4 w-4" /> My Tickets
                     </Link>
-                  )}
-                </>
-              )}
-
-              <div className="mt-4 flex flex-col gap-2 px-1">
-                {user ? (
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => {
-                      handleSignOut();
-                      setOpen(false);
-                    }}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                  </Button>
-                ) : (
-                  <>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link to="/login" onClick={() => setOpen(false)}>
-                        Sign In
-                      </Link>
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="bg-sda-gradient text-primary-foreground"
-                      asChild
+                    <Link
+                      to="/profile"
+                      onClick={() => setOpen(false)}
+                      className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                        isActive("/profile")
+                          ? "bg-muted text-primary"
+                          : "text-muted-foreground hover:bg-muted/60"
+                      }`}
                     >
-                      <Link to="/signup" onClick={() => setOpen(false)}>
-                        Join Fellowship
+                      <User className="h-4 w-4" /> My Profile
+                    </Link>
+                    {isOrganizer && (
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setOpen(false)}
+                        className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                          isActive("/dashboard")
+                            ? "bg-muted text-primary"
+                            : "text-muted-foreground hover:bg-muted/60"
+                        }`}
+                      >
+                        <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
                       </Link>
-                    </Button>
+                    )}
                   </>
                 )}
-              </div>
-            </nav>
-          </SheetContent>
-        </Sheet>
+
+                <div className="mt-4 flex flex-col gap-2 px-1">
+                  {user ? (
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => {
+                        handleSignOut();
+                        setOpen(false);
+                      }}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                    </Button>
+                  ) : (
+                    <>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/login" onClick={() => setOpen(false)}>
+                          Sign In
+                        </Link>
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-sda-gradient text-primary-foreground"
+                        asChild
+                      >
+                        <Link to="/signup" onClick={() => setOpen(false)}>
+                          Join Fellowship
+                        </Link>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

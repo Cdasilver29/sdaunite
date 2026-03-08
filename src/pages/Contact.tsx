@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +16,6 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSending(true);
-    // Simulate submit
     await new Promise((r) => setTimeout(r, 800));
     setSending(false);
     toast({
@@ -29,16 +29,10 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="bg-sda-gradient py-16 md:py-24">
-        <div className="container max-w-3xl text-center">
-          <h1 className="text-3xl font-bold text-primary-foreground md:text-5xl">
-            Contact Us
-          </h1>
-          <p className="mt-4 text-lg text-primary-foreground/80">
-            Have a question, suggestion, or need support? We'd love to hear from you.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="Contact Us"
+        subtitle="Have a question, suggestion, or need support? We'd love to hear from you."
+      />
 
       <section className="py-16">
         <div className="container grid gap-12 lg:grid-cols-5">
