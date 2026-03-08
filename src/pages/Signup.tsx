@@ -4,7 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useChurches } from "@/hooks/useChurches";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -12,9 +14,11 @@ const Signup = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [churchId, setChurchId] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { data: churches } = useChurches();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const Signup = () => {
     }
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
+    const { data: authData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -35,13 +39,23 @@ const Signup = () => {
 
     if (error) {
       toast({ variant: "destructive", title: "Signup failed", description: error.message });
-    } else {
-      toast({
-        title: "Account created!",
-        description: "Check your email to confirm your account.",
-      });
-      navigate("/login");
+      setLoading(false);
+      return;
     }
+
+    // Update profile with church if selected
+    if (authData.user && churchId) {
+      await supabase
+        .from("profiles")
+        .update({ church_id: churchId })
+        .eq("user_id", authData.user.id);
+    }
+
+    toast({
+      title: "Account created!",
+      description: "Welcome to SDA Unite. You are now signed in.",
+    });
+    navigate("/profile");
     setLoading(false);
   };
 
@@ -89,6 +103,21 @@ const Signup = () => {
                 required
                 minLength={6}
               />
+            </div>
+            <div className="space-y-2">
+              <Label>Home Church</Label>
+              <Select value={churchId} onValueChange={setChurchId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your church (optional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  {churches?.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.church_name} — {c.city}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <Button
               type="submit"

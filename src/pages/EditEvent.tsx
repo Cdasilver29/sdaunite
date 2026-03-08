@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEventById } from "@/hooks/useEvents";
 import { useChurches } from "@/hooks/useChurches";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,14 +16,16 @@ import { CATEGORIES } from "@/lib/events-data";
 import { Plus, Trash2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-type TicketTierForm = { name: string; price: string; currency: string; description: string; quantity: string };
+type TicketTierForm = { id?: string; name: string; price: string; currency: string; description: string; quantity: string };
 
 const emptyTier = (): TicketTierForm => ({
   name: "", price: "0", currency: "KES", description: "", quantity: "100",
 });
 
-const CreateEvent = () => {
+const EditEvent = () => {
+  const { id } = useParams();
   const { user } = useAuth();
+  const { data: event, isLoading } = useEventById(id);
   const { data: churches } = useChurches();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -46,23 +49,54 @@ const CreateEvent = () => {
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [tiers, setTiers] = useState<TicketTierForm[]>([emptyTier()]);
 
+  useEffect(() => {
+    if (event) {
+      setTitle(event.title);
+      setSubtitle(event.subtitle || "");
+      setDescription(event.description);
+      setCategory(event.event_category);
+      setLocationName(event.location_name);
+      setCity(event.city);
+      setChurchId(event.church_id || "");
+      setStartDatetime(event.start_datetime.slice(0, 16));
+      setEndDatetime(event.end_datetime.slice(0, 16));
+      setCapacity(String(event.event_capacity));
+      setMinistryFocus(event.ministry_focus || "");
+      setBibleVerse(event.bible_verse || "");
+      setBibleReference(event.bible_reference || "");
+      setAgeGroup(event.age_group || "");
+      setStatus(event.event_status as "draft" | "published");
+      if (event.ticket_types && event.ticket_types.length > 0) {
+        setTiers(
+          event.ticket_types.map((t) => ({
+            id: t.id,
+            name: t.name,
+            price: String(t.price),
+            currency: t.currency,
+            description: t.description || "",
+            quantity: String(t.quantity_available),
+          }))
+        );
+      }
+    }
+  }, [event]);
+
   const updateTier = (idx: number, field: keyof TicketTierForm, value: string) => {
     setTiers((prev) => prev.map((t, i) => (i === idx ? { ...t, [field]: value } : t)));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !category) return;
+    if (!user || !id || !category) return;
     setSaving(true);
 
-    const { data: eventData, error: eventError } = await supabase
+    const { error: eventError } = await supabase
       .from("events")
-      .insert({
+      .update({
         title: title.trim(),
         subtitle: subtitle.trim() || null,
         description: description.trim(),
         event_category: category as any,
-        organizer_id: user.id,
         location_name: locationName.trim(),
         city: city.trim(),
         church_id: churchId || null,
@@ -75,20 +109,22 @@ const CreateEvent = () => {
         bible_reference: bibleReference.trim() || null,
         age_group: ageGroup.trim() || null,
       })
-      .select("id")
-      .single();
+      .eq("id", id);
 
     if (eventError) {
-      toast({ variant: "destructive", title: "Error creating event", description: eventError.message });
+      toast({ variant: "destructive", title: "Error updating event", description: eventError.message });
       setSaving(false);
       return;
     }
+
+    // Delete existing ticket types and re-insert
+    await supabase.from("ticket_types").delete().eq("event_id", id);
 
     const validTiers = tiers.filter((t) => t.name.trim());
     if (validTiers.length > 0) {
       const { error: tierError } = await supabase.from("ticket_types").insert(
         validTiers.map((t) => ({
-          event_id: eventData.id,
+          event_id: id,
           name: t.name.trim(),
           price: parseFloat(t.price) || 0,
           currency: t.currency || "KES",
@@ -98,23 +134,50 @@ const CreateEvent = () => {
       );
 
       if (tierError) {
-        toast({ variant: "destructive", title: "Event created but ticket tiers failed", description: tierError.message });
+        toast({ variant: "destructive", title: "Event updated but ticket tiers failed", description: tierError.message });
       }
     }
 
     queryClient.invalidateQueries({ queryKey: ["events"] });
-    toast({ title: "Event created!", description: `"${title}" has been saved as ${status}.` });
+    toast({ title: "Event updated!", description: `"${title}" has been saved.` });
     navigate("/dashboard");
     setSaving(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container flex items-center justify-center py-20">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container py-20 text-center">
+          <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
+          <Button variant="outline" className="mt-4" onClick={() => navigate("/dashboard")}>
+            Back to Dashboard
+          </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="container py-10">
         <div className="mx-auto max-w-3xl">
-          <h1 className="text-2xl font-bold text-foreground">Create New Event</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Fill in the details for your SDA event</p>
+          <h1 className="text-2xl font-bold text-foreground">Edit Event</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Update the details for "{event.title}"</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-8">
             {/* Basic Info */}
@@ -253,7 +316,7 @@ const CreateEvent = () => {
 
             <div className="flex gap-3">
               <Button type="submit" disabled={saving} className="bg-sda-gradient text-primary-foreground hover:opacity-90">
-                {saving ? "Creating..." : "Create Event"}
+                {saving ? "Saving..." : "Save Changes"}
               </Button>
               <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
                 Cancel
@@ -267,4 +330,4 @@ const CreateEvent = () => {
   );
 };
 
-export default CreateEvent;
+export default EditEvent;

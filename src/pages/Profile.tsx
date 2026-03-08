@@ -6,17 +6,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useChurches } from "@/hooks/useChurches";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { User, Phone, Mail, MapPin } from "lucide-react";
+import { User, Phone, Mail } from "lucide-react";
 
 const Profile = () => {
   const { user, profile, roles } = useAuth();
   const { toast } = useToast();
+  const { data: churches } = useChurches();
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [ageGroup, setAgeGroup] = useState("");
+  const [churchId, setChurchId] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -25,6 +28,7 @@ const Profile = () => {
       setPhoneNumber(profile.phone_number || "");
       setGender(profile.gender || "");
       setAgeGroup(profile.age_group || "");
+      setChurchId(profile.church_id || "");
     }
   }, [profile]);
 
@@ -40,6 +44,7 @@ const Profile = () => {
         phone_number: phoneNumber.trim() || null,
         gender: (gender as "male" | "female") || null,
         age_group: ageGroup || null,
+        church_id: churchId || null,
       })
       .eq("user_id", user.id);
 
@@ -123,6 +128,20 @@ const Profile = () => {
                     <SelectItem value="25-30">25–30</SelectItem>
                     <SelectItem value="30-40">30–40</SelectItem>
                     <SelectItem value="40+">40+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Home Church</Label>
+                <Select value={churchId} onValueChange={setChurchId}>
+                  <SelectTrigger><SelectValue placeholder="Select your church" /></SelectTrigger>
+                  <SelectContent>
+                    {churches?.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.church_name} — {c.city}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
