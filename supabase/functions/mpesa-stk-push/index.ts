@@ -43,13 +43,17 @@ async function getOAuthToken(baseUrl: string, consumerKey: string, consumerSecre
     headers: { Authorization: `Basic ${credentials}` },
   });
 
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
     throw new Error(`OAuth token fetch failed: ${res.status} - ${text}`);
   }
 
-  const data = await res.json();
-  return data.access_token;
+  try {
+    const data = JSON.parse(text);
+    return data.access_token;
+  } catch {
+    throw new Error(`OAuth response is not valid JSON: ${text.slice(0, 200)}`);
+  }
 }
 
 /**
