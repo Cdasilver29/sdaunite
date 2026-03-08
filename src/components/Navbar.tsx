@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Search, User, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -12,6 +20,15 @@ const NAV_LINKS = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, profile, roles, signOut } = useAuth();
+
+  const isOrganizer = roles.includes("organizer") || roles.includes("admin");
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-card/80 backdrop-blur-lg">
@@ -43,22 +60,43 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" size="icon" className="text-muted-foreground">
-            <Search className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="sm">
-            Sign In
-          </Button>
-          <Button size="sm" className="bg-sda-gradient text-primary-foreground hover:opacity-90">
-            Join Fellowship
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  {profile?.full_name || "Account"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <User className="mr-2 h-4 w-4" /> My Profile
+                </DropdownMenuItem>
+                {isOrganizer && (
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+              <Button size="sm" className="bg-sda-gradient text-primary-foreground hover:opacity-90" asChild>
+                <Link to="/signup">Join Fellowship</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setOpen(!open)}
-        >
+        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
@@ -82,12 +120,25 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="mt-3 flex gap-2">
-              <Button variant="outline" size="sm" className="flex-1">
-                Sign In
-              </Button>
-              <Button size="sm" className="flex-1 bg-sda-gradient text-primary-foreground">
-                Join Fellowship
-              </Button>
+              {user ? (
+                <>
+                  <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <Link to="/profile" onClick={() => setOpen(false)}>Profile</Link>
+                  </Button>
+                  <Button size="sm" className="flex-1" variant="destructive" onClick={() => { handleSignOut(); setOpen(false); }}>
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <Link to="/login" onClick={() => setOpen(false)}>Sign In</Link>
+                  </Button>
+                  <Button size="sm" className="flex-1 bg-sda-gradient text-primary-foreground" asChild>
+                    <Link to="/signup" onClick={() => setOpen(false)}>Join Fellowship</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>

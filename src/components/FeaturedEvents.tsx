@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
-import { FEATURED_EVENTS } from "@/lib/events-data";
+import { usePublishedEvents } from "@/hooks/useEvents";
 import EventCard from "./EventCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const FeaturedEvents = () => {
+  const { data: events, isLoading } = usePublishedEvents();
+  const featured = events?.slice(0, 4) ?? [];
+
   return (
     <section className="bg-muted/50 py-16 md:py-24">
       <div className="container">
@@ -25,19 +28,31 @@ const FeaturedEvents = () => {
           </Button>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURED_EVENTS.map((event, i) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <EventCard event={event} />
-            </motion.div>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-80 animate-pulse rounded-xl bg-muted" />
+            ))}
+          </div>
+        ) : featured.length > 0 ? (
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {featured.map((event, i) => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <EventCard event={event} />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 rounded-xl border border-border bg-card p-12 text-center">
+            <p className="text-muted-foreground">No upcoming events yet. Check back soon!</p>
+          </div>
+        )}
 
         <div className="mt-8 text-center md:hidden">
           <Button asChild variant="outline" className="gap-1">
