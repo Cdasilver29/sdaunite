@@ -26,12 +26,12 @@ const CategorySection = () => {
             >
               <Link
                 to={`/events?category=${encodeURIComponent(cat.label)}`}
-                className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:shadow-sda-lg hover:-translate-y-1"
+                className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all duration-300 ease-out hover:shadow-sda-lg hover:-translate-y-1.5 hover:border-secondary/40"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10">
-                  <cat.icon className="h-6 w-6 text-secondary" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary/20 group-hover:shadow-md group-hover:shadow-secondary/10">
+                  <cat.icon className="h-6 w-6 text-secondary transition-transform duration-300 group-hover:scale-110" />
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">{cat.label}</h3>
+                <h3 className="text-sm font-semibold text-foreground transition-colors duration-300 group-hover:text-secondary">{cat.label}</h3>
                 <p className="text-xs text-muted-foreground">{cat.description}</p>
               </Link>
             </motion.div>
