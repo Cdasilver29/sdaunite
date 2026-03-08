@@ -161,7 +161,6 @@ const EditEvent = () => {
           <h1 className="text-2xl font-bold text-foreground">Event not found</h1>
           <Button variant="outline" className="mt-4" onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
         </div>
-        <Footer />
       </div>
     );
   }
