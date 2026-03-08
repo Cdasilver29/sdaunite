@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const CategorySection = () => {
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 md:py-24 bg-background">
       <div className="container">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-foreground md:text-4xl">
@@ -26,7 +26,7 @@ const CategorySection = () => {
             >
               <Link
                 to={`/events?category=${encodeURIComponent(cat.label)}`}
-                className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sda transition-all hover:shadow-sda-lg hover:-translate-y-1"
+                className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:shadow-sda-lg hover:-translate-y-1"
               >
                 <span className="text-3xl">{cat.icon}</span>
                 <h3 className="text-sm font-semibold text-foreground">{cat.label}</h3>
