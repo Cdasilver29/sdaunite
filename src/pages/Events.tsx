@@ -5,6 +5,7 @@ import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
 import { CATEGORIES } from "@/lib/events-data";
 import { Search } from "lucide-react";
+import SocialShareBar from "@/components/SocialShareBar";
 
 const Events = () => {
   const [searchParams] = useSearchParams();
