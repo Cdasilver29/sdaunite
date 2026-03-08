@@ -43,13 +43,17 @@ async function getOAuthToken(baseUrl: string, consumerKey: string, consumerSecre
     headers: { Authorization: `Basic ${credentials}` },
   });
 
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
     throw new Error(`OAuth token fetch failed: ${res.status} - ${text}`);
   }
 
-  const data = await res.json();
-  return data.access_token;
+  try {
+    const data = JSON.parse(text);
+    return data.access_token;
+  } catch {
+    throw new Error(`OAuth response is not valid JSON: ${text.slice(0, 200)}`);
+  }
 }
 
 /**
@@ -255,10 +259,20 @@ Deno.serve(async (req) => {
       body: JSON.stringify(stkPayload),
     });
 
-    const stkData = await stkRes.json();
+    const stkText = await stkRes.text();
+    let stkData: any;
+    try {
+      stkData = JSON.parse(stkText);
+    } catch {
+      await adminClient.from("payments").update({ payment_status: "failed" }).eq("id", payment.id);
+      console.error("Non-JSON STK response:", stkText.slice(0, 300));
+      return new Response(JSON.stringify({ error: "STK Push failed", detail: "Safaricom returned an invalid response. Please try again." }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (stkData.ResponseCode !== "0") {
-      // STK Push failed — mark payment as failed
       await adminClient.from("payments").update({ payment_status: "failed" }).eq("id", payment.id);
       return new Response(JSON.stringify({ 
         error: "STK Push failed", 
