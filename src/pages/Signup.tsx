@@ -79,7 +79,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Join Fellowship"
