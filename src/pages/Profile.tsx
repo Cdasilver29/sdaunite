@@ -73,7 +73,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="My Profile"
