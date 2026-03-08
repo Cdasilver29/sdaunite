@@ -19,7 +19,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.40)] via-[hsl(202,100%,14%/0.30)] to-[hsl(var(--background)/0.95)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,8%/0.60)] via-[hsl(202,100%,10%/0.45)] to-[hsl(var(--background)/0.95)]" />
         </>
       ) : (
         <div className="absolute inset-0 page-header-gradient" />
