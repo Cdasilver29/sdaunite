@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface PageHeaderProps {
   title: string;
@@ -7,23 +8,31 @@ interface PageHeaderProps {
   icon?: ReactNode;
   children?: ReactNode;
   backgroundImage?: string;
+  useProfileCover?: boolean;
 }
 
-const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHeaderProps) => {
+const PageHeader = ({ title, subtitle, icon, children, backgroundImage, useProfileCover }: PageHeaderProps) => {
+  const { profile } = useAuth();
+
+  // Use uploaded profile photo as cover if enabled and available
+  const bgImage = useProfileCover && profile?.profile_photo_url
+    ? profile.profile_photo_url
+    : backgroundImage;
+
   return (
-    <section className="relative overflow-hidden min-h-[40vh] flex items-center">
+    <section className="relative overflow-hidden min-h-[50vh] md:min-h-[55vh] flex items-center">
       {/* Background: image or gradient */}
-      {backgroundImage ? (
+      {bgImage ? (
         <>
           <img
-            src={backgroundImage}
+            src={bgImage}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-center scale-[1.02]"
           />
           {/* Animated gradient layer */}
           <div className="hero-animated-bg opacity-40" />
           {/* Dark readability overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,10%/0.80)] via-[hsl(202,100%,12%/0.65)] to-[hsl(var(--background)/0.95)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,10%/0.75)] via-[hsl(202,100%,12%/0.55)] to-[hsl(var(--background)/0.90)]" />
         </>
       ) : (
         <>
@@ -31,7 +40,6 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
           <div className="hero-animated-bg opacity-25" />
         </>
       )}
-
       {/* Dot grid */}
       <div
         className="absolute inset-0 opacity-[0.03]"
