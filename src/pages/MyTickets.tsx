@@ -125,7 +125,7 @@ const MyTickets = () => {
         </div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 };

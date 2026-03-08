@@ -82,7 +82,7 @@ const CodeOfConduct = () => (
       </div>
     </div>
 
-    <Footer />
+    
   </div>
 );
 

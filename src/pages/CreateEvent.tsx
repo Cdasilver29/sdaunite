@@ -265,7 +265,7 @@ const CreateEvent = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

@@ -160,7 +160,7 @@ const EventDetail = () => {
         </div>
       </div>
 
-      <Footer />
+      
     </div>
   );
 };

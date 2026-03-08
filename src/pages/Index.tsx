@@ -12,7 +12,6 @@ import { ArrowRight } from "lucide-react";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      
       <HeroSection />
       <ScrollingChips />
       <FeatureCards />

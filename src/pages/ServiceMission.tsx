@@ -66,7 +66,7 @@ const ServiceMission = () => {
         </div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 };

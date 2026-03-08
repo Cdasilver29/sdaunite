@@ -73,7 +73,7 @@ const ResetPassword = () => {
           )}
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

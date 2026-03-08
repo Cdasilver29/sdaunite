@@ -156,7 +156,7 @@ const Profile = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

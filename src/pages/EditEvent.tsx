@@ -322,7 +322,7 @@ const EditEvent = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
