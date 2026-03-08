@@ -55,6 +55,54 @@
     --sda-shadow: 0 4px 24px -4px hsl(202 100% 18% / 0.12);
     --sda-shadow-lg: 0 12px 40px -8px hsl(202 100% 18% / 0.18);
   }
+
+  .dark {
+    --background: 220 25% 6%;
+    --foreground: 210 20% 92%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 202 80% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 202 65% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 15% 16%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 30 70% 60%;
+    --accent-foreground: 220 25% 6%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 202 80% 40%;
+
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 210 15% 70%;
+    --sidebar-primary: 202 80% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 14%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 202 65% 50%;
+
+    --sda-warm: 30 70% 60%;
+    --sda-warm-light: 30 30% 15%;
+    --sda-deep: 202 80% 30%;
+    --sda-sky: 202 65% 50%;
+    --sda-surface: 220 20% 10%;
+    --sda-gradient: linear-gradient(135deg, hsl(202 80% 18%), hsl(202 65% 35%));
+    --sda-shadow: 0 4px 24px -4px hsl(202 80% 10% / 0.4);
+    --sda-shadow-lg: 0 12px 40px -8px hsl(202 80% 10% / 0.5);
+  }
 }
 
 @layer base {
@@ -104,6 +152,19 @@
   animation: gradient-breathe 16s ease-in-out infinite;
 }
 
+.dark .hero-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    hsl(220 30% 5%) 0%,
+    hsl(202 60% 14%) 30%,
+    hsl(202 50% 20%) 50%,
+    hsl(202 60% 14%) 70%,
+    hsl(220 30% 5%) 100%
+  );
+  background-size: 300% 300%;
+  animation: gradient-breathe 16s ease-in-out infinite;
+}
+
 @keyframes gradient-breathe {
   0%, 100% {
     background-position: 0% 50%;
@@ -116,6 +177,31 @@
   }
 }
 
+/* ===== PAGE HEADER — smaller animated gradient for subpages ===== */
+.page-header-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(202 100% 14%) 0%,
+    hsl(202 100% 18%) 40%,
+    hsl(202 81% 28%) 60%,
+    hsl(202 100% 16%) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-breathe 20s ease-in-out infinite;
+}
+
+.dark .page-header-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(220 30% 5%) 0%,
+    hsl(202 60% 12%) 40%,
+    hsl(202 50% 18%) 60%,
+    hsl(220 30% 5%) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-breathe 20s ease-in-out infinite;
+}
+
 /* ===== FLOATING ORBS — ambient light blobs ===== */
 .hero-orb {
   position: absolute;
@@ -124,6 +210,10 @@
   opacity: 0.15;
   pointer-events: none;
   will-change: transform;
+}
+
+.dark .hero-orb {
+  opacity: 0.1;
 }
 
 .hero-orb--1 {
@@ -153,6 +243,38 @@
   animation: orb-float-3 20s ease-in-out infinite;
 }
 
+/* Smaller orbs for page headers */
+.page-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.12;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dark .page-orb {
+  opacity: 0.08;
+}
+
+.page-orb--1 {
+  width: 300px;
+  height: 300px;
+  background: hsl(202 81% 33%);
+  top: -20%;
+  right: -5%;
+  animation: orb-float-1 18s ease-in-out infinite;
+}
+
+.page-orb--2 {
+  width: 250px;
+  height: 250px;
+  background: hsl(30 75% 70%);
+  bottom: -15%;
+  left: -5%;
+  animation: orb-float-2 22s ease-in-out infinite;
+}
+
 @keyframes orb-float-1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(-40px, 30px) scale(1.05); }
@@ -172,12 +294,8 @@
 
 /* ===== INFINITE SCROLLING CHIPS ===== */
 @keyframes scroll-x {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-scroll-x {
@@ -203,6 +321,10 @@
   border: 1px solid hsl(var(--border));
 }
 
+.dark .glass-card {
+  background: hsl(0 0% 100% / 0.04);
+}
+
 /* ===== PREMIUM CARD HOVER GLOW ===== */
 .card-glow {
   position: relative;
@@ -222,6 +344,10 @@
 
 .card-glow:hover::before {
   opacity: 0.04;
+}
+
+.dark .card-glow:hover::before {
+  opacity: 0.08;
 }
 
 /* ===== SECTION DIVIDER LINE ===== */
