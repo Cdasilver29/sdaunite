@@ -54,7 +54,7 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHe
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" as const }}
-          className="text-3xl font-bold text-primary-foreground md:text-5xl drop-shadow-lg"
+          className="text-3xl font-bold text-primary-foreground md:text-5xl [text-shadow:_0_2px_16px_rgb(0_0_0_/_40%)]"
         >
           {title}
         </motion.h1>
