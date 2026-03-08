@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface PageHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   icon?: ReactNode;
   children?: ReactNode;
