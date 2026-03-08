@@ -52,7 +52,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-8 text-5xl font-extrabold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] drop-shadow-lg"
+            className="mt-8 text-5xl font-bold leading-[1.08] text-primary-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] [text-shadow:_0_2px_20px_rgb(0_0_0_/_40%)]"
           >
             Unite in Faith.
             <br />
