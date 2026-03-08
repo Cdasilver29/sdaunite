@@ -6,11 +6,25 @@ interface PageHeaderProps {
   subtitle?: string;
   icon?: ReactNode;
   children?: ReactNode;
+  backgroundImage?: string;
 }
 
-const PageHeader = ({ title, subtitle, icon, children }: PageHeaderProps) => {
+const PageHeader = ({ title, subtitle, icon, children, backgroundImage }: PageHeaderProps) => {
   return (
-    <section className="relative overflow-hidden page-header-gradient py-16 md:py-24">
+    <section className="relative overflow-hidden py-16 md:py-24">
+      {/* Background: image or gradient */}
+      {backgroundImage ? (
+        <>
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url('${backgroundImage}')` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.40)] via-[hsl(202,100%,14%/0.30)] to-[hsl(var(--background)/0.95)]" />
+        </>
+      ) : (
+        <div className="absolute inset-0 page-header-gradient" />
+      )}
+
       {/* Floating orbs */}
       <div className="page-orb page-orb--1" />
       <div className="page-orb page-orb--2" />
@@ -40,7 +54,7 @@ const PageHeader = ({ title, subtitle, icon, children }: PageHeaderProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" as const }}
-          className="text-3xl font-bold text-primary-foreground md:text-5xl"
+          className="text-3xl font-bold text-primary-foreground md:text-5xl drop-shadow-lg"
         >
           {title}
         </motion.h1>
@@ -49,7 +63,7 @@ const PageHeader = ({ title, subtitle, icon, children }: PageHeaderProps) => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" as const }}
-            className="mt-4 text-lg text-primary-foreground/75 leading-relaxed"
+            className="mt-4 text-lg text-primary-foreground/80 leading-relaxed drop-shadow-sm"
           >
             {subtitle}
           </motion.p>

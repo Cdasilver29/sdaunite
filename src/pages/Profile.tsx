@@ -83,6 +83,7 @@ const Profile = () => {
             : "Manage your SDA Unite account details"
         }
         icon={<User className="h-6 w-6 text-primary-foreground" />}
+        backgroundImage="/images/sda-profile.jpg"
       />
 
       <div className="container py-10 md:py-16">
