@@ -67,7 +67,7 @@ const Events = () => {
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
-              {cat.icon} {cat.label}
+              <cat.icon className="h-4 w-4" /> {cat.label}
             </button>
           ))}
         </div>
