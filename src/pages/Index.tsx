@@ -3,7 +3,7 @@ import ScrollingChips from "@/components/ScrollingChips";
 import FeatureCards from "@/components/FeatureCards";
 import CategorySection from "@/components/CategorySection";
 import FeaturedEvents from "@/components/FeaturedEvents";
-import Footer from "@/components/Footer";
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
