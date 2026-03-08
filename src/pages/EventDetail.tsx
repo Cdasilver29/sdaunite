@@ -2,8 +2,6 @@ import { useParams, Link } from "react-router-dom";
 import { Calendar, MapPin, Users, BadgeCheck, ArrowLeft, BookOpen, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import EventDetailTicketPanel from "@/components/EventDetailTicketPanel";
 import EventShareButton from "@/components/EventShareButton";
 import { useEventById } from "@/hooks/useEvents";

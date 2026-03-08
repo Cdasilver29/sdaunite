@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { BookOpen, Shirt, Heart, Sun, Shield } from "lucide-react";
 
