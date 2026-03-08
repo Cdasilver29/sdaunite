@@ -15,7 +15,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title={`Welcome, ${profile?.full_name || "Organizer"}`}
