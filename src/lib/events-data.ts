@@ -1,3 +1,5 @@
+import { LucideIcon, Users, Mountain, BookHeart, Dumbbell, HeartHandshake, Music, Handshake } from "lucide-react";
+
 export type EventCategory =
   | "Social & Fellowship"
   | "Outdoor & Nature"
@@ -35,14 +37,14 @@ export type SDAEvent = {
   ageGroup?: string;
 };
 
-export const CATEGORIES: { label: EventCategory; icon: string; description: string }[] = [
-  { label: "Social & Fellowship", icon: "👥", description: "Build meaningful connections" },
-  { label: "Outdoor & Nature", icon: "🏔️", description: "Explore God's creation" },
-  { label: "Spiritual Retreats", icon: "🙏", description: "Deepen your walk with Christ" },
-  { label: "Sports & Health", icon: "⚽", description: "Honor God with your body" },
-  { label: "Service & Mission", icon: "💛", description: "Serve your community" },
-  { label: "Music & Worship", icon: "🎵", description: "Praise through song" },
-  { label: "Fundraisers", icon: "🤝", description: "Support church ministries" },
+export const CATEGORIES: { label: EventCategory; icon: LucideIcon; description: string }[] = [
+  { label: "Social & Fellowship", icon: Users, description: "Build meaningful connections" },
+  { label: "Outdoor & Nature", icon: Mountain, description: "Explore God's creation" },
+  { label: "Spiritual Retreats", icon: BookHeart, description: "Deepen your walk with Christ" },
+  { label: "Sports & Health", icon: Dumbbell, description: "Honor God with your body" },
+  { label: "Service & Mission", icon: HeartHandshake, description: "Serve your community" },
+  { label: "Music & Worship", icon: Music, description: "Praise through song" },
+  { label: "Fundraisers", icon: Handshake, description: "Support church ministries" },
 ];
 
 export const FEATURED_EVENTS: SDAEvent[] = [

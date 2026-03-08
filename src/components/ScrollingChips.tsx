@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Users, Mountain, HeartHandshake, BookHeart, Dumbbell, Music, Handshake, Home } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-const CHIPS = [
-  { label: "Singles Fellowship", icon: "👥", category: "Social & Fellowship" },
-  { label: "Youth Hikes", icon: "🏔️", category: "Outdoor & Nature" },
-  { label: "Service & Mission", icon: "💛", category: "Service & Mission" },
-  { label: "Spiritual Retreats", icon: "🙏", category: "Spiritual Retreats" },
-  { label: "Football League", icon: "⚽", category: "Sports & Health" },
-  { label: "Music & Worship", icon: "🎵", category: "Music & Worship" },
-  { label: "Fundraisers", icon: "🤝", category: "Fundraisers" },
-  { label: "Kids & Family", icon: "👨‍👩‍👧‍👦", category: "Social & Fellowship" },
+const CHIPS: { label: string; icon: LucideIcon; category: string }[] = [
+  { label: "Singles Fellowship", icon: Users, category: "Social & Fellowship" },
+  { label: "Youth Hikes", icon: Mountain, category: "Outdoor & Nature" },
+  { label: "Service & Mission", icon: HeartHandshake, category: "Service & Mission" },
+  { label: "Spiritual Retreats", icon: BookHeart, category: "Spiritual Retreats" },
+  { label: "Football League", icon: Dumbbell, category: "Sports & Health" },
+  { label: "Music & Worship", icon: Music, category: "Music & Worship" },
+  { label: "Fundraisers", icon: Handshake, category: "Fundraisers" },
+  { label: "Kids & Family", icon: Home, category: "Social & Fellowship" },
 ];
 
 const DOUBLED = [...CHIPS, ...CHIPS];
@@ -33,7 +35,6 @@ const ScrollingChips = () => {
       </motion.div>
 
       <div className="relative">
-        {/* Fade edges */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 
@@ -44,7 +45,7 @@ const ScrollingChips = () => {
               to={`/events?category=${encodeURIComponent(chip.category)}`}
               className="flex shrink-0 items-center gap-2.5 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium text-foreground shadow-sm transition-all duration-300 hover:shadow-sda hover:border-secondary/50 hover:-translate-y-1 hover:bg-card"
             >
-              <span className="text-lg">{chip.icon}</span>
+              <chip.icon className="h-4 w-4 text-secondary" />
               {chip.label}
             </Link>
           ))}

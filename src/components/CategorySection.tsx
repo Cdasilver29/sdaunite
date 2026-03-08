@@ -28,7 +28,9 @@ const CategorySection = () => {
                 to={`/events?category=${encodeURIComponent(cat.label)}`}
                 className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:shadow-sda-lg hover:-translate-y-1"
               >
-                <span className="text-3xl">{cat.icon}</span>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10">
+                  <cat.icon className="h-6 w-6 text-secondary" />
+                </div>
                 <h3 className="text-sm font-semibold text-foreground">{cat.label}</h3>
                 <p className="text-xs text-muted-foreground">{cat.description}</p>
               </Link>
