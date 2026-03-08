@@ -122,7 +122,15 @@ const HeroSection = () => {
               </div>
             ))}
           </motion.div>
+
+          {/* Social share */}
+          <SocialShareBar className="mt-10 justify-center" />
         </div>
+      </div>
+
+      {/* Floating social on right side (desktop only) */}
+      <div className="hidden lg:block">
+        <SocialShareBar variant="floating" />
       </div>
 
       {/* Bottom gradient fade into next section */}
