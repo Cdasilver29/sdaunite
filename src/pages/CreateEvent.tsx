@@ -110,7 +110,7 @@ const CreateEvent = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <div className="container py-10">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-2xl font-bold text-foreground">Create New Event</h1>
