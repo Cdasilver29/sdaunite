@@ -31,7 +31,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
 
       <PageHeader
         title="Reset Password"
