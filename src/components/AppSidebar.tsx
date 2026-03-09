@@ -166,7 +166,7 @@ export function AppSidebar() {
               className="justify-start text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
               asChild
             >
-              <Link to="/login">
+              <Link to="/auth/sign-in">
                 <User className="h-4 w-4 shrink-0" />
                 {!collapsed && <span className="ml-2">Sign In</span>}
               </Link>
