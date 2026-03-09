@@ -30,10 +30,10 @@ const EventDetailTicketPanel = ({ event }: { event: DbEvent }) => {
         </p>
         <div className="mt-4 flex flex-col gap-2">
           <Button asChild className="bg-sda-gradient text-primary-foreground hover:opacity-90">
-            <Link to="/login">Log In</Link>
+            <Link to="/auth/sign-in">Log In</Link>
           </Button>
           <Button asChild variant="outline">
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/auth/sign-up">Sign Up</Link>
           </Button>
         </div>
       </div>

@@ -166,7 +166,7 @@ export function AppSidebar() {
               className="justify-start text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
               asChild
             >
-              <Link to="/login">
+              <Link to="/auth/sign-in">
                 <User className="h-4 w-4 shrink-0" />
                 {!collapsed && <span className="ml-2">Sign In</span>}
               </Link>
@@ -176,7 +176,7 @@ export function AppSidebar() {
               className="justify-start bg-gradient-to-r from-secondary to-accent text-primary-foreground border-0 hover:opacity-90"
               asChild
             >
-              <Link to="/signup">
+              <Link to="/auth/sign-up">
                 {!collapsed ? "Join Fellowship" : <Heart className="h-4 w-4" />}
               </Link>
             </Button>

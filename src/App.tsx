@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -14,8 +14,8 @@ import ServiceMission from "./pages/ServiceMission";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import CodeOfConduct from "./pages/CodeOfConduct";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
@@ -36,6 +36,14 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              {/* New auth pages — no AppLayout (full-screen) */}
+              <Route path="/auth/sign-in" element={<SignIn />} />
+              <Route path="/auth/sign-up" element={<SignUp />} />
+
+              {/* Legacy redirects */}
+              <Route path="/login" element={<Navigate to="/auth/sign-in" replace />} />
+              <Route path="/signup" element={<Navigate to="/auth/sign-up" replace />} />
+
               <Route element={<AppLayout />}>
                 <Route path="/" element={<Index />} />
                 <Route path="/events" element={<Events />} />
@@ -44,8 +52,6 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/code-of-conduct" element={<CodeOfConduct />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route

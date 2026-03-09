@@ -20,7 +20,7 @@ const ProtectedRoute = ({
   }
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/auth/sign-in" state={{ from: location }} replace />;
   }
 
   if (requiredRole && !roles.includes(requiredRole)) {
