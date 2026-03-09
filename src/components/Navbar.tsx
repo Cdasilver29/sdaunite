@@ -312,10 +312,10 @@ const Navbar = () => {
                 </button>
               ) : (
                 <Link
-                  to="/signup"
+                  to="/auth/sign-in"
                   className="block text-center rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--accent))] transition-colors"
                 >
-                  Join Fellowship
+                  Sign In
                 </Link>
               )}
             </div>
