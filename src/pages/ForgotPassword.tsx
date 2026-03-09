@@ -59,7 +59,7 @@ const ForgotPassword = () => {
           )}
 
           <p className="text-center text-sm text-muted-foreground">
-            <Link to="/login" className="font-semibold text-secondary hover:underline">
+            <Link to="/auth/sign-in" className="font-semibold text-secondary hover:underline">
               Back to Sign In
             </Link>
           </p>

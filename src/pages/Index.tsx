@@ -46,7 +46,7 @@ const Index = () => {
                   size="lg"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 rounded-xl shadow-lg shadow-accent/20 gap-2"
                 >
-                  <Link to="/signup">
+                  <Link to="/auth/sign-up">
                     Join Fellowship <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>

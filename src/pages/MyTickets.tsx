@@ -54,7 +54,7 @@ const MyTickets = () => {
                 Sign in to view your tickets
               </p>
               <Button asChild className="mt-4 bg-sda-gradient text-primary-foreground hover:opacity-90">
-                <Link to="/login">Sign In</Link>
+                <Link to="/auth/sign-in">Sign In</Link>
               </Button>
             </div>
           ) : isLoading ? (

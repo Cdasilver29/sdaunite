@@ -176,7 +176,7 @@ export function AppSidebar() {
               className="justify-start bg-gradient-to-r from-secondary to-accent text-primary-foreground border-0 hover:opacity-90"
               asChild
             >
-              <Link to="/signup">
+              <Link to="/auth/sign-up">
                 {!collapsed ? "Join Fellowship" : <Heart className="h-4 w-4" />}
               </Link>
             </Button>
