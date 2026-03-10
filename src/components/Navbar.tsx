@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, User, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, User, ChevronDown, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CATEGORIES } from "@/lib/events-data";
 
@@ -96,7 +96,8 @@ const Navbar = () => {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, roles, signOut } = useAuth();
+  const isAdminUser = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer");
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
@@ -300,6 +301,14 @@ const Navbar = () => {
                 >
                   Profile
                 </Link>
+                {isAdminUser && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[hsl(var(--sda-warm))] hover:bg-white/5 rounded transition-colors"
+                  >
+                    <Shield className="h-4 w-4" /> Admin
+                  </Link>
+                )}
               </>
             )}
             <div className="mt-3 pt-3 border-t border-white/10">

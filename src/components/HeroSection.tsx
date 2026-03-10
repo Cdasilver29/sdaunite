@@ -1,23 +1,10 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import SocialShareBar from "./SocialShareBar";
 
 const HeroSection = () => {
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search.trim()) {
-      navigate(`/events?search=${encodeURIComponent(search.trim())}`);
-    } else {
-      navigate("/events");
-    }
-  };
-
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
       {/* Layer 1: Full-bleed background image */}
@@ -74,34 +61,43 @@ const HeroSection = () => {
             gatherings. Register, connect, and strengthen your walk with Christ.
           </motion.p>
 
-          {/* Search bar */}
-          <motion.form
-            onSubmit={handleSearch}
+          {/* CTA Buttons */}
+          <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.42, ease: "easeOut" }}
-            className="mx-auto mt-10 flex max-w-xl items-center gap-2 rounded-2xl glass p-2"
+            className="mx-auto mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <div className="flex flex-1 items-center gap-3 px-4">
-              <Search className="h-5 w-5 text-white/40 shrink-0" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search events, hikes, retreats..."
-                className="w-full bg-transparent py-3 text-sm text-white placeholder:text-white/35 outline-none"
-              />
-            </div>
             <Button
-              type="submit"
+              asChild
               size="lg"
-              className="bg-[hsl(var(--sda-warm))] text-accent-foreground hover:bg-[hsl(var(--sda-warm))]/90 font-semibold gap-2 rounded-xl px-6 shrink-0 shadow-lg shadow-[hsl(var(--sda-warm))/0.25]"
+              className="bg-[hsl(var(--sda-warm))] text-accent-foreground hover:bg-[hsl(var(--sda-warm))]/90 font-semibold gap-2 rounded-full px-8 py-6 text-base shadow-lg shadow-[hsl(var(--sda-warm))/0.25] min-w-[220px]"
             >
-              <span className="hidden sm:inline">Find Events</span>
-              <span className="sm:hidden">Go</span>
-              <ArrowRight className="h-4 w-4" />
+              <Link to="/events">
+                Browse Events <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
-          </motion.form>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 font-semibold rounded-full px-8 py-6 text-base min-w-[220px] bg-transparent"
+            >
+              <Link to="/events?category=Social+%26+Fellowship">
+                Singles Events
+              </Link>
+            </Button>
+          </motion.div>
+
+          {/* Scroll hint */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="mt-6 flex justify-center"
+          >
+            <ChevronDown className="h-6 w-6 text-white/40 animate-bounce" />
+          </motion.div>
 
           {/* Stats */}
           <motion.div

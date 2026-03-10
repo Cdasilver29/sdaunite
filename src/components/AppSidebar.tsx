@@ -122,7 +122,7 @@ export function AppSidebar() {
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild tooltip="Admin Dashboard">
                       <NavLink
-                        to="/dashboard"
+                        to="/admin"
                         className="text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
                         activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                       >
