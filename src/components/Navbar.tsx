@@ -96,7 +96,8 @@ const Navbar = () => {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, roles, signOut } = useAuth();
+  const isAdminUser = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer");
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
