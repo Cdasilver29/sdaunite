@@ -20,10 +20,14 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import MyTickets from "./pages/MyTickets";
-import Dashboard from "./pages/Dashboard";
 import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
 import NotFound from "./pages/NotFound";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminOverview from "./pages/admin/AdminOverview";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminAttendees from "./pages/admin/AdminAttendees";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -36,13 +40,15 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* New auth pages — no AppLayout (full-screen) */}
+              {/* Auth pages — full-screen */}
               <Route path="/auth/sign-in" element={<SignIn />} />
               <Route path="/auth/sign-up" element={<SignUp />} />
 
               {/* Legacy redirects */}
               <Route path="/login" element={<Navigate to="/auth/sign-in" replace />} />
               <Route path="/signup" element={<Navigate to="/auth/sign-up" replace />} />
+              <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
+              <Route path="/dashboard/*" element={<Navigate to="/admin" replace />} />
 
               <Route element={<AppLayout />}>
                 <Route path="/" element={<Index />} />
@@ -62,18 +68,17 @@ const App = () => (
                   path="/profile"
                   element={<ProtectedRoute><Profile /></ProtectedRoute>}
                 />
-                <Route
-                  path="/dashboard"
-                  element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
-                />
-                <Route
-                  path="/dashboard/create-event"
-                  element={<ProtectedRoute><CreateEvent /></ProtectedRoute>}
-                />
-                <Route
-                  path="/dashboard/edit-event/:id"
-                  element={<ProtectedRoute><EditEvent /></ProtectedRoute>}
-                />
+
+                {/* Admin area */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminOverview />} />
+                  <Route path="events" element={<AdminEvents />} />
+                  <Route path="attendees" element={<AdminAttendees />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                  <Route path="create-event" element={<CreateEvent />} />
+                  <Route path="edit-event/:id" element={<EditEvent />} />
+                </Route>
+
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>

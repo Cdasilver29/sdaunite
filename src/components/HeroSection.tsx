@@ -5,18 +5,6 @@ import { Link } from "react-router-dom";
 import SocialShareBar from "./SocialShareBar";
 
 const HeroSection = () => {
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search.trim()) {
-      navigate(`/events?search=${encodeURIComponent(search.trim())}`);
-    } else {
-      navigate("/events");
-    }
-  };
-
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
       {/* Layer 1: Full-bleed background image */}
