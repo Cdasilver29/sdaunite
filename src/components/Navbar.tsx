@@ -301,6 +301,14 @@ const Navbar = () => {
                 >
                   Profile
                 </Link>
+                {isAdminUser && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[hsl(var(--sda-warm))] hover:bg-white/5 rounded transition-colors"
+                  >
+                    <Shield className="h-4 w-4" /> Admin
+                  </Link>
+                )}
               </>
             )}
             <div className="mt-3 pt-3 border-t border-white/10">
