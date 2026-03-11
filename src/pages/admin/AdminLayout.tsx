@@ -16,7 +16,7 @@ const AdminLayout = () => {
   const location = useLocation();
   const toastShown = useRef(false);
 
-  const isAdmin = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer");
+  const isAdmin = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer") || roles.includes("super_admin");
 
   useEffect(() => {
     if (!loading && user && !isAdmin && !toastShown.current) {

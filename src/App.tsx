@@ -28,6 +28,14 @@ import AdminOverview from "./pages/admin/AdminOverview";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminAttendees from "./pages/admin/AdminAttendees";
 import AdminSettings from "./pages/admin/AdminSettings";
+import Retreats from "./pages/Retreats";
+import RetreatDetail from "./pages/RetreatDetail";
+import Insider from "./pages/Insider";
+import InsiderArticle from "./pages/InsiderArticle";
+import Xperience from "./pages/Xperience";
+import XperienceDetail from "./pages/XperienceDetail";
+import Streams from "./pages/Streams";
+import StreamDetail from "./pages/StreamDetail";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +68,23 @@ const App = () => (
                 <Route path="/code-of-conduct" element={<CodeOfConduct />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+
+                {/* Retreats */}
+                <Route path="/retreats" element={<Retreats />} />
+                <Route path="/retreats/:id" element={<RetreatDetail />} />
+
+                {/* Blog / Insider */}
+                <Route path="/insider" element={<Insider />} />
+                <Route path="/insider/:slug" element={<InsiderArticle />} />
+
+                {/* Xperience */}
+                <Route path="/xperience" element={<Xperience />} />
+                <Route path="/xperience/:id" element={<XperienceDetail />} />
+
+                {/* Streams */}
+                <Route path="/streams" element={<Streams />} />
+                <Route path="/streams/:id" element={<StreamDetail />} />
+
                 <Route
                   path="/my-tickets"
                   element={<ProtectedRoute><MyTickets /></ProtectedRoute>}
