@@ -21,6 +21,15 @@ const DROPDOWNS: Record<string, DropdownConfig> = {
       })),
     ],
   },
+  Explore: {
+    label: "Explore",
+    items: [
+      { href: "/retreats", label: "Retreat Escapes", desc: "Unplug & reconnect with God" },
+      { href: "/streams", label: "Streams", desc: "Watch sermons & programs" },
+      { href: "/xperience", label: "Xperience", desc: "Post-event galleries" },
+      { href: "/insider", label: "Insider Blog", desc: "Faith & fellowship articles" },
+    ],
+  },
   "Service & Mission": {
     label: "Service & Mission",
     items: [
@@ -38,11 +47,6 @@ const DROPDOWNS: Record<string, DropdownConfig> = {
     ],
   },
 };
-
-const SIMPLE_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/contact", label: "Contact" },
-];
 
 const DropdownMenu = ({
   config,
@@ -97,7 +101,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, profile, roles, signOut } = useAuth();
-  const isAdminUser = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer");
+  const isAdminUser = roles.includes("admin") || roles.includes("church_admin") || roles.includes("organizer") || roles.includes("super_admin");
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
@@ -130,10 +134,8 @@ const Navbar = () => {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
-  // Desktop nav order: Home, Events▼, Service & Mission▼, About▼, Contact
   const desktopNav = (
     <nav className="hidden items-center gap-0.5 lg:flex">
-      {/* Home */}
       <Link
         to="/"
         className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
@@ -143,7 +145,6 @@ const Navbar = () => {
         Home
       </Link>
 
-      {/* Dropdown menus */}
       {Object.entries(DROPDOWNS).map(([key, config]) => (
         <DropdownMenu
           key={key}
@@ -154,7 +155,6 @@ const Navbar = () => {
         />
       ))}
 
-      {/* Contact */}
       <Link
         to="/contact"
         className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
@@ -186,7 +186,6 @@ const Navbar = () => {
       } backdrop-blur-md`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-1.5 shrink-0">
           <span className="text-base font-semibold tracking-tight text-white">
             SDA <span className="text-[hsl(var(--accent))]">Unite</span>
@@ -195,10 +194,17 @@ const Navbar = () => {
 
         {desktopNav}
 
-        {/* Desktop right */}
         <div className="hidden items-center gap-3 lg:flex">
           {user ? (
             <div className="flex items-center gap-2">
+              {isAdminUser && (
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-1 text-xs font-medium text-[hsl(var(--sda-warm))] hover:text-[hsl(var(--accent))] transition-colors"
+                >
+                  <Shield className="h-3.5 w-3.5" /> Admin
+                </Link>
+              )}
               <Link
                 to="/profile"
                 className="flex items-center gap-1.5 text-sm font-medium text-white/70 hover:text-[hsl(var(--accent))] transition-colors"
@@ -223,7 +229,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="lg:hidden p-1.5 text-white/80 hover:text-white transition-colors"
@@ -233,11 +238,9 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="lg:hidden bg-[hsl(202,100%,18%)] border-t border-white/10">
           <nav className="flex flex-col px-5 py-4 gap-1">
-            {/* Home */}
             <Link
               to="/"
               className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
@@ -247,7 +250,6 @@ const Navbar = () => {
               Home
             </Link>
 
-            {/* Mobile dropdowns as expandable sections */}
             {Object.entries(DROPDOWNS).map(([key, config]) => (
               <div key={key}>
                 <button
@@ -277,7 +279,6 @@ const Navbar = () => {
               </div>
             ))}
 
-            {/* Contact */}
             <Link
               to="/contact"
               className={`px-3 py-2 text-sm font-medium rounded transition-colors ${

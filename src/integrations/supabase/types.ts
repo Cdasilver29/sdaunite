@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_articles: {
+        Row: {
+          author_id: string
+          category: string
+          content: string
+          created_at: string
+          excerpt: string
+          id: string
+          image_url: string | null
+          published: boolean
+          related_event_ids: string[] | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          category?: string
+          content: string
+          created_at?: string
+          excerpt: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          related_event_ids?: string[] | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          related_event_ids?: string[] | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       churches: {
         Row: {
           address: string | null
@@ -376,6 +421,205 @@ export type Database = {
           },
         ]
       }
+      retreats: {
+        Row: {
+          capacity: number
+          church_id: string | null
+          city: string
+          country: string
+          created_at: string
+          currency: string
+          description: string
+          end_date: string
+          id: string
+          image_url: string | null
+          includes_accommodation: boolean | null
+          includes_meals: boolean | null
+          includes_transport: boolean | null
+          location_name: string
+          organizer_id: string
+          retreat_status: string
+          schedule: Json | null
+          spiritual_objective: string | null
+          start_date: string
+          starting_price: number | null
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          capacity?: number
+          church_id?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          currency?: string
+          description: string
+          end_date: string
+          id?: string
+          image_url?: string | null
+          includes_accommodation?: boolean | null
+          includes_meals?: boolean | null
+          includes_transport?: boolean | null
+          location_name: string
+          organizer_id: string
+          retreat_status?: string
+          schedule?: Json | null
+          spiritual_objective?: string | null
+          start_date: string
+          starting_price?: number | null
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          capacity?: number
+          church_id?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          end_date?: string
+          id?: string
+          image_url?: string | null
+          includes_accommodation?: boolean | null
+          includes_meals?: boolean | null
+          includes_transport?: boolean | null
+          location_name?: string
+          organizer_id?: string
+          retreat_status?: string
+          schedule?: Json | null
+          spiritual_objective?: string | null
+          start_date?: string
+          starting_price?: number | null
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreats_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stream_access: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          payment_id: string | null
+          stream_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          payment_id?: string | null
+          stream_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          payment_id?: string | null
+          stream_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stream_access_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stream_access_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      streams: {
+        Row: {
+          approved: boolean
+          bible_text: string | null
+          church_id: string | null
+          created_at: string
+          currency: string
+          description: string
+          duration_minutes: number | null
+          id: string
+          organizer_id: string
+          price: number
+          pricing_model: string
+          rent_duration_hours: number | null
+          stream_status: string
+          stream_type: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          approved?: boolean
+          bible_text?: string | null
+          church_id?: string | null
+          created_at?: string
+          currency?: string
+          description: string
+          duration_minutes?: number | null
+          id?: string
+          organizer_id: string
+          price?: number
+          pricing_model?: string
+          rent_duration_hours?: number | null
+          stream_status?: string
+          stream_type?: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          approved?: boolean
+          bible_text?: string | null
+          church_id?: string | null
+          created_at?: string
+          currency?: string
+          description?: string
+          duration_minutes?: number | null
+          id?: string
+          organizer_id?: string
+          price?: number
+          pricing_model?: string
+          rent_duration_hours?: number | null
+          stream_status?: string
+          stream_type?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "streams_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_event_registrations: {
         Row: {
           created_at: string
@@ -631,6 +875,47 @@ export type Database = {
           },
         ]
       }
+      xperience_photos: {
+        Row: {
+          approved: boolean
+          approved_by: string | null
+          caption: string | null
+          created_at: string
+          event_id: string
+          id: string
+          image_url: string
+          uploaded_by: string
+        }
+        Insert: {
+          approved?: boolean
+          approved_by?: string | null
+          caption?: string | null
+          created_at?: string
+          event_id: string
+          id?: string
+          image_url: string
+          uploaded_by: string
+        }
+        Update: {
+          approved?: boolean
+          approved_by?: string | null
+          caption?: string | null
+          created_at?: string
+          event_id?: string
+          id?: string
+          image_url?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "xperience_photos_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -645,7 +930,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "user" | "organizer" | "admin" | "church_admin"
+      app_role: "user" | "organizer" | "admin" | "church_admin" | "super_admin"
       attendance_status: "registered" | "attended" | "no_show"
       event_category:
         | "Social & Fellowship"
@@ -789,7 +1074,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["user", "organizer", "admin", "church_admin"],
+      app_role: ["user", "organizer", "admin", "church_admin", "super_admin"],
       attendance_status: ["registered", "attended", "no_show"],
       event_category: [
         "Social & Fellowship",
