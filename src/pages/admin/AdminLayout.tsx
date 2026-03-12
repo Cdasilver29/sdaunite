@@ -7,6 +7,10 @@ import { useEffect, useRef } from "react";
 const NAV = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/admin/events", label: "Events", icon: CalendarDays },
+  { to: "/admin/retreats", label: "Retreats", icon: Mountain },
+  { to: "/admin/blog", label: "Blog", icon: BookOpen },
+  { to: "/admin/streams", label: "Streams", icon: Video },
+  { to: "/admin/xperience", label: "Xperience", icon: Image },
   { to: "/admin/attendees", label: "Attendees", icon: Users },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ];

@@ -108,6 +108,10 @@ const App = () => (
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<AdminOverview />} />
                   <Route path="events" element={<AdminEvents />} />
+                  <Route path="retreats" element={<AdminRetreats />} />
+                  <Route path="blog" element={<AdminBlog />} />
+                  <Route path="streams" element={<AdminStreams />} />
+                  <Route path="xperience" element={<AdminXperience />} />
                   <Route path="attendees" element={<AdminAttendees />} />
                   <Route path="settings" element={<AdminSettings />} />
                   <Route path="create-event" element={<CreateEvent />} />
