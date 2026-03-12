@@ -91,6 +91,10 @@ const App = () => (
                 <Route path="/streams" element={<Streams />} />
                 <Route path="/streams/:id" element={<StreamDetail />} />
 
+                {/* Special Event Pages */}
+                <Route path="/singles-spark" element={<SinglesSpark />} />
+                <Route path="/football-league" element={<FootballLeague />} />
+
                 <Route
                   path="/my-tickets"
                   element={<ProtectedRoute><MyTickets /></ProtectedRoute>}
