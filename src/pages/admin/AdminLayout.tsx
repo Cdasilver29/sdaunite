@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { CalendarDays, Users, Settings, LayoutDashboard } from "lucide-react";
+import { CalendarDays, Users, Settings, LayoutDashboard, Mountain, BookOpen, Video, Image } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef } from "react";
 
