@@ -237,7 +237,7 @@ const AdminOverview = () => {
       </div>
 
       {/* Quick Links */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link to="/admin/events" className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 transition-colors group">
           <CalendarDays className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
           <h3 className="font-semibold text-foreground">Manage Events</h3>
@@ -247,6 +247,26 @@ const AdminOverview = () => {
           <Users className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
           <h3 className="font-semibold text-foreground">View Attendees</h3>
           <p className="text-sm text-muted-foreground mt-1">See who's registered for each event</p>
+        </Link>
+        <Link to="/admin/retreats" className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 transition-colors group">
+          <TrendingUp className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
+          <h3 className="font-semibold text-foreground">Manage Retreats</h3>
+          <p className="text-sm text-muted-foreground mt-1">Publish and manage retreat escapes</p>
+        </Link>
+        <Link to="/admin/blog" className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 transition-colors group">
+          <CalendarDays className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
+          <h3 className="font-semibold text-foreground">Blog Articles</h3>
+          <p className="text-sm text-muted-foreground mt-1">Publish insider blog content</p>
+        </Link>
+        <Link to="/admin/streams" className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 transition-colors group">
+          <Ticket className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
+          <h3 className="font-semibold text-foreground">Streams</h3>
+          <p className="text-sm text-muted-foreground mt-1">Approve and manage video streams</p>
+        </Link>
+        <Link to="/admin/xperience" className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 transition-colors group">
+          <Users className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
+          <h3 className="font-semibold text-foreground">Xperience Photos</h3>
+          <p className="text-sm text-muted-foreground mt-1">Review and approve gallery photos</p>
         </Link>
       </div>
     </div>
