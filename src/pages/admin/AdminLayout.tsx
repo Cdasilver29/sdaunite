@@ -1,12 +1,16 @@
 import { Outlet, Link, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { CalendarDays, Users, Settings, LayoutDashboard } from "lucide-react";
+import { CalendarDays, Users, Settings, LayoutDashboard, Mountain, BookOpen, Video, Image } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef } from "react";
 
 const NAV = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/admin/events", label: "Events", icon: CalendarDays },
+  { to: "/admin/retreats", label: "Retreats", icon: Mountain },
+  { to: "/admin/blog", label: "Blog", icon: BookOpen },
+  { to: "/admin/streams", label: "Streams", icon: Video },
+  { to: "/admin/xperience", label: "Xperience", icon: Image },
   { to: "/admin/attendees", label: "Attendees", icon: Users },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ];

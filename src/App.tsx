@@ -28,7 +28,13 @@ import AdminOverview from "./pages/admin/AdminOverview";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminAttendees from "./pages/admin/AdminAttendees";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminRetreats from "./pages/admin/AdminRetreats";
+import AdminBlog from "./pages/admin/AdminBlog";
+import AdminStreams from "./pages/admin/AdminStreams";
+import AdminXperience from "./pages/admin/AdminXperience";
 import Retreats from "./pages/Retreats";
+import SinglesSpark from "./pages/SinglesSpark";
+import FootballLeague from "./pages/FootballLeague";
 import RetreatDetail from "./pages/RetreatDetail";
 import Insider from "./pages/Insider";
 import InsiderArticle from "./pages/InsiderArticle";
@@ -85,6 +91,10 @@ const App = () => (
                 <Route path="/streams" element={<Streams />} />
                 <Route path="/streams/:id" element={<StreamDetail />} />
 
+                {/* Special Event Pages */}
+                <Route path="/singles-spark" element={<SinglesSpark />} />
+                <Route path="/football-league" element={<FootballLeague />} />
+
                 <Route
                   path="/my-tickets"
                   element={<ProtectedRoute><MyTickets /></ProtectedRoute>}
@@ -98,6 +108,10 @@ const App = () => (
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<AdminOverview />} />
                   <Route path="events" element={<AdminEvents />} />
+                  <Route path="retreats" element={<AdminRetreats />} />
+                  <Route path="blog" element={<AdminBlog />} />
+                  <Route path="streams" element={<AdminStreams />} />
+                  <Route path="xperience" element={<AdminXperience />} />
                   <Route path="attendees" element={<AdminAttendees />} />
                   <Route path="settings" element={<AdminSettings />} />
                   <Route path="create-event" element={<CreateEvent />} />
