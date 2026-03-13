@@ -22,6 +22,8 @@ import { Link } from "react-router-dom";
 const NAV_ITEMS = [
   { title: "Home", url: "/", icon: Home },
   { title: "Events", url: "/events", icon: CalendarDays },
+  { title: "Singles Spark", url: "/singles-spark", icon: Heart },
+  { title: "Football League", url: "/football-league", icon: CalendarDays },
   { title: "Service & Mission", url: "/service-mission", icon: Heart },
   { title: "About", url: "/about", icon: Info },
   { title: "Contact", url: "/contact", icon: Mail },
