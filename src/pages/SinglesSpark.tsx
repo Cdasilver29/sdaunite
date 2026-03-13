@@ -1,50 +1,111 @@
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Users, Heart, BookOpen, ArrowLeft, Sparkles, Music, MessageCircle, Coffee } from "lucide-react";
+import { Calendar, MapPin, Users, Heart, BookOpen, ArrowLeft, Sparkles, Music, MessageCircle, Coffee, Star, Shield, Clock, CheckCircle, Utensils, Camera, Gamepad2, HandHeart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import singleSparkHero from "@/assets/singles-spark-hero.jpg";
+import singlesIcebreakers from "@/assets/singles-icebreakers.jpg";
+import singlesWorship from "@/assets/singles-worship.jpg";
 
 const SCHEDULE = [
-  { time: "2:00 PM", title: "Arrival & Registration", desc: "Check in, get your badge, and settle in", icon: Coffee },
-  { time: "2:30 PM", title: "Welcome & Ice Breakers", desc: "Fun group activities to meet new people in a comfortable setting", icon: Sparkles },
-  { time: "3:30 PM", title: "Devotional Session", desc: "A Christ-centered talk on relationships, purpose, and waiting on God's timing", icon: BookOpen },
-  { time: "4:30 PM", title: "Small Group Discussions", desc: "Break into groups to share experiences and encourage one another", icon: MessageCircle },
-  { time: "5:30 PM", title: "Music & Fellowship", desc: "Worship session followed by open social time with refreshments", icon: Music },
-  { time: "7:00 PM", title: "Closing & Connections", desc: "Exchange contacts, pray together, and plan the next meetup", icon: Heart },
+  { time: "2:00 PM", title: "Arrival & Registration", desc: "Check in, get your name badge with fun conversation starters, and grab a welcome drink", icon: Coffee },
+  { time: "2:30 PM", title: "Welcome & Ice Breakers", desc: "Guided group activities designed to make introductions easy, natural, and pressure-free", icon: Sparkles },
+  { time: "3:15 PM", title: "Speed Fellowship Rounds", desc: "Rotate through short, meaningful conversations with fellow Adventist singles using faith-based prompts", icon: MessageCircle },
+  { time: "3:45 PM", title: "Devotional Session", desc: "A Christ-centered talk on relationships, purpose, identity in Christ, and waiting on God's timing", icon: BookOpen },
+  { time: "4:30 PM", title: "Small Group Discussions", desc: "Break into groups of 6-8 to share experiences, prayer requests, and encourage one another", icon: MessageCircle },
+  { time: "5:15 PM", title: "Fun & Games", desc: "Team-based Bible trivia, creative challenges, and outdoor games to build connections through laughter", icon: Gamepad2 },
+  { time: "6:00 PM", title: "Music & Fellowship Dinner", desc: "Live worship music, refreshments, and an open social hour with a catered vegetarian dinner", icon: Music },
+  { time: "7:00 PM", title: "Closing Prayer & Connections", desc: "Exchange contacts, join the Spark community group, pray together, and plan the next meetup", icon: Heart },
+];
+
+const ACTIVITIES = [
+  {
+    title: "Ice Breaker Games",
+    desc: "Fun, structured activities that make meeting new people feel natural. No awkward silences, just genuine conversations sparked by creative prompts and team challenges.",
+    icon: Sparkles,
+    image: singlesIcebreakers,
+  },
+  {
+    title: "Worship & Devotion",
+    desc: "A powerful worship experience with live music followed by a devotional on God's design for relationships, singleness as a season of growth, and trusting His timing.",
+    icon: Music,
+    image: singlesWorship,
+  },
+  {
+    title: "Fellowship Dinner",
+    desc: "A catered vegetarian dinner where you can sit with new friends, continue conversations, and enjoy good food in a relaxed, social atmosphere.",
+    icon: Utensils,
+  },
+  {
+    title: "Community Service Project",
+    desc: "Bond with others over a mini community service activity. Nothing builds connection faster than serving together for God's kingdom.",
+    icon: HandHeart,
+  },
+  {
+    title: "Photo Booth & Memories",
+    desc: "Capture the moments with a themed photo booth. Take group photos and individual shots to remember the day by.",
+    icon: Camera,
+  },
+  {
+    title: "Bible Trivia & Team Games",
+    desc: "Put your Bible knowledge to the test in teams. Friendly competition with prizes, laughs, and plenty of high-fives.",
+    icon: Gamepad2,
+  },
 ];
 
 const VALUES = [
-  { title: "Christ First", desc: "Every activity and conversation is grounded in biblical principles and Christ-centered values." },
-  { title: "Respect & Modesty", desc: "We uphold SDA standards of modest dress, respectful behavior, and wholesome interactions." },
-  { title: "Authentic Connection", desc: "No pressure, no games. Just genuine fellowship among like-minded Adventist singles." },
-  { title: "Community Building", desc: "Whether you find a partner or a friend, you leave with a stronger faith community." },
+  { title: "Christ First", desc: "Every activity and conversation is grounded in biblical principles. We seek God's guidance in all things, including relationships.", icon: BookOpen },
+  { title: "Respect & Modesty", desc: "We uphold SDA standards of modest dress, respectful behavior, and wholesome interactions. Every person is treated with dignity.", icon: Shield },
+  { title: "Authentic Connection", desc: "No pressure, no games, no worldly dating culture. Just genuine fellowship among like-minded Adventist singles who share your faith.", icon: Heart },
+  { title: "Community Building", desc: "Whether you find a partner or a friend, you leave with a stronger faith community that supports you beyond this event.", icon: Users },
+];
+
+const FAQS = [
+  { q: "Is this a dating event?", a: "No. Adventist Singles Spark is a fellowship event. It's designed to help you build genuine friendships and community with other SDA singles. If God leads to something more, that's wonderful, but the focus is on fellowship, not matchmaking." },
+  { q: "What's the age range?", a: "This event is for SDA singles aged 21 and above. Whether you're a young professional or a seasoned single, you're welcome here." },
+  { q: "What should I wear?", a: "Smart casual, modest attire in line with SDA standards. Think clean, presentable, and comfortable. No jewelry please, in keeping with our Adventist values." },
+  { q: "Will there be food?", a: "Yes! A fully catered vegetarian dinner is included with your ticket. We'll also have refreshments (juices, water, light snacks) available throughout the event." },
+  { q: "Can I come alone?", a: "Absolutely! Most attendees come solo. The whole point of the ice breakers and structured activities is to make sure nobody feels left out. You'll make friends within the first 30 minutes." },
+  { q: "How do I pay for tickets?", a: "Tickets are purchased via M-Pesa right here on SDA Unite. Sign in, select your ticket tier, and complete payment securely." },
+  { q: "Is this event only in Nairobi?", a: "The inaugural Spark event is in Nairobi, but we plan to expand to other cities across Kenya and East Africa based on demand." },
+];
+
+const TESTIMONIALS = [
+  { name: "Grace M.", church: "Nairobi Central SDA", quote: "I went expecting nothing and left with five new friends who I now pray with every week. Spark changed my perspective on community." },
+  { name: "David K.", church: "Karura SDA", quote: "Finally, an event for singles that doesn't feel forced. The devotional on God's timing really spoke to me." },
+  { name: "Faith W.", church: "Rongai SDA", quote: "The ice breakers were so well done. I'm usually shy at events but here I felt completely at ease. Can't wait for the next one!" },
 ];
 
 const SinglesSpark = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <div className="relative h-72 md:h-[28rem]">
+      <div className="relative h-80 md:h-[32rem]">
         <img src={singleSparkHero} alt="Adventist Singles Spark" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/40 to-transparent" />
         <div className="container absolute inset-x-0 bottom-8">
-          <Link to="/events" className="inline-flex items-center gap-1 text-xs font-medium text-primary-foreground/70 hover:text-primary-foreground mb-3">
-            <ArrowLeft className="h-3 w-3" /> Back to Events
+          <Link to="/" className="inline-flex items-center gap-1 text-xs font-medium text-primary-foreground/70 hover:text-primary-foreground mb-3">
+            <ArrowLeft className="h-3 w-3" /> Back to Home
           </Link>
           <Badge className="bg-accent text-accent-foreground border-0 mb-2">Social & Fellowship</Badge>
-          <h1 className="text-3xl md:text-5xl font-bold text-primary-foreground">Adventist Singles Spark</h1>
-          <p className="mt-2 text-lg italic text-accent">Where Faith Meets Fellowship</p>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+            Adventist Singles Spark
+          </h1>
+          <p className="mt-2 text-lg md:text-xl italic text-accent">Where Faith Meets Fellowship</p>
+          <p className="mt-3 max-w-xl text-sm text-primary-foreground/80">
+            A Christ-centered gathering for SDA singles to connect, grow, and build lasting community through faith, fun, and fellowship.
+          </p>
         </div>
       </div>
 
       <div className="container py-10">
         <div className="grid gap-10 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-10">
+          <div className="lg:col-span-2 space-y-12">
             {/* Quick Info */}
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {[
                 { icon: Calendar, label: "Date", value: "April 26, 2026" },
-                { icon: Calendar, label: "Time", value: "2:00 PM – 7:00 PM" },
+                { icon: Clock, label: "Time", value: "2:00 PM – 7:00 PM" },
                 { icon: MapPin, label: "Location", value: "Nairobi Chapel Gardens" },
                 { icon: Users, label: "Capacity", value: "120 Singles" },
               ].map((item) => (
@@ -67,25 +128,59 @@ const SinglesSpark = () => {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">About Adventist Singles Spark</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Adventist Singles Spark is a Christ-centered social gathering designed exclusively for SDA singles aged 21 and above.
-                In a world where finding genuine, faith-aligned connections can be challenging, Spark provides a safe, fun, and spiritually
+                Adventist Singles Spark is a Christ-centered social gathering designed exclusively for Seventh-day Adventist singles aged 21 and above.
+                In a world where finding genuine, faith-aligned connections can be incredibly challenging, Spark provides a safe, fun, and spiritually
                 enriching environment where Adventist singles can meet, fellowship, and build meaningful relationships.
               </p>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                This isn't a dating event. It's a fellowship event. Whether God leads you to a life partner, a prayer partner, or simply
-                a great friend, the goal is to grow your community of faith. Every interaction is rooted in respect, modesty, and shared
-                Adventist values.
+                This isn't a dating event, and there's zero pressure to pair up. It's a fellowship event rooted in the belief that God places people
+                in our lives for a reason. Whether He leads you to a life partner, a prayer partner, an accountability partner, or simply a great friend,
+                the goal is to grow your community of faith. Every interaction is grounded in respect, modesty, and shared Adventist values.
               </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Spark was born from a simple observation: many young Adventist singles feel isolated in their faith journey, especially when it comes to
+                relationships. Church can sometimes feel like a "couples club," and mainstream social events don't align with SDA values. Spark bridges
+                that gap with intentional, spirit-led programming that makes connection feel natural and God-honoring.
+              </p>
+            </div>
+
+            {/* Activities Section */}
+            <div>
+              <h2 className="text-xl font-bold text-foreground mb-2">Activities & Experiences</h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                Every moment at Spark is intentionally designed to foster genuine connection in a faith-centered atmosphere.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {ACTIVITIES.map((a) => (
+                  <div key={a.title} className="rounded-xl border border-border bg-card overflow-hidden">
+                    {a.image && (
+                      <img src={a.image} alt={a.title} className="w-full h-36 object-cover" />
+                    )}
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-1">
+                        <a.icon className="h-4 w-4 text-secondary" />
+                        <h3 className="font-semibold text-foreground text-sm">{a.title}</h3>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{a.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Values */}
             <div>
-              <h2 className="text-xl font-bold text-foreground mb-4">Our Values</h2>
+              <h2 className="text-xl font-bold text-foreground mb-4">Our Core Values</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {VALUES.map(v => (
-                  <div key={v.title} className="rounded-xl border border-border bg-card p-5">
-                    <h3 className="font-semibold text-foreground text-sm">{v.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">{v.desc}</p>
+                  <div key={v.title} className="rounded-xl border border-border bg-card p-5 flex gap-3">
+                    <div className="rounded-lg bg-primary/10 p-2 h-fit">
+                      <v.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm">{v.title}</h3>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{v.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -97,15 +192,15 @@ const SinglesSpark = () => {
               <div className="space-y-3">
                 {SCHEDULE.map((s, i) => (
                   <div key={i} className="flex gap-4 rounded-xl border border-border bg-card p-4">
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center shrink-0">
                       <div className="rounded-lg bg-primary/10 p-2">
                         <s.icon className="h-4 w-4 text-primary" />
                       </div>
-                      <p className="text-xs font-bold text-secondary mt-1">{s.time}</p>
+                      <p className="text-xs font-bold text-secondary mt-1 whitespace-nowrap">{s.time}</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground text-sm">{s.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">{s.desc}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -115,67 +210,123 @@ const SinglesSpark = () => {
             {/* What to Expect */}
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">What to Expect</h2>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex gap-2"><Sparkles className="h-4 w-4 text-accent shrink-0 mt-0.5" /> Interactive ice-breaker activities designed to make introductions easy and natural</li>
-                <li className="flex gap-2"><BookOpen className="h-4 w-4 text-accent shrink-0 mt-0.5" /> A powerful devotional on God's plan for relationships and singleness</li>
-                <li className="flex gap-2"><MessageCircle className="h-4 w-4 text-accent shrink-0 mt-0.5" /> Honest small-group conversations about faith, career, and life goals</li>
-                <li className="flex gap-2"><Music className="h-4 w-4 text-accent shrink-0 mt-0.5" /> Live worship music and a relaxed social atmosphere with refreshments</li>
-                <li className="flex gap-2"><Heart className="h-4 w-4 text-accent shrink-0 mt-0.5" /> A supportive community that extends well beyond the event itself</li>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                {[
+                  { icon: Sparkles, text: "Interactive ice-breaker activities designed to make introductions easy, natural, and fun for everyone" },
+                  { icon: BookOpen, text: "A powerful devotional on God's plan for relationships, singleness as a gift, and trusting His perfect timing" },
+                  { icon: MessageCircle, text: "Honest small-group conversations about faith, career goals, life challenges, and spiritual growth" },
+                  { icon: Music, text: "Live worship music and a relaxed social atmosphere with a fully catered vegetarian dinner" },
+                  { icon: Heart, text: "A supportive Adventist community that extends well beyond the event through prayer groups and social meetups" },
+                  { icon: CheckCircle, text: "A safe, judgment-free environment where every person is valued regardless of their story or background" },
+                ].map((item, i) => (
+                  <li key={i} className="flex gap-2">
+                    <item.icon className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                    {item.text}
+                  </li>
+                ))}
               </ul>
+            </div>
+
+            {/* Testimonials */}
+            <div>
+              <h2 className="text-xl font-bold text-foreground mb-4">What People Are Saying</h2>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {TESTIMONIALS.map((t) => (
+                  <div key={t.name} className="rounded-xl border border-border bg-card p-5">
+                    <div className="flex gap-0.5 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-3.5 w-3.5 fill-accent text-accent" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground italic leading-relaxed">"{t.quote}"</p>
+                    <div className="mt-3 border-t border-border pt-3">
+                      <p className="text-xs font-semibold text-foreground">{t.name}</p>
+                      <p className="text-[11px] text-muted-foreground">{t.church}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQs */}
+            <div>
+              <h2 className="text-xl font-bold text-foreground mb-4">Frequently Asked Questions</h2>
+              <Accordion type="single" collapsible className="w-full">
+                {FAQS.map((faq, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`}>
+                    <AccordionTrigger className="text-sm font-semibold text-foreground text-left">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
 
           {/* Ticket Panel */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20 rounded-xl border border-border bg-card p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-foreground mb-1">Get Your Ticket</h3>
-              <p className="text-xs text-muted-foreground mb-4">Secure your spot at Adventist Singles Spark</p>
-
-              <div className="space-y-3 mb-6">
-                <div className="rounded-lg border border-border p-4">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Early Bird</p>
-                      <p className="text-xs text-muted-foreground">Limited spots available</p>
-                    </div>
-                    <p className="text-lg font-bold text-secondary">KES 500</p>
-                  </div>
-                </div>
-                <div className="rounded-lg border border-border p-4">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Regular</p>
-                      <p className="text-xs text-muted-foreground">Standard admission</p>
-                    </div>
-                    <p className="text-lg font-bold text-secondary">KES 800</p>
-                  </div>
-                </div>
-                <div className="rounded-lg border border-border p-4">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">VIP</p>
-                      <p className="text-xs text-muted-foreground">Front row + gift bag</p>
-                    </div>
-                    <p className="text-lg font-bold text-secondary">KES 1,500</p>
-                  </div>
-                </div>
+            <div className="sticky top-20 rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Get Your Ticket</h3>
+                <p className="text-xs text-muted-foreground mt-1">Secure your spot at Adventist Singles Spark</p>
               </div>
 
-              <Button asChild className="w-full bg-sda-gradient text-primary-foreground hover:opacity-90 gap-2 mb-3">
+              <div className="space-y-3">
+                {[
+                  { tier: "Early Bird", desc: "Limited to first 40 registrations", price: "KES 500", highlight: true },
+                  { tier: "Regular", desc: "Standard admission with dinner included", price: "KES 800", highlight: false },
+                  { tier: "VIP", desc: "Front row seating, gift bag, exclusive group photo", price: "KES 1,500", highlight: false },
+                ].map((t) => (
+                  <div key={t.tier} className={`rounded-lg border p-4 ${t.highlight ? "border-secondary bg-secondary/5" : "border-border"}`}>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-semibold text-foreground">{t.tier}</p>
+                          {t.highlight && <Badge variant="secondary" className="text-[10px] px-1.5 py-0">Best Value</Badge>}
+                        </div>
+                        <p className="text-xs text-muted-foreground">{t.desc}</p>
+                      </div>
+                      <p className="text-lg font-bold text-secondary">{t.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-2 text-xs text-muted-foreground">
+                <p className="font-medium text-foreground text-sm">All tickets include:</p>
+                <ul className="space-y-1.5">
+                  {["Full event access (2 PM – 7 PM)", "Catered vegetarian dinner", "Welcome drink & refreshments", "Name badge with conversation starters", "Access to Spark community group"].map((item) => (
+                    <li key={item} className="flex gap-2 items-start">
+                      <CheckCircle className="h-3.5 w-3.5 text-secondary shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <Button asChild className="w-full bg-sda-gradient text-primary-foreground hover:opacity-90 gap-2" size="lg">
                 <Link to="/auth/sign-in">
                   <Heart className="h-4 w-4" /> Register Now
                 </Link>
               </Button>
               <p className="text-center text-xs text-muted-foreground">Sign in to purchase tickets via M-Pesa</p>
 
-              <div className="mt-6 pt-4 border-t border-border">
-                <h4 className="text-sm font-semibold text-foreground mb-2">Dress Code</h4>
-                <p className="text-xs text-muted-foreground">Smart casual, modest attire in line with SDA standards. No jewelry.</p>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-border">
-                <h4 className="text-sm font-semibold text-foreground mb-2">Age Group</h4>
-                <p className="text-xs text-muted-foreground">21+ (Young Adults & Adults)</p>
+              <div className="pt-4 border-t border-border space-y-4">
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-1">Dress Code</h4>
+                  <p className="text-xs text-muted-foreground">Smart casual, modest attire in line with SDA standards. No jewelry, in keeping with Adventist values.</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-1">Age Group</h4>
+                  <p className="text-xs text-muted-foreground">21+ (Young Adults & Adults). Must be a baptized or practicing Seventh-day Adventist.</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground mb-1">Venue</h4>
+                  <p className="text-xs text-muted-foreground">Nairobi Chapel Gardens, off Ngong Road. Ample parking available. The venue is outdoor with covered areas.</p>
+                </div>
               </div>
             </div>
           </div>
