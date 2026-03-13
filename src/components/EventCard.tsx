@@ -5,7 +5,7 @@ import type { DbEvent } from "@/hooks/useEvents";
 import { getEventImageUrl } from "@/lib/event-image";
 
 const EventCard = ({ event }: { event: DbEvent }) => {
-  const imgSrc = getEventImageUrl(event.image_url);
+  const imgSrc = getEventImageUrl(event.image_url, event.event_category);
   const lowestPrice = event.ticket_types?.length
     ? Math.min(...event.ticket_types.map((t) => t.price))
     : 0;
@@ -17,7 +17,7 @@ const EventCard = ({ event }: { event: DbEvent }) => {
       to={`/events/${event.id}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sda transition-all hover:shadow-sda-lg hover:-translate-y-1"
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden">
         <img
           src={imgSrc}
           alt={event.title}

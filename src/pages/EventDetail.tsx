@@ -38,7 +38,7 @@ const EventDetail = () => {
     );
   }
 
-  const imgSrc = getEventImageUrl(event.image_url);
+  const imgSrc = getEventImageUrl(event.image_url, event.event_category);
   const ticketsSold = event.tickets?.length || 0;
   const spotsLeft = event.event_capacity - ticketsSold;
   const churchName = event.churches?.church_name;
