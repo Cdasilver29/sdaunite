@@ -5,7 +5,7 @@ import type { DbEvent } from "@/hooks/useEvents";
 import { getEventImageUrl } from "@/lib/event-image";
 
 const EventCard = ({ event }: { event: DbEvent }) => {
-  const imgSrc = getEventImageUrl(event.image_url);
+  const imgSrc = getEventImageUrl(event.image_url, event.event_category);
   const lowestPrice = event.ticket_types?.length
     ? Math.min(...event.ticket_types.map((t) => t.price))
     : 0;
