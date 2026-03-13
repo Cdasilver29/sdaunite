@@ -83,8 +83,8 @@ const HeroSection = () => {
               size="lg"
               className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 font-semibold rounded-full px-8 py-6 text-base min-w-[220px] bg-transparent"
             >
-              <Link to="/events?category=Social+%26+Fellowship">
-                Singles Events
+              <Link to="/singles-spark">
+                Singles Spark ✨
               </Link>
             </Button>
           </motion.div>
