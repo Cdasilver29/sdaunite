@@ -42,9 +42,9 @@ const Streams = () => {
   return (
     <div className="min-h-screen bg-background">
       <PageHeader
-        title="Streams"
+        title="Live Streams & Replays"
         subtitle="Watch sermons, seminars, concerts, and youth programs on demand"
-        backgroundImage="/images/sda-service-mission.jpg"
+        compact
       />
 
       <section className="container py-12">
