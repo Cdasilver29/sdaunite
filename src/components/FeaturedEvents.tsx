@@ -10,7 +10,7 @@ const FeaturedEvents = () => {
   const featured = events?.slice(0, 4) ?? [];
 
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
