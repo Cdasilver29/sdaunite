@@ -1,8 +1,7 @@
 import HeroSection from "@/components/HeroSection";
-import ScrollingChips from "@/components/ScrollingChips";
-import FeatureCards from "@/components/FeatureCards";
-import CategorySection from "@/components/CategorySection";
+import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedEvents from "@/components/FeaturedEvents";
+import WhySDAUnite from "@/components/WhySDAUnite";
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -13,34 +12,32 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      <ScrollingChips />
-      <FeatureCards />
-      <CategorySection />
+      <CategoryGrid />
       <FeaturedEvents />
+      <WhySDAUnite />
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-background">
+      <section className="py-16 md:py-20 bg-muted/30">
         <div className="container">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto max-w-3xl overflow-hidden rounded-3xl bg-sda-gradient p-12 text-center shadow-sda-lg md:p-16"
+            transition={{ duration: 0.5 }}
+            className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-sda-gradient p-10 text-center shadow-sda-lg md:p-14"
           >
-            {/* Orb inside CTA */}
             <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-accent/20 blur-[80px] pointer-events-none" />
             <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-secondary/30 blur-[60px] pointer-events-none" />
 
             <div className="relative z-10">
-              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">
+              <h2 className="text-2xl font-bold text-primary-foreground md:text-3xl">
                 Ready to Grow in Faith Together?
               </h2>
-              <p className="mt-4 text-primary-foreground/70 md:text-lg max-w-lg mx-auto">
+              <p className="mt-3 text-primary-foreground/70 text-sm md:text-base max-w-lg mx-auto">
                 Join thousands of Adventist youth discovering fellowship,
                 service, and spiritual growth across the nation.
               </p>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button
                   asChild
                   size="lg"
@@ -63,8 +60,6 @@ const Index = () => {
           </motion.div>
         </div>
       </section>
-
-      
     </div>
   );
 };

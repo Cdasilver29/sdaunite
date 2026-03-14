@@ -9,32 +9,73 @@ interface PageHeaderProps {
   children?: ReactNode;
   backgroundImage?: string;
   useProfileCover?: boolean;
+  /** Compact mode for functional pages like /events, /streams (160-260px) */
+  compact?: boolean;
 }
 
-const PageHeader = ({ title, subtitle, icon, children, backgroundImage, useProfileCover }: PageHeaderProps) => {
+const PageHeader = ({ title, subtitle, icon, children, backgroundImage, useProfileCover, compact }: PageHeaderProps) => {
   const { profile } = useAuth();
 
-  // Use uploaded profile photo as cover if enabled and available
   const bgImage = useProfileCover && profile?.profile_photo_url
     ? profile.profile_photo_url
     : backgroundImage;
 
-  // Cover-only mode: no title/subtitle/icon passed — render a clean full cover
   const isCoverOnly = !title && !subtitle && !icon && !children;
+
+  if (compact) {
+    return (
+      <section className="relative overflow-hidden bg-primary">
+        {/* Subtle gradient bg */}
+        <div className="absolute inset-0 page-header-gradient" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, hsl(0 0% 100%) 1px, transparent 0)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <div className="relative z-10 container py-10 md:py-14">
+          <div className="max-w-2xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-2xl font-bold text-primary-foreground md:text-3xl"
+            >
+              {title}
+            </motion.h1>
+            {subtitle && (
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.08 }}
+                className="mt-2 text-sm text-primary-foreground/70"
+              >
+                {subtitle}
+              </motion.p>
+            )}
+            {children && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="mt-4"
+              >
+                {children}
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative overflow-hidden min-h-[62vh] md:min-h-[70vh] flex items-end">
-      {/* Background: image or gradient */}
       {bgImage ? (
         <>
-          <img
-            src={bgImage}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
-          {/* Animated gradient layer */}
+          <img src={bgImage} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
           <div className="hero-animated-bg opacity-30" />
-          {/* Dark readability overlay — lighter at top to show image, darker at bottom for text */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/70" />
         </>
       ) : (
@@ -43,12 +84,10 @@ const PageHeader = ({ title, subtitle, icon, children, backgroundImage, useProfi
           <div className="hero-animated-bg opacity-25" />
         </>
       )}
-      {/* Dot grid */}
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, hsl(0 0% 100%) 1px, transparent 0)",
+          backgroundImage: "radial-gradient(circle at 1px 1px, hsl(0 0% 100%) 1px, transparent 0)",
           backgroundSize: "48px 48px",
         }}
       />

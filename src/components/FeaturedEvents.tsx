@@ -10,7 +10,7 @@ const FeaturedEvents = () => {
   const featured = events?.slice(0, 4) ?? [];
 
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -40,16 +40,13 @@ const FeaturedEvents = () => {
         </motion.div>
 
         {isLoading ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-80 animate-pulse rounded-2xl bg-muted"
-              />
+              <div key={i} className="h-64 animate-pulse rounded-xl bg-muted" />
             ))}
           </div>
         ) : featured.length > 0 ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {featured.map((event, i) => (
               <motion.div
                 key={event.id}

@@ -2,76 +2,81 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import SocialShareBar from "./SocialShareBar";
+import TickerBar from "./TickerBar";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-      {/* Layer 1: Full-bleed background image */}
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      {/* Background image */}
       <img
         src="/images/sda-hero.jpg"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Layer 2: Animated gradient overlay (SDA blue/gold breathing) */}
+      {/* Animated gradient overlay */}
       <div className="hero-animated-bg" />
 
-      {/* Layer 3: Dark readability overlay */}
+      {/* Dark readability overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,12%/0.82)] via-[hsl(202,100%,14%/0.70)] to-[hsl(202,100%,10%/0.88)]" />
 
-      {/* Layer 4: Content */}
-      <div className="relative z-10 w-full px-4 py-24 md:py-32">
+      {/* Content */}
+      <div className="relative z-10 w-full px-4 py-20 md:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          {/* Social share bar at top */}
-          <SocialShareBar variant="top-bar" className="justify-center mb-6" />
-
           {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.5 }}
           >
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full glass px-5 py-2 text-xs font-semibold tracking-widest uppercase text-white/90">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-semibold tracking-widest uppercase text-white/90">
               <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sda-warm))] animate-pulse" />
               Christ-Centered Community
             </span>
           </motion.div>
 
-          {/* Headline — large, high contrast */}
+          {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
-            className="mt-8 text-5xl font-bold leading-[1.06] text-white sm:text-6xl md:text-7xl lg:text-[5.5rem] [text-shadow:_0_4px_30px_rgb(0_0_0_/_50%)]"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mt-6 text-5xl font-bold leading-[1.06] text-white sm:text-6xl md:text-7xl [text-shadow:_0_4px_30px_rgb(0_0_0_/_50%)]"
           >
             Unite in Faith.
             <br />
             <span className="text-[hsl(var(--sda-warm))] drop-shadow-lg">Grow Together.</span>
           </motion.h1>
 
-          {/* Subtitle — high contrast */}
+          {/* Short subheading */}
           <motion.p
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-100/90 md:text-xl [text-shadow:_0_2px_16px_rgb(0_0_0_/_40%)]"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mx-auto mt-5 max-w-lg text-base text-slate-200/85 md:text-lg [text-shadow:_0_2px_12px_rgb(0_0_0_/_30%)]"
           >
-            Discover SDA youth events, retreats, service missions, and fellowship
-            gatherings. Register, connect, and strengthen your walk with Christ.
+            Discover Christ-centered events, connect with Adventist youth, and strengthen your walk in fellowship.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* Ticker bar */}
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
+            <TickerBar />
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.42, ease: "easeOut" }}
-            className="mx-auto mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mx-auto mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
           >
             <Button
               asChild
               size="lg"
-              className="bg-[hsl(var(--sda-warm))] text-accent-foreground hover:bg-[hsl(var(--sda-warm))]/90 font-semibold gap-2 rounded-full px-8 py-6 text-base shadow-lg shadow-[hsl(var(--sda-warm))/0.25] min-w-[220px]"
+              className="bg-[hsl(var(--sda-warm))] text-accent-foreground hover:bg-[hsl(var(--sda-warm))]/90 font-semibold gap-2 rounded-full px-8 py-5 text-base shadow-lg shadow-[hsl(var(--sda-warm))/0.25] min-w-[200px]"
             >
               <Link to="/events">
                 Browse Events <ArrowRight className="h-4 w-4" />
@@ -81,10 +86,10 @@ const HeroSection = () => {
               asChild
               variant="outline"
               size="lg"
-              className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 font-semibold rounded-full px-8 py-6 text-base min-w-[220px] bg-transparent"
+              className="border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 font-semibold rounded-full px-8 py-5 text-base min-w-[200px] bg-transparent"
             >
               <Link to="/singles-spark">
-                Singles Spark ✨
+                Singles Spark
               </Link>
             </Button>
           </motion.div>
@@ -93,46 +98,16 @@ const HeroSection = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="mt-6 flex justify-center"
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="mt-8 flex justify-center"
           >
-            <ChevronDown className="h-6 w-6 text-white/40 animate-bounce" />
+            <ChevronDown className="h-5 w-5 text-white/30 animate-bounce" />
           </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-8 text-white/60"
-          >
-            {[
-              { value: "2,400+", label: "Members" },
-              { value: "120+", label: "Events" },
-              { value: "45+", label: "Churches" },
-            ].map((stat, i) => (
-              <div key={stat.label} className="flex items-center gap-3">
-                {i > 0 && <div className="h-8 w-px bg-white/20 -ml-4 mr-0" />}
-                <div className="text-center">
-                  <span className="block text-2xl font-bold text-white md:text-3xl drop-shadow-sm">
-                    {stat.value}
-                  </span>
-                  <span className="text-xs uppercase tracking-wider">{stat.label}</span>
-                </div>
-              </div>
-            ))}
-          </motion.div>
-
         </div>
       </div>
 
-      {/* Floating social on right side (desktop only) */}
-      <div className="hidden lg:block">
-        <SocialShareBar variant="floating" />
-      </div>
-
       {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10" />
     </section>
   );
 };
