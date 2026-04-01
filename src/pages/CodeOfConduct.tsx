@@ -1,5 +1,5 @@
-import PageHeader from "@/components/PageHeader";
-import { BookOpen, Shirt, Heart, Sun, Shield } from "lucide-react";
+import PageHero from "@/components/PageHero";
+import { Shirt, Heart, Shield, Sun } from "lucide-react";
 
 const sections = [
   {
@@ -42,12 +42,11 @@ const sections = [
 
 const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
-    
-
-    <PageHeader
-      title="Code of Conduct"
-      subtitle="All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct."
-      icon={<BookOpen className="h-6 w-6 text-accent" />}
+    <PageHero
+      label="Our Standards"
+      title="Code of"
+      titleAccent="Conduct."
+      subtitle="All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct"
       backgroundImage="/images/sda-code-of-conduct.jpg"
     />
 
@@ -82,8 +81,6 @@ const CodeOfConduct = () => (
         ))}
       </div>
     </div>
-
-    
   </div>
 );
 

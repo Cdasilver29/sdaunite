@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,16 +25,16 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
-      <PageHeader
-        title="Contact Us"
-        subtitle="Have a question, suggestion, or need support? We'd love to hear from you."
+      <PageHero
+        label="Get In Touch"
+        title="Contact"
+        titleAccent="Us."
+        subtitle="Have a question, suggestion, or need support? We'd love to hear from you"
+        backgroundImage="/images/sda-about.jpg"
       />
 
       <section className="py-16">
         <div className="container grid gap-12 lg:grid-cols-5">
-          {/* Info sidebar */}
           <div className="lg:col-span-2 space-y-8">
             <div className="flex gap-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sda-gradient">
@@ -42,9 +42,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Email</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  support@sdaunite.com
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">support@sdaunite.com</p>
               </div>
             </div>
 
@@ -54,9 +52,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">WhatsApp</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  +254 700 000 000
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">+254 700 000 000</p>
               </div>
             </div>
 
@@ -66,9 +62,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Location</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Nairobi, Kenya
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">Nairobi, Kenya</p>
               </div>
             </div>
 
@@ -82,7 +76,6 @@ const Contact = () => {
             </blockquote>
           </div>
 
-          {/* Form */}
           <form
             onSubmit={handleSubmit}
             className="space-y-5 rounded-xl border border-border bg-card p-6 shadow-sda lg:col-span-3"
@@ -105,12 +98,7 @@ const Contact = () => {
 
             <div className="space-y-2">
               <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
-                placeholder="Tell us more..."
-                rows={5}
-                required
-              />
+              <Textarea id="message" placeholder="Tell us more..." rows={5} required />
             </div>
 
             <Button
@@ -118,13 +106,11 @@ const Contact = () => {
               disabled={sending}
               className="w-full bg-sda-gradient text-primary-foreground hover:opacity-90"
             >
-              {sending ? "Sending…" : "Send Message"}
+              {sending ? "Sending..." : "Send Message"}
             </Button>
           </form>
         </div>
       </section>
-
-      
     </div>
   );
 };

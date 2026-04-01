@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, Users, Utensils, Bus, Home as HomeIcon } from "lucide-react";
+import { MapPin, Calendar, Utensils, Bus, Home as HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 
 const useRetreats = () =>
   useQuery({
@@ -28,13 +28,18 @@ const Retreats = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader
-        title="Retreat Escapes"
+      <PageHero
+        label="Escape & Reconnect"
+        title="Retreat"
+        titleAccent="Escapes."
         subtitle="Unplug, reconnect with God, and experience fellowship in nature"
         backgroundImage="/images/sda-retreats-hikes.jpg"
+        ctas={[
+          { label: "View Retreats", to: "#retreats" },
+        ]}
       />
 
-      <section className="container py-16">
+      <section id="retreats" className="container py-16">
         {isLoading ? (
           <div className="flex justify-center py-20">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />

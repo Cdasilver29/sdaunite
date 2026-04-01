@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Users, Trophy, ArrowLeft, Shield, Star, Target, Swords } from "lucide-react";
+import { Calendar, MapPin, Users, Trophy, Shield, Star, Target, Swords } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import PageHero from "@/components/PageHero";
 import footballHero from "@/assets/football-league-hero.jpg";
 
 const TEAMS = [
@@ -23,19 +24,17 @@ const FIXTURES = [
 const FootballLeague = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <div className="relative h-72 md:h-[28rem]">
-        <img src={footballHero} alt="Adventist Football League" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
-        <div className="container absolute inset-x-0 bottom-8">
-          <Link to="/events" className="inline-flex items-center gap-1 text-xs font-medium text-primary-foreground/70 hover:text-primary-foreground mb-3">
-            <ArrowLeft className="h-3 w-3" /> Back to Events
-          </Link>
-          <Badge className="bg-accent text-accent-foreground border-0 mb-2">Sports & Health</Badge>
-          <h1 className="text-3xl md:text-5xl font-bold text-primary-foreground">Adventist Football League</h1>
-          <p className="mt-2 text-lg italic text-accent">Season 2026 — Glory to God on the Pitch</p>
-        </div>
-      </div>
+      <PageHero
+        label="Sports & Health"
+        title="Adventist Football"
+        titleAccent="League."
+        subtitle="Season 2026 — Glory to God on the Pitch"
+        backgroundImage={footballHero}
+        ctas={[
+          { label: "Register Team", to: "#register" },
+          { label: "View Standings", to: "#standings", variant: "outline" },
+        ]}
+      />
 
       <div className="container py-10">
         <div className="grid gap-10 lg:grid-cols-3">
@@ -60,18 +59,15 @@ const FootballLeague = () => {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">About the League</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                The Adventist Football League brings together SDA churches across Kenya for a season of competitive, Christ-centered football.
-                More than just a sports league, this is a platform for youth ministry, fellowship, health promotion, and community building.
-                Every match begins with prayer and every team commits to sportsmanship that reflects our Adventist values.
+                The Adventist Football League brings together SDA churches across Kenya for a season of competitive, Christ-centered football. More than just a sports league, this is a platform for youth ministry, fellowship, health promotion, and community building. Every match begins with prayer and every team commits to sportsmanship that reflects our Adventist values.
               </p>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Teams represent their local churches and play in a round-robin format, with top teams advancing to knockout rounds.
-                The league culminates in a Championship Sunday featuring the finals, worship, and a community fellowship meal.
+                Teams represent their local churches and play in a round-robin format, with top teams advancing to knockout rounds. The league culminates in a Championship Sunday featuring the finals, worship, and a community fellowship meal.
               </p>
             </div>
 
             {/* League Table */}
-            <div>
+            <div id="standings">
               <h2 className="text-xl font-bold text-foreground mb-4">League Standings</h2>
               <div className="rounded-xl border border-border bg-card overflow-hidden">
                 <div className="overflow-x-auto">
@@ -148,7 +144,7 @@ const FootballLeague = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
+          <div id="register" className="lg:col-span-1">
             <div className="sticky top-20 space-y-6">
               <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-foreground mb-1">Register Your Team</h3>

@@ -1,4 +1,4 @@
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
 import { Heart } from "lucide-react";
@@ -12,11 +12,15 @@ const ServiceMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader
-        title="Service & Mission"
-        subtitle="Hospital visits, children's home outreaches, community clean-ups, and more. Put your faith into action."
-        icon={<Heart className="h-6 w-6 text-primary-foreground" />}
+      <PageHero
+        label="Put Faith Into Action"
+        title="Service &"
+        titleAccent="Mission."
+        subtitle="Hospital visits, children's home outreaches, community clean-ups, and more"
         backgroundImage="/images/sda-service-mission.jpg"
+        ctas={[
+          { label: "View Opportunities", to: "#missions" },
+        ]}
       />
 
       {/* Why serve — quote section */}
@@ -37,7 +41,7 @@ const ServiceMission = () => {
       </section>
 
       {/* Listing */}
-      <section className="py-12">
+      <section id="missions" className="py-12">
         <div className="container">
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
