@@ -71,7 +71,7 @@ const MpesaCheckout = ({
       if (data.free) {
         setTicketId(data.ticket_id);
         setState("success");
-        toast({ title: "Ticket secured! 🎉", description: "Your free ticket has been issued." });
+        toast({ title: "Ticket secured", description: "Your free ticket has been issued." });
         return;
       }
 
@@ -111,7 +111,7 @@ const MpesaCheckout = ({
           setTicketId(data.ticket_id);
           setMpesaReceipt(data.mpesa_receipt);
           setState("success");
-          toast({ title: "Payment confirmed! 🎉", description: "Your ticket has been issued." });
+          toast({ title: "Payment confirmed", description: "Your ticket has been issued." });
         } else if (data?.status === "failed") {
           clearInterval(pollRef.current);
           setState("failed");

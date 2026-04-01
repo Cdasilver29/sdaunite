@@ -47,15 +47,7 @@ const HeroSection = () => {
             <span className="text-[hsl(var(--sda-warm))] drop-shadow-lg">Grow Together.</span>
           </motion.h1>
 
-          {/* Short subheading */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-5 max-w-lg text-base text-slate-200/85 md:text-lg [text-shadow:_0_2px_12px_rgb(0_0_0_/_30%)]"
-          >
-            Discover Christ-centered events, connect with Adventist youth, and strengthen your walk in fellowship.
-          </motion.p>
+          {/* Short subheading - removed wordy paragraph */}
 
           {/* Ticker bar */}
           <motion.div
