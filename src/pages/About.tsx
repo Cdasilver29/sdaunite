@@ -1,4 +1,4 @@
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 import { Heart, BookOpen, Users, Globe } from "lucide-react";
 
 const VALUES = [
@@ -30,16 +30,20 @@ const VALUES = [
 
 const About = () => (
   <div className="min-h-screen bg-background">
-    
-
-    <PageHeader
-      title="About SDA Unite"
-      subtitle="A Christ-centered platform connecting Seventh-day Adventist youth through fellowship, service, outdoor adventures, and spiritual growth events."
+    <PageHero
+      label="Who We Are"
+      title="About SDA"
+      titleAccent="Unite."
+      subtitle="A Christ-centered platform connecting Adventist youth through fellowship, service, and spiritual growth"
       backgroundImage="/images/sda-about.jpg"
+      ctas={[
+        { label: "Learn More", to: "#mission" },
+        { label: "Contact Us", to: "/contact", variant: "outline" },
+      ]}
     />
 
     {/* Mission */}
-    <section className="py-16">
+    <section id="mission" className="py-16">
       <div className="container max-w-3xl">
         <h2 className="text-2xl font-bold text-foreground">Our Mission</h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">
@@ -92,8 +96,6 @@ const About = () => (
         </p>
       </div>
     </section>
-
-    
   </div>
 );
 

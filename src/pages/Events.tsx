@@ -3,9 +3,9 @@ import { useSearchParams, Link } from "react-router-dom";
 import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
 import { CATEGORIES } from "@/lib/events-data";
-import { Search, Ticket, PlusCircle } from "lucide-react";
+import { Search, Ticket, PlusCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import PageHero from "@/components/PageHero";
 
 const STATUS_FILTERS = ["All", "Upcoming", "Past"] as const;
 
@@ -35,67 +35,22 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Slim hero inspired by zenlipa */}
-      <section className="relative overflow-hidden bg-primary py-14 md:py-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--secondary)/0.15),transparent_70%)]" />
-        <div className="container relative z-10 text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground/50 mb-3"
-          >
-            Discover SDA Events
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
-            className="text-3xl font-bold text-primary-foreground md:text-5xl"
-          >
-            Experience Every Moment.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mx-auto mt-3 max-w-lg text-sm text-primary-foreground/60 md:text-base"
-          >
-            Find fellowship, service, and spiritual growth near you
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="mt-6 flex items-center justify-center gap-3"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-8 gap-2 font-semibold"
-            >
-              <a href="#events">
-                <Ticket className="h-4 w-4" /> Browse Events
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-full px-8 gap-2 font-semibold bg-transparent"
-            >
-              <Link to="/auth/sign-in">
-                <PlusCircle className="h-4 w-4" /> Create Event
-              </Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        label="Discover SDA Events"
+        title="Experience Every"
+        titleAccent="Moment."
+        subtitle="Find fellowship, service, and spiritual growth near you"
+        backgroundImage="/images/sda-hero.jpg"
+        ctas={[
+          { label: "Browse Events", to: "#events", icon: <Ticket className="h-4 w-4" /> },
+          { label: "Create Event", to: "/auth/sign-in", variant: "outline", icon: <PlusCircle className="h-4 w-4" /> },
+        ]}
+      />
 
       {/* Filter bar */}
       <div id="events" className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-2">
-            {/* Status filters */}
             {STATUS_FILTERS.map((s) => (
               <button
                 key={s}
@@ -110,7 +65,6 @@ const Events = () => {
               </button>
             ))}
             <div className="h-5 w-px bg-border mx-1 hidden md:block" />
-            {/* Category filter */}
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -125,7 +79,6 @@ const Events = () => {
             </select>
           </div>
 
-          {/* Search */}
           <div className="flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-2 md:min-w-[280px]">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input

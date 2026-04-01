@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Play, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 import { useState } from "react";
 
 const TYPES = ["All", "sermon", "seminar", "concert", "retreat", "youth_program"];
@@ -41,14 +41,18 @@ const Streams = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader
-        title="Live Streams & Replays"
+      <PageHero
+        label="Watch & Be Inspired"
+        title="Live Streams &"
+        titleAccent="Replays."
         subtitle="Watch sermons, seminars, concerts, and youth programs on demand"
-        compact
+        backgroundImage="/images/sda-hero.jpg"
+        ctas={[
+          { label: "Browse Streams", to: "#streams" },
+        ]}
       />
 
-      <section className="container py-12">
-        {/* Type filter */}
+      <section id="streams" className="container py-12">
         <div className="flex flex-wrap gap-2 mb-10">
           {TYPES.map((t) => (
             <button
@@ -94,11 +98,9 @@ const Streams = () => {
                         <Play className="h-12 w-12 text-primary-foreground/60" />
                       </div>
                     )}
-                    {/* Pricing badge */}
                     <Badge className={`absolute top-3 right-3 ${stream.pricing_model === 'free' ? 'bg-secondary text-secondary-foreground' : 'bg-accent text-accent-foreground'}`}>
                       {stream.pricing_model === "free" ? "Free" : `${stream.currency} ${stream.price}`}
                     </Badge>
-                    {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
                       <div className="h-14 w-14 rounded-full bg-primary/90 flex items-center justify-center">
                         <Play className="h-6 w-6 text-primary-foreground ml-0.5" />

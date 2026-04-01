@@ -6,13 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Camera } from "lucide-react";
-import PageHeader from "@/components/PageHeader";
+import PageHero from "@/components/PageHero";
 
 const usePastEventsWithPhotos = () =>
   useQuery({
     queryKey: ["xperience-events"],
     queryFn: async () => {
-      // Get past events that have at least one approved photo
       const { data: photos, error: pErr } = await supabase
         .from("xperience_photos")
         .select("event_id")
@@ -37,13 +36,18 @@ const Xperience = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader
-        title="Xperience"
-        subtitle="Relive the moments. See what God did through our fellowship events."
+      <PageHero
+        label="Relive the Moments"
+        title="The SDA Unite"
+        titleAccent="Xperience."
+        subtitle="See what God did through our fellowship events"
         backgroundImage="/images/sda-sports.jpg"
+        ctas={[
+          { label: "View Gallery", to: "#gallery" },
+        ]}
       />
 
-      <section className="container py-16">
+      <section id="gallery" className="container py-16">
         {isLoading ? (
           <div className="flex justify-center py-20">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
