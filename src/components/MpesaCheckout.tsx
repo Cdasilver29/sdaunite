@@ -111,7 +111,7 @@ const MpesaCheckout = ({
           setTicketId(data.ticket_id);
           setMpesaReceipt(data.mpesa_receipt);
           setState("success");
-          toast({ title: "Payment confirmed! 🎉", description: "Your ticket has been issued." });
+          toast({ title: "Payment confirmed", description: "Your ticket has been issued." });
         } else if (data?.status === "failed") {
           clearInterval(pollRef.current);
           setState("failed");
