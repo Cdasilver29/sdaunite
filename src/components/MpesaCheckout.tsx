@@ -71,7 +71,7 @@ const MpesaCheckout = ({
       if (data.free) {
         setTicketId(data.ticket_id);
         setState("success");
-        toast({ title: "Ticket secured! 🎉", description: "Your free ticket has been issued." });
+        toast({ title: "Ticket secured", description: "Your free ticket has been issued." });
         return;
       }
 
