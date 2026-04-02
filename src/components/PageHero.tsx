@@ -22,12 +22,12 @@ interface PageHeroProps {
 
 const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas = [], children }: PageHeroProps) => {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-primary">
       {/* Background image */}
       <img
         src={backgroundImage}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-35"
       />
 
       {/* Animated gradient overlay */}
