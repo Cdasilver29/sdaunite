@@ -2,10 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Play, Clock, Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import PageHero from "@/components/PageHero";
 import { useState } from "react";
 
@@ -47,18 +45,17 @@ const Streams = () => {
         titleAccent="Replays."
         subtitle="Watch sermons, seminars, concerts, and youth programs on demand"
         backgroundImage="/images/sda-hero.jpg"
-        ctas={[
-          { label: "Browse Streams", to: "#streams" },
-        ]}
+        ctas={[{ label: "Browse Streams", to: "#streams" }]}
       />
 
-      <section id="streams" className="container py-12">
-        <div className="flex flex-wrap gap-2 mb-10">
+      <section id="streams" className="container py-8">
+        {/* Type filter pills */}
+        <div className="flex flex-wrap gap-2 mb-6">
           {TYPES.map((t) => (
             <button
               key={t}
               onClick={() => setActiveType(t)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
                 activeType === t
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -69,9 +66,13 @@ const Streams = () => {
           ))}
         </div>
 
+        <h2 className="text-lg font-bold text-foreground mb-4">Available Streams</h2>
+
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="flex flex-col gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-48 animate-pulse rounded-xl bg-muted" />
+            ))}
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
@@ -80,57 +81,69 @@ const Streams = () => {
             <p className="mt-2 text-muted-foreground">Video content will appear here once published.</p>
           </div>
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-col gap-4">
             {filtered.map((stream: any, i: number) => (
               <motion.div
                 key={stream.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
+                transition={{ delay: i * 0.05, duration: 0.35 }}
               >
-                <Card className="overflow-hidden group hover:shadow-sda-lg transition-shadow h-full flex flex-col">
-                  <div className="relative h-44 overflow-hidden bg-muted">
+                <Link
+                  to={`/streams/${stream.id}`}
+                  className="group flex flex-col sm:flex-row overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-sda-lg hover:-translate-y-0.5"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative sm:w-72 md:w-80 shrink-0 aspect-[16/10] sm:aspect-auto sm:h-44 overflow-hidden bg-muted">
                     {stream.thumbnail_url ? (
-                      <img src={stream.thumbnail_url} alt={stream.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <img
+                        src={stream.thumbnail_url}
+                        alt={stream.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
                     ) : (
                       <div className="h-full w-full bg-sda-gradient flex items-center justify-center">
-                        <Play className="h-12 w-12 text-primary-foreground/60" />
+                        <Play className="h-10 w-10 text-primary-foreground/60" />
                       </div>
                     )}
-                    <Badge className={`absolute top-3 right-3 ${stream.pricing_model === 'free' ? 'bg-secondary text-secondary-foreground' : 'bg-accent text-accent-foreground'}`}>
+                    <Badge className={`absolute top-2.5 right-2.5 border-0 text-[10px] font-semibold ${stream.pricing_model === 'free' ? 'bg-secondary text-secondary-foreground' : 'bg-accent text-accent-foreground'}`}>
                       {stream.pricing_model === "free" ? "Free" : `${stream.currency} ${stream.price}`}
                     </Badge>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-                      <div className="h-14 w-14 rounded-full bg-primary/90 flex items-center justify-center">
-                        <Play className="h-6 w-6 text-primary-foreground ml-0.5" />
+                      <div className="h-12 w-12 rounded-full bg-primary/90 flex items-center justify-center">
+                        <Play className="h-5 w-5 text-primary-foreground ml-0.5" />
                       </div>
                     </div>
                   </div>
-                  <CardContent className="p-5 flex flex-col flex-1">
-                    <Badge variant="outline" className="self-start mb-2 text-xs">{TYPE_LABELS[stream.stream_type] || stream.stream_type}</Badge>
-                    <h3 className="text-lg font-bold text-foreground line-clamp-2">{stream.title}</h3>
-                    {(stream as any).churches?.church_name && (
-                      <p className="mt-1 text-xs text-muted-foreground">{(stream as any).churches.church_name}</p>
-                    )}
-                    <div className="mt-auto pt-4 flex items-center justify-between">
+
+                  {/* Info */}
+                  <div className="flex flex-1 flex-col justify-between gap-2 p-4 sm:p-5">
+                    <div>
+                      <Badge variant="outline" className="mb-2 text-[10px]">{TYPE_LABELS[stream.stream_type] || stream.stream_type}</Badge>
+                      <h3 className="text-base font-bold text-foreground line-clamp-2 group-hover:text-secondary transition-colors">{stream.title}</h3>
+                      {(stream as any).churches?.church_name && (
+                        <p className="mt-1 text-xs text-muted-foreground">{(stream as any).churches.church_name}</p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between border-t border-border pt-3 mt-1">
                       {stream.duration_minutes && (
                         <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Clock className="h-3.5 w-3.5" /> {stream.duration_minutes} min
                         </span>
                       )}
-                      <Button asChild size="sm" className="rounded-xl gap-1.5">
-                        <Link to={`/streams/${stream.id}`}>
-                          {stream.pricing_model === "free" ? (
-                            <>Watch now <Play className="h-3.5 w-3.5" /></>
-                          ) : (
-                            <>Buy to watch <Lock className="h-3.5 w-3.5" /></>
-                          )}
-                        </Link>
-                      </Button>
+                      <span className="ml-auto text-xs font-semibold text-secondary group-hover:underline flex items-center gap-1">
+                        {stream.pricing_model === "free" ? (
+                          <>Watch now <Play className="h-3 w-3" /></>
+                        ) : (
+                          <>Buy to watch <Lock className="h-3 w-3" /></>
+                        )}
+                      </span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
