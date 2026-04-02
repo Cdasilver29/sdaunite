@@ -1,7 +1,9 @@
 import HeroSection from "@/components/HeroSection";
+import StatsSection from "@/components/StatsSection";
 import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedEvents from "@/components/FeaturedEvents";
 import WhySDAUnite from "@/components/WhySDAUnite";
+import FeatureCards from "@/components/FeatureCards";
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -12,9 +14,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      <CategoryGrid />
+      <StatsSection />
       <FeaturedEvents />
+      <CategoryGrid />
       <WhySDAUnite />
+      <FeatureCards />
 
       {/* CTA Section */}
       <section className="py-16 md:py-20 bg-muted/30">
