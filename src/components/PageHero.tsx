@@ -22,37 +22,36 @@ interface PageHeroProps {
 
 const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas = [], children }: PageHeroProps) => {
   return (
-    <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-primary">
+    <section className="relative flex min-h-[44vh] items-center justify-center overflow-hidden bg-primary">
       {/* Background image */}
       <img
         src={backgroundImage}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-35"
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(202,100%,10%/0.65)] via-[hsl(202,100%,12%/0.5)] to-[hsl(202,100%,8%/0.8)]" />
+      {/* Clean dark overlay */}
+      <div className="absolute inset-0 bg-black/60" />
 
       {/* Content */}
-      <div className="relative z-10 w-full px-4 py-20 md:py-24">
+      <div className="relative z-10 w-full px-4 py-16 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
           {/* Label */}
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-widest text-white/80 backdrop-blur-sm"
+            className="mb-4 text-[11px] font-medium uppercase tracking-[0.2em] text-white/45"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sda-warm))] animate-pulse" />
             {label}
-          </motion.span>
+          </motion.p>
 
           {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.06 }}
-            className="text-3xl font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl"
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-5xl"
           >
             {title}
             {titleAccent && (
@@ -65,10 +64,10 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
 
           {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.12 }}
-            className="mx-auto mt-4 max-w-lg text-sm text-white/60 leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.12 }}
+            className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-white/45"
           >
             {subtitle}
           </motion.p>
@@ -76,9 +75,9 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
           {/* CTAs */}
           {ctas.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
               className="mx-auto mt-6 flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               {ctas.map((cta, i) => (
@@ -88,8 +87,8 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
                   size="lg"
                   className={
                     cta.variant === "outline"
-                      ? "border border-white/25 text-white hover:bg-white/10 hover:border-white/40 font-semibold rounded-full px-7 text-sm min-w-[170px] bg-transparent"
-                      : "bg-[hsl(var(--sda-warm))] text-accent-foreground hover:bg-[hsl(var(--sda-warm))]/90 font-semibold gap-2 rounded-full px-7 text-sm shadow-lg shadow-[hsl(var(--sda-warm))/0.2] min-w-[170px]"
+                      ? "border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium rounded-full px-7 text-sm h-10 min-w-[160px] bg-transparent"
+                      : "bg-[hsl(var(--sda-warm))] text-white hover:bg-[hsl(var(--sda-warm))]/90 font-medium rounded-full px-7 text-sm h-10 min-w-[160px]"
                   }
                   variant={cta.variant === "outline" ? "outline" : "default"}
                 >
@@ -103,9 +102,9 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
 
           {children && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
               className="mt-5"
             >
               {children}
