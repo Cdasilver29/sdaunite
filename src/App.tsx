@@ -42,6 +42,7 @@ import Xperience from "./pages/Xperience";
 import XperienceDetail from "./pages/XperienceDetail";
 import Streams from "./pages/Streams";
 import StreamDetail from "./pages/StreamDetail";
+import CampMeeting from "./pages/CampMeeting";
 
 const queryClient = new QueryClient();
 
@@ -94,6 +95,7 @@ const App = () => (
                 {/* Special Event Pages */}
                 <Route path="/singles-spark" element={<SinglesSpark />} />
                 <Route path="/football-league" element={<FootballLeague />} />
+                <Route path="/camp-meeting" element={<CampMeeting />} />
 
                 <Route
                   path="/my-tickets"
