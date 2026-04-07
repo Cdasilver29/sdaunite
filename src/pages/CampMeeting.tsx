@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, Radio, Clock, Music, Heart, ExternalLink } from "lucide-react";
+import { Play, Pause, Radio, Clock, Music, Heart, ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,6 +14,7 @@ const CATEGORIES = ["All", "Hymns", "Worship", "Advent Hope", "Sermons"];
 const CampMeeting = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeYear, setActiveYear] = useState("All");
+  const [showLivePlayer, setShowLivePlayer] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState<number | null>(null);
 
   const { data: schedules, isLoading: loadingSchedules } = useCampSchedules();
@@ -68,16 +69,52 @@ const CampMeeting = () => {
           <div className="grid gap-6 lg:grid-cols-5">
             <div className="lg:col-span-3">
               <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-primary/10 border border-border">
-                <img src="/images/camp-meeting-hero.jpg" alt="Live stream" className="h-full w-full object-cover opacity-60" />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <button className="flex h-16 w-16 items-center justify-center rounded-full bg-[hsl(var(--sda-warm))] text-white shadow-lg transition-transform hover:scale-105">
-                    <Play className="h-7 w-7 ml-1" />
-                  </button>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-xs text-white/60 uppercase tracking-wide">Streaming Live</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">Main Worship Service - Camp Meeting 2026</p>
-                </div>
+                {showLivePlayer ? (
+                  <>
+                    <iframe
+                      src={(() => {
+                        const liveItem = (schedules || []).find(s => s.status === "live" && s.stream_url);
+                        const url = liveItem?.stream_url || "https://www.youtube.com/embed/live_stream?channel=UCa2gHhwuV3v5RZf0hJg8_Ng";
+                        // Convert watch URLs to embed
+                        if (url.includes("youtube.com/watch")) {
+                          const vid = new URL(url).searchParams.get("v");
+                          return `https://www.youtube.com/embed/${vid}?autoplay=1`;
+                        }
+                        if (url.includes("youtu.be/")) {
+                          const vid = url.split("youtu.be/")[1]?.split("?")[0];
+                          return `https://www.youtube.com/embed/${vid}?autoplay=1`;
+                        }
+                        return url.includes("?") ? `${url}&autoplay=1` : `${url}?autoplay=1`;
+                      })()}
+                      className="absolute inset-0 h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="Live Stream"
+                    />
+                    <button
+                      onClick={() => setShowLivePlayer(false)}
+                      className="absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <img src="/images/camp-meeting-hero.jpg" alt="Live stream" className="h-full w-full object-cover opacity-60" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <button
+                        onClick={() => setShowLivePlayer(true)}
+                        className="flex h-16 w-16 items-center justify-center rounded-full bg-[hsl(var(--sda-warm))] text-white shadow-lg transition-transform hover:scale-105"
+                      >
+                        <Play className="h-7 w-7 ml-1" />
+                      </button>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                      <p className="text-xs text-white/60 uppercase tracking-wide">Streaming Live</p>
+                      <p className="text-sm font-semibold text-white mt-0.5">Main Worship Service - Camp Meeting 2026</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

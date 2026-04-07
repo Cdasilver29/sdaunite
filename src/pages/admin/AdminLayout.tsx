@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { CalendarDays, Users, Settings, LayoutDashboard, Mountain, BookOpen, Video, Image } from "lucide-react";
+import { CalendarDays, Users, Settings, LayoutDashboard, Mountain, BookOpen, Video, Image, Music } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef } from "react";
 
@@ -11,6 +11,7 @@ const NAV = [
   { to: "/admin/blog", label: "Blog", icon: BookOpen },
   { to: "/admin/streams", label: "Streams", icon: Video },
   { to: "/admin/xperience", label: "Xperience", icon: Image },
+  { to: "/admin/camp-meeting", label: "Camp Meeting", icon: Music },
   { to: "/admin/attendees", label: "Attendees", icon: Users },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ];
