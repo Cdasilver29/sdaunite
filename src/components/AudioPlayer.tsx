@@ -18,9 +18,7 @@ const AudioPlayer = ({ tracks, currentIndex, onTrackChange }: AudioPlayerProps) 
   const [muted, setMuted] = useState(false);
 
   const track = tracks[currentIndex];
-  if (!track) return null;
-
-  const hasAudio = !!track.audio_url;
+  const hasAudio = !!track?.audio_url;
 
   const togglePlay = useCallback(() => {
     if (!audioRef.current || !hasAudio) return;
@@ -48,13 +46,15 @@ const AudioPlayer = ({ tracks, currentIndex, onTrackChange }: AudioPlayerProps) 
     if (!audio || !hasAudio) return;
     audio.load();
     if (isPlaying) audio.play().catch(() => {});
-  }, [track.id]);
+  }, [track?.id]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = muted ? 0 : volume / 100;
   }, [volume, muted]);
+
+  if (!track) return null;
 
   const fmt = (s: number) => {
     const m = Math.floor(s / 60);
@@ -77,13 +77,11 @@ const AudioPlayer = ({ tracks, currentIndex, onTrackChange }: AudioPlayerProps) 
       )}
 
       <div className="container flex items-center gap-4 py-2.5">
-        {/* Track info */}
         <div className="min-w-0 flex-1 max-w-[200px]">
           <p className="truncate text-sm font-medium text-foreground">{track.title}</p>
           <p className="truncate text-xs text-muted-foreground">{track.artist}</p>
         </div>
 
-        {/* Controls */}
         <div className="flex items-center gap-2">
           <button onClick={() => skip(-1)} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors" aria-label="Previous">
             <SkipBack className="h-4 w-4" />
@@ -101,22 +99,18 @@ const AudioPlayer = ({ tracks, currentIndex, onTrackChange }: AudioPlayerProps) 
           </button>
         </div>
 
-        {/* Progress */}
         <div className="hidden sm:flex flex-1 items-center gap-2">
           <span className="text-[10px] tabular-nums text-muted-foreground w-8 text-right">{fmt(progress)}</span>
           <Slider
             value={[progress]}
             max={duration || 1}
             step={1}
-            onValueChange={([v]) => {
-              if (audioRef.current) audioRef.current.currentTime = v;
-            }}
+            onValueChange={([v]) => { if (audioRef.current) audioRef.current.currentTime = v; }}
             className="flex-1"
           />
           <span className="text-[10px] tabular-nums text-muted-foreground w-8">{fmt(duration)}</span>
         </div>
 
-        {/* Volume */}
         <div className="hidden md:flex items-center gap-1.5">
           <button onClick={() => setMuted(!muted)} className="p-1 text-muted-foreground hover:text-foreground">
             {muted || volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
@@ -131,7 +125,7 @@ const AudioPlayer = ({ tracks, currentIndex, onTrackChange }: AudioPlayerProps) 
         </div>
 
         {!hasAudio && (
-          <span className="text-[10px] text-muted-foreground italic">No audio file uploaded yet</span>
+          <span className="text-[10px] text-muted-foreground italic">No audio file yet</span>
         )}
       </div>
     </div>
