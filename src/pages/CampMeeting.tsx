@@ -1,50 +1,44 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Play, Radio, Clock, Music, Heart, ExternalLink } from "lucide-react";
+import { Play, Pause, Radio, Clock, Music, Heart, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import PageHero from "@/components/PageHero";
-
-/* ── Sample Data ── */
-
-const LIVE_SCHEDULE = [
-  { time: "6:00 AM", title: "Morning Devotion & Hymns", speaker: "Pastor James Mwangi", status: "upcoming" as const },
-  { time: "9:00 AM", title: "Main Worship Service", speaker: "Elder Sarah Wanjiku", status: "live" as const },
-  { time: "11:30 AM", title: "Youth Praise Session", speaker: "SDA Unite Worship Team", status: "upcoming" as const },
-  { time: "2:00 PM", title: "Afternoon Seminars", speaker: "Dr. Peter Ochieng", status: "upcoming" as const },
-  { time: "5:00 PM", title: "Vespers & Evening Praise", speaker: "Camp Meeting Choir", status: "upcoming" as const },
-  { time: "7:00 PM", title: "Evening Revival Service", speaker: "Pastor Grace Njeri", status: "upcoming" as const },
-];
-
-const ON_DEMAND_TRACKS = [
-  { id: 1, title: "Great Is Thy Faithfulness", artist: "Camp Meeting Choir 2025", duration: "5:23", category: "Hymns", year: "2025" },
-  { id: 2, title: "How Great Thou Art", artist: "Elder David Kimani", duration: "4:47", category: "Hymns", year: "2025" },
-  { id: 3, title: "It Is Well With My Soul", artist: "Youth Worship Band", duration: "6:12", category: "Hymns", year: "2025" },
-  { id: 4, title: "A Mighty Fortress Is Our God", artist: "Nairobi SDA Chorale", duration: "4:58", category: "Hymns", year: "2024" },
-  { id: 5, title: "Sabbath Morning Worship Medley", artist: "Camp Meeting Orchestra", duration: "12:34", category: "Worship", year: "2024" },
-  { id: 6, title: "Soon and Very Soon", artist: "Combined Camp Choir", duration: "5:01", category: "Advent Hope", year: "2024" },
-  { id: 7, title: "We Have This Hope", artist: "East Africa Division Choir", duration: "4:22", category: "Advent Hope", year: "2023" },
-  { id: 8, title: "Blessed Assurance", artist: "Karen SDA Youth", duration: "5:45", category: "Hymns", year: "2023" },
-  { id: 9, title: "Morning Devotion – Day 3 Full", artist: "Pastor John Odhiambo", duration: "42:10", category: "Sermons", year: "2024" },
-  { id: 10, title: "The Three Angels' Message in Song", artist: "Camp Meeting Ensemble", duration: "8:15", category: "Worship", year: "2023" },
-];
+import AudioPlayer from "@/components/AudioPlayer";
+import CampMeetingDonation from "@/components/CampMeetingDonation";
+import { useCampSchedules, useCampTracks } from "@/hooks/useCampMeeting";
 
 const CATEGORIES = ["All", "Hymns", "Worship", "Advent Hope", "Sermons"];
 
 const CampMeeting = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeYear, setActiveYear] = useState("All");
+  const [activeTrackIndex, setActiveTrackIndex] = useState<number | null>(null);
 
-  const years = ["All", ...Array.from(new Set(ON_DEMAND_TRACKS.map(t => t.year))).sort().reverse()];
+  const { data: schedules, isLoading: loadingSchedules } = useCampSchedules();
+  const { data: tracks, isLoading: loadingTracks } = useCampTracks();
 
-  const filtered = ON_DEMAND_TRACKS.filter(t => {
+  const years = tracks
+    ? ["All", ...Array.from(new Set(tracks.map(t => t.year))).sort().reverse()]
+    : ["All"];
+
+  const filtered = (tracks || []).filter(t => {
     const catMatch = activeCategory === "All" || t.category === activeCategory;
     const yearMatch = activeYear === "All" || t.year === activeYear;
     return catMatch && yearMatch;
   });
 
+  const handlePlayTrack = (filteredIndex: number) => {
+    // Map filtered index to full tracks array index
+    const track = filtered[filteredIndex];
+    if (!tracks || !track) return;
+    const realIndex = tracks.findIndex(t => t.id === track.id);
+    setActiveTrackIndex(realIndex);
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen bg-background ${activeTrackIndex !== null ? "pb-16" : ""}`}>
       <PageHero
         label="Camp Meeting Music"
         title="Worship Without"
@@ -57,7 +51,7 @@ const CampMeeting = () => {
         ]}
       />
 
-      {/* ── LIVE STREAM SECTION ── */}
+      {/* LIVE STREAM SECTION */}
       <section id="live" className="border-b border-border bg-card">
         <div className="container py-12 md:py-16">
           <div className="flex items-center gap-3 mb-8">
@@ -72,14 +66,9 @@ const CampMeeting = () => {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-5">
-            {/* Live player placeholder */}
             <div className="lg:col-span-3">
               <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-primary/10 border border-border">
-                <img
-                  src="/images/camp-meeting-hero.jpg"
-                  alt="Live stream"
-                  className="h-full w-full object-cover opacity-60"
-                />
+                <img src="/images/camp-meeting-hero.jpg" alt="Live stream" className="h-full w-full object-cover opacity-60" />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                   <button className="flex h-16 w-16 items-center justify-center rounded-full bg-[hsl(var(--sda-warm))] text-white shadow-lg transition-transform hover:scale-105">
                     <Play className="h-7 w-7 ml-1" />
@@ -87,45 +76,48 @@ const CampMeeting = () => {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <p className="text-xs text-white/60 uppercase tracking-wide">Streaming Live</p>
-                  <p className="text-sm font-semibold text-white mt-0.5">Main Worship Service – Camp Meeting 2026</p>
+                  <p className="text-sm font-semibold text-white mt-0.5">Main Worship Service - Camp Meeting 2026</p>
                 </div>
               </div>
             </div>
 
-            {/* Schedule */}
             <div className="lg:col-span-2">
               <h3 className="text-sm font-semibold text-foreground mb-3">Today's Schedule</h3>
               <div className="flex flex-col gap-1.5 max-h-[340px] overflow-y-auto pr-1">
-                {LIVE_SCHEDULE.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: 10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.04 }}
-                    className={`flex items-start gap-3 rounded-lg border p-3 transition-colors ${
-                      item.status === "live"
-                        ? "border-[hsl(var(--sda-warm))]/30 bg-[hsl(var(--sda-warm))]/5"
-                        : "border-border bg-background hover:bg-muted/50"
-                    }`}
-                  >
-                    <span className="shrink-0 text-xs font-medium text-muted-foreground mt-0.5 w-14">{item.time}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground leading-snug">{item.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{item.speaker}</p>
-                    </div>
-                    {item.status === "live" && (
-                      <Badge className="shrink-0 bg-red-500 text-white border-0 text-[10px]">LIVE</Badge>
-                    )}
-                  </motion.div>
-                ))}
+                {loadingSchedules ? (
+                  Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
+                ) : (
+                  (schedules || []).map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, x: 10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.04 }}
+                      className={`flex items-start gap-3 rounded-lg border p-3 transition-colors ${
+                        item.status === "live"
+                          ? "border-[hsl(var(--sda-warm))]/30 bg-[hsl(var(--sda-warm))]/5"
+                          : "border-border bg-background hover:bg-muted/50"
+                      }`}
+                    >
+                      <span className="shrink-0 text-xs font-medium text-muted-foreground mt-0.5 w-14">{item.time}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground leading-snug">{item.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{item.speaker}</p>
+                      </div>
+                      {item.status === "live" && (
+                        <Badge className="shrink-0 bg-red-500 text-white border-0 text-[10px]">LIVE</Badge>
+                      )}
+                    </motion.div>
+                  ))
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── ON-DEMAND LIBRARY ── */}
+      {/* ON-DEMAND LIBRARY */}
       <section id="library" className="bg-background">
         <div className="container py-12 md:py-16">
           <div className="mb-8">
@@ -133,16 +125,13 @@ const CampMeeting = () => {
             <p className="mt-1 text-sm text-muted-foreground">Revisit worship moments from past camp meetings</p>
           </div>
 
-          {/* Filters */}
           <div className="flex flex-wrap items-center gap-2 mb-6">
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
-                  activeCategory === cat
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }`}
               >
                 {cat}
@@ -154,13 +143,10 @@ const CampMeeting = () => {
               onChange={(e) => setActiveYear(e.target.value)}
               className="rounded-full border border-border bg-background px-4 py-1.5 text-xs font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/30"
             >
-              {years.map(y => (
-                <option key={y} value={y}>{y === "All" ? "All Years" : y}</option>
-              ))}
+              {years.map(y => <option key={y} value={y}>{y === "All" ? "All Years" : y}</option>)}
             </select>
           </div>
 
-          {/* Track list */}
           <div className="rounded-xl border border-border overflow-hidden">
             <div className="hidden sm:grid grid-cols-[auto_1fr_1fr_80px_50px] gap-4 px-4 py-2.5 bg-muted/50 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
               <span className="w-8" />
@@ -169,35 +155,43 @@ const CampMeeting = () => {
               <span>Duration</span>
               <span />
             </div>
-            {filtered.length > 0 ? (
-              filtered.map((track, i) => (
-                <motion.div
-                  key={track.id}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.03 }}
-                  className="group grid grid-cols-1 sm:grid-cols-[auto_1fr_1fr_80px_50px] gap-2 sm:gap-4 items-center px-4 py-3 border-b border-border last:border-0 hover:bg-muted/30 transition-colors"
-                >
-                  <button className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground group-hover:bg-[hsl(var(--sda-warm))] group-hover:text-white transition-colors">
-                    <Play className="h-3.5 w-3.5 ml-0.5" />
-                  </button>
-                  <div className="flex items-center gap-3 sm:block">
-                    <button className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                      <Play className="h-3.5 w-3.5 ml-0.5" />
+            {loadingTracks ? (
+              Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-14 mx-4 my-2 rounded" />)
+            ) : filtered.length > 0 ? (
+              filtered.map((track, i) => {
+                const isActive = tracks && activeTrackIndex !== null && tracks[activeTrackIndex]?.id === track.id;
+                return (
+                  <motion.div
+                    key={track.id}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.03 }}
+                    className={`group grid grid-cols-1 sm:grid-cols-[auto_1fr_1fr_80px_50px] gap-2 sm:gap-4 items-center px-4 py-3 border-b border-border last:border-0 hover:bg-muted/30 transition-colors cursor-pointer ${
+                      isActive ? "bg-primary/5" : ""
+                    }`}
+                    onClick={() => handlePlayTrack(i)}
+                  >
+                    <button className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground group-hover:bg-[hsl(var(--sda-warm))] group-hover:text-white transition-colors">
+                      {isActive ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 ml-0.5" />}
                     </button>
-                    <div>
-                      <p className="text-sm font-medium text-foreground leading-snug">{track.title}</p>
-                      <p className="sm:hidden text-xs text-muted-foreground mt-0.5">{track.artist}</p>
+                    <div className="flex items-center gap-3 sm:block">
+                      <button className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                        {isActive ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 ml-0.5" />}
+                      </button>
+                      <div>
+                        <p className={`text-sm font-medium leading-snug ${isActive ? "text-[hsl(var(--sda-warm))]" : "text-foreground"}`}>{track.title}</p>
+                        <p className="sm:hidden text-xs text-muted-foreground mt-0.5">{track.artist}</p>
+                      </div>
                     </div>
-                  </div>
-                  <span className="hidden sm:block text-sm text-muted-foreground truncate">{track.artist}</span>
-                  <span className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" /> {track.duration}
-                  </span>
-                  <Badge variant="outline" className="hidden sm:inline-flex text-[10px] w-fit">{track.category}</Badge>
-                </motion.div>
-              ))
+                    <span className="hidden sm:block text-sm text-muted-foreground truncate">{track.artist}</span>
+                    <span className="hidden sm:flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" /> {track.duration}
+                    </span>
+                    <Badge variant="outline" className="hidden sm:inline-flex text-[10px] w-fit">{track.category}</Badge>
+                  </motion.div>
+                );
+              })
             ) : (
               <div className="py-12 text-center text-sm text-muted-foreground">No tracks found for this filter.</div>
             )}
@@ -205,7 +199,7 @@ const CampMeeting = () => {
         </div>
       </section>
 
-      {/* ── DONATION CTA ── */}
+      {/* DONATION CTA */}
       <section className="border-t border-border bg-card">
         <div className="container py-12 md:py-16">
           <motion.div
@@ -220,9 +214,7 @@ const CampMeeting = () => {
               All camp meeting music is freely available. Your generous contributions help cover production costs, musician travel, and equipment for future camp meetings.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button className="bg-[hsl(var(--sda-warm))] text-white hover:bg-[hsl(var(--sda-warm))]/90 rounded-full px-8 h-10 font-medium text-sm min-w-[160px]">
-                <Heart className="mr-1.5 h-4 w-4" /> Support via M-Pesa
-              </Button>
+              <CampMeetingDonation />
               <Button variant="outline" className="rounded-full px-8 h-10 font-medium text-sm min-w-[160px] border-border">
                 <ExternalLink className="mr-1.5 h-4 w-4" /> Other Ways to Give
               </Button>
@@ -233,6 +225,15 @@ const CampMeeting = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Audio Player */}
+      {activeTrackIndex !== null && tracks && (
+        <AudioPlayer
+          tracks={tracks}
+          currentIndex={activeTrackIndex}
+          onTrackChange={setActiveTrackIndex}
+        />
+      )}
     </div>
   );
 };
