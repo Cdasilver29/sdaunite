@@ -59,6 +59,84 @@ export type Database = {
         }
         Relationships: []
       }
+      camp_meeting_schedules: {
+        Row: {
+          created_at: string
+          id: string
+          session_date: string
+          speaker: string
+          status: string
+          stream_url: string | null
+          time: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          session_date?: string
+          speaker: string
+          status?: string
+          stream_url?: string | null
+          time: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          session_date?: string
+          speaker?: string
+          status?: string
+          stream_url?: string | null
+          time?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      camp_meeting_tracks: {
+        Row: {
+          artist: string
+          audio_url: string | null
+          category: string
+          cover_image_url: string | null
+          created_at: string
+          duration: string
+          id: string
+          play_count: number
+          title: string
+          updated_at: string
+          year: string
+        }
+        Insert: {
+          artist: string
+          audio_url?: string | null
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          duration?: string
+          id?: string
+          play_count?: number
+          title: string
+          updated_at?: string
+          year?: string
+        }
+        Update: {
+          artist?: string
+          audio_url?: string | null
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          duration?: string
+          id?: string
+          play_count?: number
+          title?: string
+          updated_at?: string
+          year?: string
+        }
+        Relationships: []
+      }
       churches: {
         Row: {
           address: string | null
