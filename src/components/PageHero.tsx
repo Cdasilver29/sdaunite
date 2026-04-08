@@ -81,21 +81,40 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
               className="mx-auto mt-6 flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               {ctas.map((cta, i) => (
-                <Button
-                  key={i}
-                  asChild
-                  size="lg"
-                  className={
-                    cta.variant === "outline"
-                      ? "border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium rounded-full px-7 text-sm h-10 min-w-[160px] bg-transparent"
-                      : "bg-[hsl(var(--sda-warm))] text-white hover:bg-[hsl(var(--sda-warm))]/90 font-medium rounded-full px-7 text-sm h-10 min-w-[160px]"
-                  }
-                  variant={cta.variant === "outline" ? "outline" : "default"}
-                >
-                  <Link to={cta.to}>
+                {cta.to.startsWith("#") ? (
+                  <Button
+                    key={i}
+                    size="lg"
+                    className={
+                      cta.variant === "outline"
+                        ? "border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium rounded-full px-7 text-sm h-10 min-w-[160px] bg-transparent"
+                        : "bg-[hsl(var(--sda-warm))] text-white hover:bg-[hsl(var(--sda-warm))]/90 font-medium rounded-full px-7 text-sm h-10 min-w-[160px]"
+                    }
+                    variant={cta.variant === "outline" ? "outline" : "default"}
+                    onClick={() => {
+                      const el = document.querySelector(cta.to);
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
                     {cta.label} {cta.icon}
-                  </Link>
-                </Button>
+                  </Button>
+                ) : (
+                  <Button
+                    key={i}
+                    asChild
+                    size="lg"
+                    className={
+                      cta.variant === "outline"
+                        ? "border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium rounded-full px-7 text-sm h-10 min-w-[160px] bg-transparent"
+                        : "bg-[hsl(var(--sda-warm))] text-white hover:bg-[hsl(var(--sda-warm))]/90 font-medium rounded-full px-7 text-sm h-10 min-w-[160px]"
+                    }
+                    variant={cta.variant === "outline" ? "outline" : "default"}
+                  >
+                    <Link to={cta.to}>
+                      {cta.label} {cta.icon}
+                    </Link>
+                  </Button>
+                )}
               ))}
             </motion.div>
           )}
