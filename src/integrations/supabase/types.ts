@@ -59,6 +59,48 @@ export type Database = {
         }
         Relationships: []
       }
+      camp_meeting_donations: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          donor_name: string | null
+          id: string
+          mpesa_checkout_request_id: string | null
+          mpesa_receipt: string | null
+          payment_status: string
+          phone_number: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          donor_name?: string | null
+          id?: string
+          mpesa_checkout_request_id?: string | null
+          mpesa_receipt?: string | null
+          payment_status?: string
+          phone_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          donor_name?: string | null
+          id?: string
+          mpesa_checkout_request_id?: string | null
+          mpesa_receipt?: string | null
+          payment_status?: string
+          phone_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       camp_meeting_schedules: {
         Row: {
           created_at: string
