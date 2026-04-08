@@ -80,8 +80,8 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
               transition={{ duration: 0.4, delay: 0.2 }}
               className="mx-auto mt-6 flex flex-col sm:flex-row items-center justify-center gap-3"
             >
-              {ctas.map((cta, i) => (
-                {cta.to.startsWith("#") ? (
+              {ctas.map((cta, i) =>
+                cta.to.startsWith("#") ? (
                   <Button
                     key={i}
                     size="lg"
@@ -114,8 +114,8 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
                       {cta.label} {cta.icon}
                     </Link>
                   </Button>
-                )}
-              ))}
+                )
+              )}
             </motion.div>
           )}
 
