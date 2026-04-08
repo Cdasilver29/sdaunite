@@ -252,7 +252,13 @@ const CampMeeting = () => {
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <CampMeetingDonation />
-              <Button variant="outline" className="rounded-full px-8 h-10 font-medium text-sm min-w-[160px] border-border">
+              <Button
+                variant="outline"
+                className="rounded-full px-8 h-10 font-medium text-sm min-w-[160px] border-border"
+                onClick={() => {
+                  window.open("https://wa.me/254700000000?text=I%20would%20like%20to%20support%20Camp%20Meeting%20music", "_blank");
+                }}
+              >
                 <ExternalLink className="mr-1.5 h-4 w-4" /> Other Ways to Give
               </Button>
             </div>
