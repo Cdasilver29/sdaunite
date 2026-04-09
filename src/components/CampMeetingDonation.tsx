@@ -59,14 +59,14 @@ const CampMeetingDonation = () => {
       if (!data?.success) throw new Error(data?.error || "STK Push failed");
 
       setState("polling");
-      pollPayment(data.payment_id);
+      pollDonation(data.donation_id);
     } catch (err: any) {
       setError(err.message || "Failed to initiate payment");
       setState("phone");
     }
   };
 
-  const pollPayment = (paymentId: string) => {
+  const pollDonation = (donationId: string) => {
     let count = 0;
     const interval = setInterval(async () => {
       count++;
@@ -77,15 +77,17 @@ const CampMeetingDonation = () => {
         return;
       }
       try {
-        const { data } = await supabase.functions.invoke("mpesa-payment-status", {
-          body: { payment_id: paymentId },
-        });
-        if (data?.status === "completed") {
+        const { data } = await supabase
+          .from("camp_meeting_donations")
+          .select("payment_status, mpesa_receipt")
+          .eq("id", donationId)
+          .single();
+        if (data?.payment_status === "completed") {
           clearInterval(interval);
           setReceipt(data.mpesa_receipt || "");
           setState("success");
           toast({ title: "Thank you!", description: "Your donation has been received." });
-        } else if (data?.status === "failed") {
+        } else if (data?.payment_status === "failed") {
           clearInterval(interval);
           setState("failed");
           setError("Payment was not completed. Please try again.");
