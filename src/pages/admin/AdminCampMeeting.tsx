@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Plus, Music, CalendarDays, Upload, Loader2, Pencil, Heart, TrendingUp, DollarSign } from "lucide-react";
+import { Trash2, Plus, Music, CalendarDays, Upload, Loader2, Pencil, Heart, TrendingUp, DollarSign, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
@@ -395,7 +395,42 @@ const DonationsTab = () => {
 
       {/* Donations Table */}
       <div>
-        <h2 className="text-lg font-semibold text-foreground mb-4">Donation History</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-foreground">Donation History</h2>
+          {(donations || []).length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              onClick={() => {
+                const rows = (donations || []).map(d => ({
+                  Date: new Date(d.created_at).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" }),
+                  Donor: d.donor_name || "—",
+                  Phone: d.phone_number || "—",
+                  Amount: Number(d.amount),
+                  Currency: d.currency,
+                  Status: d.payment_status,
+                  Receipt: d.mpesa_receipt || "—",
+                }));
+                const headers = Object.keys(rows[0]);
+                const csv = [
+                  headers.join(","),
+                  ...rows.map(r => headers.map(h => `"${String((r as any)[h]).replace(/"/g, '""')}"`).join(","))
+                ].join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `camp-meeting-donations-${new Date().toISOString().slice(0, 10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                toast.success("CSV exported");
+              }}
+            >
+              <Download className="h-3.5 w-3.5" /> Export CSV
+            </Button>
+          )}
+        </div>
         {isLoading ? (
           <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-14 animate-pulse rounded-lg bg-muted" />)}</div>
         ) : (donations || []).length > 0 ? (
