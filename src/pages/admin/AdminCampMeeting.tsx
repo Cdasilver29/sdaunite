@@ -440,6 +440,7 @@ const DonationsTab = () => {
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Donor</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Amount</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</th>
@@ -452,6 +453,7 @@ const DonationsTab = () => {
                       <td className="px-4 py-3 text-foreground whitespace-nowrap">
                         {new Date(d.created_at).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}
                       </td>
+                      <td className="px-4 py-3 text-foreground text-xs font-medium">{d.donor_name || "Anonymous"}</td>
                       <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{d.phone_number || "—"}</td>
                       <td className="px-4 py-3 text-right font-semibold text-foreground">KES {Number(d.amount).toLocaleString()}</td>
                       <td className="px-4 py-3">
