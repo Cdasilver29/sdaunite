@@ -53,18 +53,20 @@ Deno.serve(async (req) => {
     const normalizedPhone = normalizePhone(phone_number);
     const roundedAmount = Math.ceil(amount);
 
-    // Create payment record
-    const { data: payment, error: payErr } = await adminClient.from("payments").insert({
+    // Get donor name from profile
+    const { data: profile } = await adminClient.from("profiles").select("full_name").eq("user_id", user.id).single();
+
+    // Create donation record in camp_meeting_donations
+    const { data: donation, error: donErr } = await adminClient.from("camp_meeting_donations").insert({
       user_id: user.id,
       amount: roundedAmount,
       currency: "KES",
-      payment_method: "mpesa",
       payment_status: "pending",
       phone_number: normalizedPhone,
-      payment_provider_reference: `CAMP-DONATE-${Date.now()}`,
+      donor_name: profile?.full_name || user.email || null,
     }).select("id").single();
 
-    if (payErr) throw payErr;
+    if (donErr) throw donErr;
 
     // M-Pesa STK Push
     const mpesaEnv = Deno.env.get("MPESA_ENVIRONMENT") || "sandbox";
@@ -76,7 +78,7 @@ Deno.serve(async (req) => {
     const callbackUrl = Deno.env.get("MPESA_CALLBACK_URL");
 
     if (!consumerKey || !consumerSecret || !shortcode || !passkey || !callbackUrl) {
-      await adminClient.from("payments").update({ payment_status: "failed" }).eq("id", payment.id);
+      await adminClient.from("camp_meeting_donations").update({ payment_status: "failed" }).eq("id", donation.id);
       return new Response(JSON.stringify({ error: "M-Pesa config incomplete" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
@@ -100,20 +102,20 @@ Deno.serve(async (req) => {
         PartyB: shortcode,
         PhoneNumber: normalizedPhone,
         CallBackURL: callbackUrl,
-        AccountReference: `CampMeeting-${payment.id.slice(0, 8)}`,
+        AccountReference: `CampDonate-${donation.id.slice(0, 8)}`,
         TransactionDesc: "Camp Meeting Donation",
       }),
     });
 
     const stkData = await stkRes.json().catch(() => null);
     if (!stkData || stkData.ResponseCode !== "0") {
-      await adminClient.from("payments").update({ payment_status: "failed" }).eq("id", payment.id);
+      await adminClient.from("camp_meeting_donations").update({ payment_status: "failed" }).eq("id", donation.id);
       return new Response(JSON.stringify({ error: "STK Push failed", detail: stkData?.ResponseDescription || stkData?.errorMessage }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    await adminClient.from("payments").update({ mpesa_checkout_request_id: stkData.CheckoutRequestID }).eq("id", payment.id);
+    await adminClient.from("camp_meeting_donations").update({ mpesa_checkout_request_id: stkData.CheckoutRequestID }).eq("id", donation.id);
 
-    return new Response(JSON.stringify({ success: true, payment_id: payment.id }), {
+    return new Response(JSON.stringify({ success: true, donation_id: donation.id }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
