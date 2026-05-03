@@ -57,20 +57,20 @@ const HeroSection = () => {
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-8">
           {/* LEFT: rotating orbit */}
           <div className="order-2 flex justify-center md:order-1">
-            <div className="relative aspect-square w-[300px] sm:w-[380px] md:w-[460px] lg:w-[520px]">
+            <div className="relative aspect-square w-[340px] sm:w-[400px] md:w-[460px] lg:w-[520px]">
               {/* Concentric guide rings */}
               <div className="absolute inset-0 rounded-full border border-white/10" />
               <div className="absolute inset-[12%] rounded-full border border-dashed border-white/10" />
               <div className="absolute inset-[28%] rounded-full bg-[hsl(var(--sda-warm))]/5 border border-white/5" />
 
-              {/* Rotating ring with items */}
+              {/* Rotating ring with items — slower on mobile for easier tapping */}
               <div
-                className="absolute inset-0 animate-[spin_40s_linear_infinite]"
+                className="absolute inset-0 animate-[spin_70s_linear_infinite] sm:animate-[spin_40s_linear_infinite] motion-reduce:animate-none"
                 style={{ transformOrigin: "50% 50%" }}
               >
                 {ORBIT_ITEMS.map((item, i) => {
                   const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
-                  const radiusPct = 42;
+                  const radiusPct = 44;
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const Icon = item.icon;
@@ -83,11 +83,12 @@ const HeroSection = () => {
                       style={{ left: `${x}%`, top: `${y}%` }}
                     >
                       {/* Counter-rotate so labels stay upright */}
-                      <div className="animate-[spin_40s_linear_infinite_reverse] flex flex-col items-center gap-1.5">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/95 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))] sm:h-16 sm:w-16">
-                          <Icon className="h-6 w-6 text-[hsl(202,60%,12%)] sm:h-7 sm:w-7" />
+                      <div className="animate-[spin_70s_linear_infinite_reverse] sm:animate-[spin_40s_linear_infinite_reverse] motion-reduce:animate-none flex flex-col items-center gap-1.5">
+                        {/* Larger tappable area on mobile (min 44px target + padding) */}
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/95 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))] sm:h-16 sm:w-16">
+                          <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
                         </div>
-                        <span className="hidden whitespace-nowrap rounded-full bg-[hsl(202,60%,8%)]/85 px-2 py-0.5 text-[10px] font-semibold text-white/90 backdrop-blur-sm sm:block">
+                        <span className="whitespace-nowrap rounded-full bg-[hsl(202,60%,8%)]/85 px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white/90 backdrop-blur-sm">
                           {item.label}
                         </span>
                       </div>
