@@ -130,14 +130,11 @@ const HeroSection = () => {
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const Icon = item.icon;
                   return (
-                    <motion.div
+                    <div
                       key={item.label}
                       className="absolute -translate-x-1/2 -translate-y-1/2"
-                      style={{ left: `${x}%`, top: `${y}%`, rotate: useMotionValue(0) }}
+                      style={{ left: `${x}%`, top: `${y}%` }}
                     >
-                      <motion.div style={{ rotate: rotation }} className="origin-center">
-                        {/* counter-rotate using inverse */}
-                      </motion.div>
                       <CounterRotated rotation={rotation}>
                         <Link
                           to={item.to}
