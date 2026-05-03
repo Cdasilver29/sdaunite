@@ -99,6 +99,11 @@ const Events = () => {
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const { data: events, isLoading } = usePublishedEvents();
 
+  // Sync filter when navigating with a different ?category=
+  useEffect(() => {
+    setSelectedCategory(searchParams.get("category") || "");
+  }, [searchParams]);
+
   const now = new Date();
 
   const filtered = (events ?? []).filter((e) => {
