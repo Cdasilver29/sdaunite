@@ -14,7 +14,7 @@ const PLATFORM_LINKS = [
 ];
 
 const ABOUT_LINKS = [
-  { to: "/about", label: "About SDA Unite" },
+  { to: "/about", label: "About Adventist Unite" },
   { to: "/service-mission", label: "Service & Mission" },
   { to: "/contact", label: "Contact Us" },
 ];
@@ -133,8 +133,8 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-border bg-muted/30">
         <div className="container py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} SDA Unite. Built for the glory of God.</span>
-          <span>Powered by SDA Unite – A Christ-centered events platform.</span>
+          <span>© {new Date().getFullYear()} Adventist Unite. Built for the glory of God.</span>
+          <span>Powered by Adventist Unite – A Christ-centered events platform.</span>
         </div>
       </div>
     </footer>

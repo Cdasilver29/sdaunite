@@ -87,7 +87,7 @@ const Profile = () => {
             <p className="mt-1 text-sm text-muted-foreground">
               {isNewProfile
                 ? "Complete your profile to unlock event details and ticket purchasing"
-                : "Manage your SDA Unite account details"}
+                : "Manage your Adventist Unite account details"}
             </p>
           </div>
           {isNewProfile && (

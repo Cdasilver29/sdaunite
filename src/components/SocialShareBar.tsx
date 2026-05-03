@@ -4,7 +4,7 @@ import { Share2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const shareUrl = "https://sdaunite.lovable.app";
-const shareText = "Check out SDA Unite – Christ-centered events for Adventist youth!";
+const shareText = "Check out Adventist Unite – Christ-centered events for Adventist youth!";
 
 const socials = [
   {

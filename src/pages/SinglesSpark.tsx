@@ -41,7 +41,7 @@ const FAQS = [
   { q: "What should I wear?", a: "Smart casual, modest attire in line with SDA standards. Think clean, presentable, and comfortable. No jewelry please, in keeping with our Adventist values." },
   { q: "Will there be food?", a: "Yes! A fully catered vegetarian dinner is included with your ticket. We'll also have refreshments (juices, water, light snacks) available throughout the event." },
   { q: "Can I come alone?", a: "Absolutely! Most attendees come solo. The whole point of the ice breakers and structured activities is to make sure nobody feels left out. You'll make friends within the first 30 minutes." },
-  { q: "How do I pay for tickets?", a: "Tickets are purchased via M-Pesa right here on SDA Unite. Sign in, select your ticket tier, and complete payment securely." },
+  { q: "How do I pay for tickets?", a: "Tickets are purchased via M-Pesa right here on Adventist Unite. Sign in, select your ticket tier, and complete payment securely." },
   { q: "Is this event only in Nairobi?", a: "The inaugural Spark event is in Nairobi, but we plan to expand to other cities across Kenya and East Africa based on demand." },
 ];
 

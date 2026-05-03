@@ -54,7 +54,7 @@ const SignUp = () => {
           </Link>
           <h1 className="mt-4 text-2xl font-bold text-[hsl(220,9%,20%)] dark:text-foreground">Create your account</h1>
           <p className="mt-1 text-sm text-[hsl(220,9%,46%)] dark:text-muted-foreground">
-            Join the SDA Unite community
+            Join the Adventist Unite community
           </p>
         </div>
 

@@ -44,7 +44,7 @@ const DROPDOWNS: Record<string, DropdownConfig> = {
   About: {
     label: "About",
     items: [
-      { href: "/about", label: "About SDA Unite", desc: "Our story & values" },
+      { href: "/about", label: "About Adventist Unite", desc: "Our story & values" },
       { href: "/code-of-conduct", label: "Code of Conduct", desc: "Community guidelines" },
       { href: "/contact", label: "Contact Us", desc: "Reach out to the team" },
     ],

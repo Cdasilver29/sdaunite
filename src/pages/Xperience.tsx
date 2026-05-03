@@ -38,7 +38,7 @@ const Xperience = () => {
     <div className="min-h-screen bg-background">
       <PageHero
         label="Relive the Moments"
-        title="The SDA Unite"
+        title="The Adventist Unite"
         titleAccent="Xperience."
         subtitle="See what God did through our fellowship events"
         backgroundImage="/images/sda-sports.jpg"
