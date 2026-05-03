@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Calendar, Mountain, BookHeart, Users, Dumbbell, HeartHandshake, Music, Heart, type LucideIcon } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame, animate } from "framer-motion";
+import { ArrowRight, Calendar, Mountain, BookHeart, Users, Dumbbell, HeartHandshake, Music, Heart, Tent, PlayCircle, HandCoins, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const SUBTITLES = [
   "Discover events, connect with Adventist youth, and strengthen your walk in fellowship.",
@@ -17,18 +17,26 @@ type OrbitItem = {
 };
 
 const ORBIT_ITEMS: OrbitItem[] = [
-  { label: "Youth Events", to: "/events", icon: Calendar },
+  { label: "Events", to: "/events", icon: Calendar },
   { label: "Singles Spark", to: "/singles-spark", icon: Heart },
   { label: "Football League", to: "/football-league", icon: Dumbbell },
   { label: "Retreats", to: "/retreats", icon: BookHeart },
+  { label: "Camp Meeting", to: "/camp-meeting", icon: Tent },
+  { label: "Streams", to: "/streams", icon: PlayCircle },
+  { label: "Fundraisers", to: "/camp-meeting#donate", icon: HandCoins },
   { label: "Nature Hikes", to: "/events?category=Outdoor+%26+Nature", icon: Mountain },
   { label: "Service Missions", to: "/events?category=Service+%26+Mission", icon: HeartHandshake },
   { label: "Prayer & Worship", to: "/events?category=Music+%26+Worship", icon: Music },
-  { label: "Fellowship", to: "/events?category=Social+%26+Fellowship", icon: Users },
+  { label: "Music Concerts", to: "/events?category=Music+%26+Worship", icon: Music },
 ];
 
 const HeroSection = () => {
   const [subtitleIndex, setSubtitleIndex] = useState(0);
+  const rotation = useMotionValue(0);
+  const draggingRef = useRef(false);
+  const orbitRef = useRef<HTMLDivElement | null>(null);
+  const dragStartRef = useRef({ x: 0, y: 0, rot: 0 });
+  const lastTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,7 +45,45 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Continuous auto-rotation when not dragging
+  useAnimationFrame((t) => {
+    if (lastTimeRef.current == null) {
+      lastTimeRef.current = t;
+      return;
+    }
+    const dt = t - lastTimeRef.current;
+    lastTimeRef.current = t;
+    if (draggingRef.current) return;
+    // ~9 deg/sec → full rotation in 40s
+    rotation.set(rotation.get() + dt * 0.009);
+  });
+
   const count = ORBIT_ITEMS.length;
+
+  // Pointer-based drag (works for mouse + touch). Prevents page scroll via touch-action: none.
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (!orbitRef.current) return;
+    draggingRef.current = true;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    dragStartRef.current = { x: e.clientX, y: e.clientY, rot: rotation.get() };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!draggingRef.current || !orbitRef.current) return;
+    const rect = orbitRef.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const a1 = Math.atan2(dragStartRef.current.y - cy, dragStartRef.current.x - cx);
+    const a2 = Math.atan2(e.clientY - cy, e.clientX - cx);
+    const delta = ((a2 - a1) * 180) / Math.PI;
+    rotation.set(dragStartRef.current.rot + delta);
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    (e.target as Element).releasePointerCapture?.(e.pointerId);
+    // soft inertia: glide to nearest 0.5 deg snap (subtle)
+    animate(rotation, rotation.get(), { type: "spring", stiffness: 80, damping: 20 });
+  };
 
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden bg-primary">
@@ -57,16 +103,25 @@ const HeroSection = () => {
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-8">
           {/* LEFT: rotating orbit */}
           <div className="order-2 flex justify-center md:order-1">
-            <div className="relative aspect-square w-[340px] sm:w-[400px] md:w-[460px] lg:w-[520px]">
+            <div
+              ref={orbitRef}
+              className="relative aspect-square w-[340px] sm:w-[400px] md:w-[460px] lg:w-[520px] touch-none select-none cursor-grab active:cursor-grabbing"
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
+              role="group"
+              aria-label="Drag to rotate categories"
+            >
               {/* Concentric guide rings */}
-              <div className="absolute inset-0 rounded-full border border-white/10" />
-              <div className="absolute inset-[12%] rounded-full border border-dashed border-white/10" />
-              <div className="absolute inset-[28%] rounded-full bg-[hsl(var(--sda-warm))]/5 border border-white/5" />
+              <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none" />
+              <div className="absolute inset-[12%] rounded-full border border-dashed border-white/10 pointer-events-none" />
+              <div className="absolute inset-[28%] rounded-full bg-[hsl(var(--sda-warm))]/5 border border-white/5 pointer-events-none" />
 
-              {/* Rotating ring with items — slower on mobile for easier tapping */}
-              <div
-                className="absolute inset-0 animate-[spin_70s_linear_infinite] sm:animate-[spin_40s_linear_infinite] motion-reduce:animate-none"
-                style={{ transformOrigin: "50% 50%" }}
+              {/* Rotating ring with items */}
+              <motion.div
+                className="absolute inset-0"
+                style={{ rotate: rotation, transformOrigin: "50% 50%" }}
               >
                 {ORBIT_ITEMS.map((item, i) => {
                   const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
@@ -75,36 +130,51 @@ const HeroSection = () => {
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const Icon = item.icon;
                   return (
-                    <Link
+                    <motion.div
                       key={item.label}
-                      to={item.to}
-                      aria-label={item.label}
-                      className="group absolute -translate-x-1/2 -translate-y-1/2"
-                      style={{ left: `${x}%`, top: `${y}%` }}
+                      className="absolute -translate-x-1/2 -translate-y-1/2"
+                      style={{ left: `${x}%`, top: `${y}%`, rotate: useMotionValue(0) }}
                     >
-                      {/* Counter-rotate so labels stay upright */}
-                      <div className="animate-[spin_70s_linear_infinite_reverse] sm:animate-[spin_40s_linear_infinite_reverse] motion-reduce:animate-none flex flex-col items-center gap-1.5">
-                        {/* Larger tappable area on mobile (min 44px target + padding) */}
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/95 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))] sm:h-16 sm:w-16">
-                          <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
-                        </div>
-                        <span className="whitespace-nowrap rounded-full bg-[hsl(202,60%,8%)]/85 px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white/90 backdrop-blur-sm">
-                          {item.label}
-                        </span>
-                      </div>
-                    </Link>
+                      <motion.div style={{ rotate: rotation }} className="origin-center">
+                        {/* counter-rotate using inverse */}
+                      </motion.div>
+                      <CounterRotated rotation={rotation}>
+                        <Link
+                          to={item.to}
+                          aria-label={item.label}
+                          onClick={(e) => {
+                            // prevent navigation if user was dragging
+                            if (draggingRef.current) e.preventDefault();
+                          }}
+                          draggable={false}
+                          className="group flex flex-col items-center gap-1.5"
+                        >
+                          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/95 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))]">
+                            <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
+                          </div>
+                          <span className="whitespace-nowrap rounded-full bg-[hsl(202,60%,8%)]/85 px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white/90 backdrop-blur-sm">
+                            {item.label}
+                          </span>
+                        </Link>
+                      </CounterRotated>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
 
               {/* Center "A" badge */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-[hsl(202,60%,10%)] ring-4 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-28 sm:w-28">
                   <span className="font-serif text-5xl font-bold text-[hsl(var(--sda-warm))] sm:text-6xl">
                     A
                   </span>
                   <span className="absolute -bottom-1 right-3 h-2.5 w-2.5 rounded-full bg-[hsl(var(--sda-warm))]" />
                 </div>
+              </div>
+
+              {/* Mobile hint */}
+              <div className="md:hidden absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/50 pointer-events-none">
+                Drag to rotate
               </div>
             </div>
           </div>
@@ -178,5 +248,20 @@ const HeroSection = () => {
     </section>
   );
 };
+
+// Keeps children visually upright while parent rotates
+function CounterRotated({
+  rotation,
+  children,
+}: {
+  rotation: ReturnType<typeof useMotionValue<number>>;
+  children: React.ReactNode;
+}) {
+  const inverse = useMotionValue(0);
+  useAnimationFrame(() => {
+    inverse.set(-rotation.get());
+  });
+  return <motion.div style={{ rotate: inverse }}>{children}</motion.div>;
+}
 
 export default HeroSection;
