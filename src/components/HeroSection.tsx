@@ -154,7 +154,7 @@ const HeroSection = () => {
                           </span>
                         </Link>
                       </CounterRotated>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </motion.div>
