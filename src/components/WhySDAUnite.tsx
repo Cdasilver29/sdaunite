@@ -39,7 +39,7 @@ const WhySDAUnite = () => {
             <div className="section-line" />
           </div>
           <h2 className="text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-            Why <span className="text-secondary">SDA Unite</span>?
+            Why <span className="text-secondary">Adventist Unite</span>?
           </h2>
         </motion.div>
 

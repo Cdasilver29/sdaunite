@@ -47,7 +47,7 @@ const About = () => (
       <div className="container max-w-3xl">
         <h2 className="text-2xl font-bold text-foreground">Our Mission</h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">
-          SDA Unite exists to make it easy for Adventist young people to discover, organize, and attend wholesome events that strengthen faith and build lasting friendships. Whether it's a singles' fellowship, a youth hike, a service outreach, or a worship night, our goal is to bring young Adventists together—locally and globally—so that no one walks their faith journey alone.
+          Adventist Unite exists to make it easy for Adventist young people to discover, organize, and attend wholesome events that strengthen faith and build lasting friendships. Whether it's a singles' fellowship, a youth hike, a service outreach, or a worship night, our goal is to bring young Adventists together—locally and globally—so that no one walks their faith journey alone.
         </p>
         <blockquote className="mt-8 border-l-4 border-accent pl-4">
           <p className="italic text-muted-foreground">
@@ -92,7 +92,7 @@ const About = () => (
           Seventh-day Adventists are a global community of Christians who observe the Sabbath on Saturday—the seventh day of the week—as a day of rest and worship. We emphasize holistic health, education, community service, and the hope of Jesus' soon return. With over 22 million members worldwide, the Adventist Church operates one of the largest Protestant education and healthcare networks on earth.
         </p>
         <p className="mt-4 text-muted-foreground leading-relaxed">
-          SDA Unite is not an official church body but a community-driven platform built by and for Adventist youth who want to stay connected, active, and growing in faith.
+          Adventist Unite is not an official church body but a community-driven platform built by and for Adventist youth who want to stay connected, active, and growing in faith.
         </p>
       </div>
     </section>

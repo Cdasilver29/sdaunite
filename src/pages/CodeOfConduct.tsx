@@ -46,7 +46,7 @@ const CodeOfConduct = () => (
       label="Our Standards"
       title="Code of"
       titleAccent="Conduct."
-      subtitle="All SDA Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct"
+      subtitle="All Adventist Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct"
       backgroundImage="/images/sda-code-of-conduct.jpg"
     />
 

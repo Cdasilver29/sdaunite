@@ -61,7 +61,7 @@ const FeatureCards = () => {
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-muted-foreground leading-relaxed">
             Whether you're a young adult seeking community, a single looking for
-            godly connections, or a church organizing outreach — SDA Unite is
+            godly connections, or a church organizing outreach — Adventist Unite is
             built for you.
           </p>
         </motion.div>
