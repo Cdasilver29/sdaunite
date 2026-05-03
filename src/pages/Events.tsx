@@ -150,7 +150,11 @@ const Events = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-full border border-border bg-background px-4 py-1.5 text-xs font-medium text-foreground outline-none focus:ring-2 focus:ring-primary/30"
+              className={`rounded-full border px-4 py-1.5 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/30 transition-colors ${
+                selectedCategory
+                  ? "border-secondary bg-secondary/10 text-secondary"
+                  : "border-border bg-background text-foreground font-medium"
+              }`}
             >
               <option value="">All Categories</option>
               {CATEGORIES.map((cat) => (
@@ -159,6 +163,15 @@ const Events = () => {
                 </option>
               ))}
             </select>
+            {selectedCategory && (
+              <button
+                onClick={() => setSelectedCategory("")}
+                className="rounded-full border border-secondary/40 bg-secondary/10 px-3 py-1.5 text-xs font-semibold text-secondary hover:bg-secondary/20 transition-colors"
+                aria-label="Clear category filter"
+              >
+                {selectedCategory} ✕
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-2 md:min-w-[260px]">
