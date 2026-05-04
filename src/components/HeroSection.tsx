@@ -158,13 +158,13 @@ const HeroSection = () => {
                             if (draggingRef.current) e.preventDefault();
                           }}
                           draggable={false}
-                          className="group flex flex-col items-center gap-1.5"
+                          className="group flex flex-col items-center gap-1.5 focus:outline-none"
                         >
                           <div
-                            className={`flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-all duration-300 group-hover:scale-110 ${
+                            className={`flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-all duration-300 group-hover:scale-110 group-active:scale-95 group-active:bg-[hsl(var(--sda-warm))] group-active:border-[hsl(var(--sda-warm))] group-active:shadow-[0_0_28px_6px_hsl(var(--sda-warm)/0.75)] group-active:ring-4 group-active:ring-[hsl(var(--sda-warm))]/60 group-focus-visible:shadow-[0_0_28px_6px_hsl(var(--sda-warm)/0.65)] group-focus-visible:ring-4 group-focus-visible:ring-[hsl(var(--sda-warm))]/55 ${
                               isActive
-                                ? "scale-110 bg-[hsl(var(--sda-warm))] border-2 border-[hsl(var(--sda-warm))] ring-4 ring-[hsl(var(--sda-warm))]/35"
-                                : "bg-white/95 border border-white/15 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))]"
+                                ? "scale-110 bg-[hsl(var(--sda-warm))] border-2 border-[hsl(var(--sda-warm))] ring-4 ring-[hsl(var(--sda-warm))]/35 shadow-[0_0_24px_4px_hsl(var(--sda-warm)/0.55)]"
+                                : "bg-white/95 border border-white/15 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))] group-hover:shadow-[0_0_20px_3px_hsl(var(--sda-warm)/0.45)]"
                             }`}
                           >
                             <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
