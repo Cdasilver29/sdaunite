@@ -29,7 +29,7 @@ const DROPDOWNS: Record<string, DropdownConfig> = {
       { href: "/xperience", label: "Xperience", desc: "Post-event galleries" },
       { href: "/insider", label: "Insider Blog", desc: "Faith & fellowship articles" },
       { href: "/singles-spark", label: "Singles Spark", desc: "Faith meets fellowship" },
-      { href: "/football-league", label: "Football League", desc: "SDA sports & sportsmanship" },
+      { href: "/football-league", label: "Football League", desc: "Adventist sports & sportsmanship" },
       { href: "/camp-meeting", label: "Camp Meeting", desc: "Live worship & music library" },
     ],
   },
