@@ -38,6 +38,18 @@ const HeroSection = () => {
   const dragStartRef = useRef({ x: 0, y: 0, rot: 0 });
   const lastTimeRef = useRef<number | null>(null);
 
+  const location = useLocation();
+  const activeKey = useMemo(() => {
+    const path = location.pathname.replace(/\/$/, "");
+    const search = location.search;
+    // Match by exact `to` (path + query) first, then by pathname only.
+    const full = `${path}${search}`;
+    const exact = ORBIT_ITEMS.find((it) => it.to.replace(/\/$/, "") === full);
+    if (exact) return exact.label;
+    const byPath = ORBIT_ITEMS.find((it) => it.to.split("?")[0].replace(/\/$/, "") === path);
+    return byPath?.label ?? null;
+  }, [location.pathname, location.search]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setSubtitleIndex((prev) => (prev + 1) % SUBTITLES.length);
