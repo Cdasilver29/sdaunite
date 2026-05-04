@@ -4,6 +4,7 @@ import { usePublishedEvents } from "@/hooks/useEvents";
 import { CATEGORIES } from "@/lib/events-data";
 import { Search, Calendar, MapPin, Share2, Ticket, PlusCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import PageHero from "@/components/PageHero";
 import { getEventImageUrl } from "@/lib/event-image";
