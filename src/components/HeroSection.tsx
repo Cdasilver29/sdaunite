@@ -1,8 +1,8 @@
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame, animate } from "framer-motion";
 import { ArrowRight, Calendar, Mountain, BookHeart, Users, Dumbbell, HeartHandshake, Music, Heart, Tent, PlayCircle, HandCoins, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 const SUBTITLES = [
   "Discover events, connect with Adventist youth, and strengthen your walk in fellowship.",
