@@ -29,7 +29,7 @@ const DROPDOWNS: Record<string, DropdownConfig> = {
       { href: "/xperience", label: "Xperience", desc: "Post-event galleries" },
       { href: "/insider", label: "Insider Blog", desc: "Faith & fellowship articles" },
       { href: "/singles-spark", label: "Singles Spark", desc: "Faith meets fellowship" },
-      { href: "/football-league", label: "Football League", desc: "SDA sports & sportsmanship" },
+      { href: "/football-league", label: "Football League", desc: "Adventist sports & sportsmanship" },
       { href: "/camp-meeting", label: "Camp Meeting", desc: "Live worship & music library" },
     ],
   },
@@ -191,7 +191,7 @@ const Navbar = () => {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-1.5 shrink-0">
           <span className="text-base font-semibold tracking-tight text-white">
-            SDA <span className="text-[hsl(var(--accent))]">Unite</span>
+            Adventist <span className="text-[hsl(var(--accent))]">Unite</span>
           </span>
         </Link>
 

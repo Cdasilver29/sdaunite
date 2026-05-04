@@ -4,6 +4,7 @@ import { usePublishedEvents } from "@/hooks/useEvents";
 import { CATEGORIES } from "@/lib/events-data";
 import { Search, Calendar, MapPin, Share2, Ticket, PlusCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import PageHero from "@/components/PageHero";
 import { getEventImageUrl } from "@/lib/event-image";
@@ -92,7 +93,7 @@ const WideEventCard = ({ event, index }: { event: DbEvent; index: number }) => {
 };
 
 const Events = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialCat = searchParams.get("category") || "";
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCat);
   const [search, setSearch] = useState("");
@@ -103,6 +104,15 @@ const Events = () => {
   useEffect(() => {
     setSelectedCategory(searchParams.get("category") || "");
   }, [searchParams]);
+
+  // When user changes the filter via UI, update the URL so it's shareable/bookmarkable
+  const updateCategory = (value: string) => {
+    setSelectedCategory(value);
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set("category", value);
+    else next.delete("category");
+    setSearchParams(next, { replace: true });
+  };
 
   const now = new Date();
 
@@ -123,7 +133,7 @@ const Events = () => {
   return (
     <div className="min-h-screen bg-background">
       <PageHero
-        label="Discover SDA Events"
+        label="Discover Adventist Events"
         title="Experience Every"
         titleAccent="Moment."
         subtitle="Find fellowship, service, and spiritual growth near you"
@@ -154,7 +164,7 @@ const Events = () => {
             <div className="h-5 w-px bg-border mx-1 hidden md:block" />
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => updateCategory(e.target.value)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/30 transition-colors ${
                 selectedCategory
                   ? "border-secondary bg-secondary/10 text-secondary"
@@ -170,7 +180,7 @@ const Events = () => {
             </select>
             {selectedCategory && (
               <button
-                onClick={() => setSelectedCategory("")}
+                onClick={() => updateCategory("")}
                 className="rounded-full border border-secondary/40 bg-secondary/10 px-3 py-1.5 text-xs font-semibold text-secondary hover:bg-secondary/20 transition-colors"
                 aria-label="Clear category filter"
               >
@@ -202,7 +212,26 @@ const Events = () => {
         {isLoading ? (
           <div className="flex flex-col gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-48 animate-pulse rounded-xl bg-muted" />
+              <div
+                key={i}
+                className="flex flex-col sm:flex-row overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+              >
+                <Skeleton className="sm:w-72 md:w-80 shrink-0 aspect-[16/10] sm:aspect-auto sm:h-48 rounded-none" />
+                <div className="flex flex-1 flex-col justify-between gap-3 p-4 sm:p-5">
+                  <div className="space-y-2">
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <div className="flex gap-3 pt-1">
+                      <Skeleton className="h-3 w-24" />
+                      <Skeleton className="h-3 w-32" />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-border pt-3">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-8 w-24 rounded-full" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         ) : filtered.length > 0 ? (
