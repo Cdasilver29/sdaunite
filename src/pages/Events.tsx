@@ -93,7 +93,7 @@ const WideEventCard = ({ event, index }: { event: DbEvent; index: number }) => {
 };
 
 const Events = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialCat = searchParams.get("category") || "";
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCat);
   const [search, setSearch] = useState("");
@@ -104,6 +104,15 @@ const Events = () => {
   useEffect(() => {
     setSelectedCategory(searchParams.get("category") || "");
   }, [searchParams]);
+
+  // When user changes the filter via UI, update the URL so it's shareable/bookmarkable
+  const updateCategory = (value: string) => {
+    setSelectedCategory(value);
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set("category", value);
+    else next.delete("category");
+    setSearchParams(next, { replace: true });
+  };
 
   const now = new Date();
 
