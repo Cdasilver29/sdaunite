@@ -191,7 +191,7 @@ const Navbar = () => {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-1.5 shrink-0">
           <span className="text-base font-semibold tracking-tight text-white">
-            SDA <span className="text-[hsl(var(--accent))]">Unite</span>
+            Adventist <span className="text-[hsl(var(--accent))]">Unite</span>
           </span>
         </Link>
 

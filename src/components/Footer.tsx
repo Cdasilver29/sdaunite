@@ -42,14 +42,14 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sda-gradient">
-                <span className="text-xs font-bold text-primary-foreground">SU</span>
+                <span className="text-xs font-bold text-primary-foreground">AU</span>
               </div>
               <span className="text-lg font-bold text-foreground">
-                SDA <span className="text-secondary">Unite</span>
+                Adventist <span className="text-secondary">Unite</span>
               </span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-sm">
-              A Christ-centered platform connecting SDA youth through fellowship, service, and spiritual growth across the nation.
+              A Christ-centered platform connecting Adventist youth through fellowship, service, and spiritual growth across the nation.
             </p>
 
             {/* Newsletter */}
