@@ -141,6 +141,7 @@ const HeroSection = () => {
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const Icon = item.icon;
+                  const isActive = activeKey === item.label;
                   return (
                     <div
                       key={item.label}
@@ -151,6 +152,7 @@ const HeroSection = () => {
                         <Link
                           to={item.to}
                           aria-label={item.label}
+                          aria-current={isActive ? "page" : undefined}
                           onClick={(e) => {
                             // prevent navigation if user was dragging
                             if (draggingRef.current) e.preventDefault();
@@ -158,10 +160,22 @@ const HeroSection = () => {
                           draggable={false}
                           className="group flex flex-col items-center gap-1.5"
                         >
-                          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/95 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))]">
+                          <div
+                            className={`flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-all duration-300 group-hover:scale-110 ${
+                              isActive
+                                ? "scale-110 bg-[hsl(var(--sda-warm))] border-2 border-[hsl(var(--sda-warm))] ring-4 ring-[hsl(var(--sda-warm))]/35"
+                                : "bg-white/95 border border-white/15 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))]"
+                            }`}
+                          >
                             <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
                           </div>
-                          <span className="whitespace-nowrap rounded-full bg-[hsl(202,60%,8%)]/85 px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white/90 backdrop-blur-sm">
+                          <span
+                            className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold backdrop-blur-sm ${
+                              isActive
+                                ? "bg-[hsl(var(--sda-warm))] text-[hsl(202,60%,12%)] shadow-md"
+                                : "bg-[hsl(202,60%,8%)]/85 text-white/90"
+                            }`}
+                          >
                             {item.label}
                           </span>
                         </Link>
