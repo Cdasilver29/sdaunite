@@ -33,6 +33,7 @@ import AdminBlog from "./pages/admin/AdminBlog";
 import AdminStreams from "./pages/admin/AdminStreams";
 import AdminXperience from "./pages/admin/AdminXperience";
 import AdminCampMeeting from "./pages/admin/AdminCampMeeting";
+import CheckIn from "./pages/admin/CheckIn";
 import Retreats from "./pages/Retreats";
 import SinglesSpark from "./pages/SinglesSpark";
 import FootballLeague from "./pages/FootballLeague";
@@ -120,6 +121,7 @@ const App = () => (
                   <Route path="camp-meeting" element={<AdminCampMeeting />} />
                   <Route path="create-event" element={<CreateEvent />} />
                   <Route path="edit-event/:id" element={<EditEvent />} />
+                  <Route path="check-in/:id" element={<CheckIn />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

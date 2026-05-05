@@ -335,6 +335,7 @@ export type Database = {
           age_group: string | null
           bible_reference: string | null
           bible_verse: string | null
+          checkin_secret: string
           church_id: string | null
           city: string
           country: string
@@ -360,6 +361,7 @@ export type Database = {
           age_group?: string | null
           bible_reference?: string | null
           bible_verse?: string | null
+          checkin_secret?: string
           church_id?: string | null
           city?: string
           country?: string
@@ -385,6 +387,7 @@ export type Database = {
           age_group?: string | null
           bible_reference?: string | null
           bible_verse?: string | null
+          checkin_secret?: string
           church_id?: string | null
           city?: string
           country?: string
