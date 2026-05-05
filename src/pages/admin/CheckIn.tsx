@@ -141,6 +141,102 @@ const CheckIn = () => {
     }
   };
 
+  const [exporting, setExporting] = useState(false);
+  const exportCsv = async () => {
+    if (!eventId || !event) return;
+    setExporting(true);
+    try {
+      const { data: checkins, error } = await supabase
+        .from("event_checkins")
+        .select("scanned_at, ticket_id, scanned_by_user_id")
+        .eq("event_id", eventId)
+        .order("scanned_at", { ascending: true });
+      if (error) throw error;
+      if (!checkins || checkins.length === 0) {
+        toast.info("No check-ins to export yet.");
+        return;
+      }
+
+      const ticketIds = checkins.map((c) => c.ticket_id);
+      const { data: tickets } = await supabase
+        .from("tickets")
+        .select("id, user_id, ticket_type_id")
+        .in("id", ticketIds);
+
+      const userIds = Array.from(new Set((tickets ?? []).map((t) => t.user_id)));
+      const typeIds = Array.from(
+        new Set((tickets ?? []).map((t) => t.ticket_type_id).filter(Boolean)),
+      );
+
+      const [{ data: profiles }, { data: types }] = await Promise.all([
+        userIds.length
+          ? supabase
+              .from("profiles")
+              .select("user_id, full_name, email, phone_number")
+              .in("user_id", userIds)
+          : Promise.resolve({ data: [] as any[] }),
+        typeIds.length
+          ? supabase
+              .from("ticket_types")
+              .select("id, name")
+              .in("id", typeIds as string[])
+          : Promise.resolve({ data: [] as any[] }),
+      ]);
+
+      const ticketMap = new Map((tickets ?? []).map((t) => [t.id, t]));
+      const profileMap = new Map(
+        (profiles ?? []).map((p: any) => [p.user_id, p]),
+      );
+      const typeMap = new Map((types ?? []).map((t: any) => [t.id, t]));
+
+      const escape = (v: unknown) => {
+        const s = v == null ? "" : String(v);
+        return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+
+      const headers = [
+        "Checked-in At",
+        "Attendee Name",
+        "Email",
+        "Phone",
+        "Ticket Type",
+        "Ticket ID",
+      ];
+      const rows = checkins.map((c) => {
+        const t = ticketMap.get(c.ticket_id);
+        const p = t ? profileMap.get(t.user_id) : null;
+        const ty = t?.ticket_type_id ? typeMap.get(t.ticket_type_id) : null;
+        return [
+          format(new Date(c.scanned_at), "yyyy-MM-dd HH:mm:ss"),
+          p?.full_name ?? "",
+          p?.email ?? "",
+          p?.phone_number ?? "",
+          ty?.name ?? "",
+          c.ticket_id,
+        ]
+          .map(escape)
+          .join(",");
+      });
+
+      const csv = [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const safe = event.title.replace(/[^a-z0-9-_]+/gi, "_").slice(0, 60);
+      a.href = url;
+      a.download = `${safe}_checkins_${format(new Date(), "yyyyMMdd_HHmm")}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast.success(`Exported ${checkins.length} check-ins`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Export failed");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   if (loading || evLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -175,7 +271,7 @@ const CheckIn = () => {
           {event.location_name}, {event.city}
         </p>
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <Badge variant="secondary" className="gap-1">
             <Users className="h-3 w-3" />
             {stats?.checkedIn ?? 0} / {stats?.tickets ?? 0} checked in
@@ -183,6 +279,20 @@ const CheckIn = () => {
           <span className="text-xs text-muted-foreground">
             Capacity {event.event_capacity}
           </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="ml-auto gap-1"
+            onClick={exportCsv}
+            disabled={exporting || !stats?.checkedIn}
+          >
+            {exporting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            Export CSV
+          </Button>
         </div>
       </div>
 
