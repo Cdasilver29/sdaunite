@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Users, Eye, Edit, Trash2 } from "lucide-react";
+import { Plus, Calendar, Users, Eye, Edit, Trash2, ScanLine } from "lucide-react";
 import { toast } from "sonner";
 
 const AdminEvents = () => {
@@ -90,6 +90,9 @@ const AdminEvents = () => {
                 </Button>
                 <Button asChild variant="outline" size="sm" className="gap-1">
                   <Link to={`/admin/edit-event/${event.id}`}><Edit className="h-3.5 w-3.5" /> Edit</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="gap-1">
+                  <Link to={`/admin/check-in/${event.id}`}><ScanLine className="h-3.5 w-3.5" /> Check-in</Link>
                 </Button>
                 {isAdmin && (
                   <Button variant="outline" size="sm" className="gap-1 text-destructive hover:bg-destructive/10" onClick={() => handleDelete(event.id, event.title)}>
