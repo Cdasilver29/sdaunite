@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import { Ticket, QrCode, Calendar, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import TicketQR from "@/components/TicketQR";
 
 const STATUS_COLORS: Record<string, string> = {
   valid: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
@@ -83,9 +85,30 @@ const MyTickets = () => {
                   key={ticket.id}
                   className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-sda sm:flex-row sm:items-center"
                 >
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-muted">
-                    <QrCode className="h-10 w-10 text-muted-foreground/60" />
-                  </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button
+                        type="button"
+                        className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-muted hover:bg-muted/70 transition-colors"
+                        aria-label="Show check-in QR code"
+                      >
+                        <QrCode className="h-10 w-10 text-muted-foreground/60" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle className="line-clamp-1">
+                          {ticket.events?.title ?? "Ticket"}
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="flex flex-col items-center gap-3 py-2">
+                        <TicketQR ticketId={ticket.id} size={240} />
+                        <p className="text-xs text-muted-foreground text-center">
+                          Show this QR at the event entrance for check-in.
+                        </p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
 
                   <div className="flex-1 min-w-0">
                     <Link
