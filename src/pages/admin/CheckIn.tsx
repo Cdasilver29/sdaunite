@@ -263,20 +263,86 @@ const CheckIn = () => {
           <span className="text-xs text-muted-foreground">
             Capacity {event.event_capacity}
           </span>
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-auto gap-1"
-            onClick={exportCsv}
-            disabled={exporting || !stats?.checkedIn}
-          >
-            {exporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            Export CSV
-          </Button>
+          <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-auto gap-1">
+                <Mail className="h-4 w-4" />
+                Email CSV
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Email check-in CSV</DialogTitle>
+                <DialogDescription>
+                  We'll generate a secure download link and email it to you. The link
+                  expires in 24 hours.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label htmlFor="export-email">Send to</Label>
+                  <Input
+                    id="export-email"
+                    type="email"
+                    value={emailTo}
+                    onChange={(e) => setEmailTo(e.target.value)}
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Ticket types</Label>
+                  <div className="max-h-44 overflow-y-auto rounded-md border border-border p-2 space-y-1">
+                    {!ticketTypes || ticketTypes.length === 0 ? (
+                      <p className="text-xs text-muted-foreground p-1">
+                        No ticket types — all check-ins will be exported.
+                      </p>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedTypeIds([])}
+                          className="text-xs text-primary hover:underline px-1"
+                        >
+                          {selectedTypeIds.length === 0 ? "All selected" : "Select all"}
+                        </button>
+                        {ticketTypes.map((tt) => (
+                          <label
+                            key={tt.id}
+                            className="flex items-center gap-2 rounded px-1 py-1 hover:bg-muted cursor-pointer"
+                          >
+                            <Checkbox
+                              checked={selectedTypeIds.includes(tt.id)}
+                              onCheckedChange={() => toggleType(tt.id)}
+                            />
+                            <span className="text-sm">{tt.name}</span>
+                          </label>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Leave empty to include all ticket types.
+                  </p>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setExportOpen(false)} disabled={exporting}>
+                  Cancel
+                </Button>
+                <Button onClick={sendExport} disabled={exporting} className="gap-1">
+                  {exporting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Mail className="h-4 w-4" />
+                  )}
+                  Send link
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
