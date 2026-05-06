@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame, animate } from "framer-motion";
-import { ArrowRight, Calendar, Mountain, BookHeart, Users, Dumbbell, HeartHandshake, Music, Heart, Tent, PlayCircle, HandCoins, type LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -13,36 +13,37 @@ const SUBTITLES = [
 type OrbitItem = {
   label: string;
   to: string;
-  icon: LucideIcon;
+  emoji: string;
 };
 
 const ORBIT_ITEMS: OrbitItem[] = [
-  { label: "Events", to: "/events", icon: Calendar },
-  { label: "Singles Spark", to: "/singles-spark", icon: Heart },
-  { label: "Football League", to: "/football-league", icon: Dumbbell },
-  { label: "Retreats", to: "/retreats", icon: BookHeart },
-  { label: "Camp Meeting", to: "/camp-meeting", icon: Tent },
-  { label: "Streams", to: "/streams", icon: PlayCircle },
-  { label: "Fundraisers", to: "/camp-meeting#donate", icon: HandCoins },
-  { label: "Nature Hikes", to: "/events?category=Outdoor+%26+Nature", icon: Mountain },
-  { label: "Service Missions", to: "/events?category=Service+%26+Mission", icon: HeartHandshake },
-  { label: "Prayer & Worship", to: "/events?category=Music+%26+Worship", icon: Music },
-  { label: "Music Concerts", to: "/events?category=Music+%26+Worship", icon: Music },
+  { label: "Events", to: "/events", emoji: "📅" },
+  { label: "Singles Spark", to: "/singles-spark", emoji: "💞" },
+  { label: "Football League", to: "/football-league", emoji: "⚽" },
+  { label: "Retreats", to: "/retreats", emoji: "🌄" },
+  { label: "Camp Meeting", to: "/camp-meeting", emoji: "⛺" },
+  { label: "Streams", to: "/streams", emoji: "🎥" },
+  { label: "Fundraisers", to: "/camp-meeting#donate", emoji: "🤝" },
+  { label: "Nature Hikes", to: "/events?category=Outdoor+%26+Nature", emoji: "🥾" },
+  { label: "Service Missions", to: "/events?category=Service+%26+Mission", emoji: "🙌" },
+  { label: "Prayer & Worship", to: "/events?category=Music+%26+Worship", emoji: "🙏" },
+  { label: "Music Concerts", to: "/events?category=Music+%26+Worship", emoji: "🎶" },
 ];
 
 const HeroSection = () => {
   const [subtitleIndex, setSubtitleIndex] = useState(0);
   const rotation = useMotionValue(0);
+  const ringInverse = useMotionValue(0);
   const draggingRef = useRef(false);
   const orbitRef = useRef<HTMLDivElement | null>(null);
   const dragStartRef = useRef({ x: 0, y: 0, rot: 0 });
   const lastTimeRef = useRef<number | null>(null);
+  const [pressed, setPressed] = useState<string | null>(null);
 
   const location = useLocation();
   const activeKey = useMemo(() => {
     const path = location.pathname.replace(/\/$/, "");
     const search = location.search;
-    // Match by exact `to` (path + query) first, then by pathname only.
     const full = `${path}${search}`;
     const exact = ORBIT_ITEMS.find((it) => it.to.replace(/\/$/, "") === full);
     if (exact) return exact.label;
@@ -57,7 +58,6 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Continuous auto-rotation when not dragging
   useAnimationFrame((t) => {
     if (lastTimeRef.current == null) {
       lastTimeRef.current = t;
@@ -65,14 +65,15 @@ const HeroSection = () => {
     }
     const dt = t - lastTimeRef.current;
     lastTimeRef.current = t;
-    if (draggingRef.current) return;
-    // ~9 deg/sec → full rotation in 40s
-    rotation.set(rotation.get() + dt * 0.009);
+    if (!draggingRef.current) {
+      rotation.set(rotation.get() + dt * 0.008);
+    }
+    // counter-rotate the decorative outer dashed ring slowly the other way
+    ringInverse.set(ringInverse.get() - dt * 0.004);
   });
 
   const count = ORBIT_ITEMS.length;
 
-  // Pointer-based drag (works for mouse + touch). Prevents page scroll via touch-action: none.
   const onPointerDown = (e: React.PointerEvent) => {
     if (!orbitRef.current) return;
     draggingRef.current = true;
@@ -93,24 +94,19 @@ const HeroSection = () => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
     (e.target as Element).releasePointerCapture?.(e.pointerId);
-    // soft inertia: glide to nearest 0.5 deg snap (subtle)
     animate(rotation, rotation.get(), { type: "spring", stiffness: 80, damping: 20 });
   };
 
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden bg-primary">
-      {/* Background image */}
       <img
         src="/images/sda-hero.jpg"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-
-      {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-[hsl(202,60%,8%)]/70" />
       <div className="absolute inset-0 bg-gradient-to-r from-[hsl(202,60%,6%)]/85 via-[hsl(202,60%,8%)]/55 to-[hsl(202,60%,6%)]/70" />
 
-      {/* Main content */}
       <div className="relative z-10 flex flex-1 items-center px-4 pt-24 pb-16 md:px-8">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-8">
           {/* LEFT: rotating orbit */}
@@ -125,10 +121,26 @@ const HeroSection = () => {
               role="group"
               aria-label="Drag to rotate categories"
             >
-              {/* Concentric guide rings */}
-              <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none" />
-              <div className="absolute inset-[12%] rounded-full border border-dashed border-white/10 pointer-events-none" />
-              <div className="absolute inset-[28%] rounded-full bg-[hsl(var(--sda-warm))]/5 border border-white/5 pointer-events-none" />
+              {/* Soft pulsing radial halo */}
+              <motion.div
+                className="absolute inset-[-8%] rounded-full pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(circle at 50% 50%, hsl(var(--sda-warm)/0.22), transparent 60%)",
+                  filter: "blur(20px)",
+                }}
+                animate={{ opacity: [0.55, 0.9, 0.55], scale: [1, 1.04, 1] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              />
+
+              {/* Outer counter-rotating dashed gold ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full border border-dashed border-[hsl(var(--sda-warm))]/40 pointer-events-none"
+                style={{ rotate: ringInverse }}
+              />
+              {/* Static inner rings */}
+              <div className="absolute inset-[10%] rounded-full border border-white/10 pointer-events-none" />
+              <div className="absolute inset-[26%] rounded-full bg-gradient-to-br from-white/[0.04] to-[hsl(var(--sda-warm))]/5 border border-white/5 pointer-events-none" />
 
               {/* Rotating ring with items */}
               <motion.div
@@ -140,13 +152,17 @@ const HeroSection = () => {
                   const radiusPct = 44;
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
-                  const Icon = item.icon;
                   const isActive = activeKey === item.label;
+                  const isPressed = pressed === item.label;
+
                   return (
-                    <div
+                    <motion.div
                       key={item.label}
                       className="absolute -translate-x-1/2 -translate-y-1/2"
                       style={{ left: `${x}%`, top: `${y}%` }}
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: 0.05 * i, ease: "easeOut" }}
                     >
                       <CounterRotated rotation={rotation}>
                         <Link
@@ -154,50 +170,95 @@ const HeroSection = () => {
                           aria-label={item.label}
                           aria-current={isActive ? "page" : undefined}
                           onClick={(e) => {
-                            // prevent navigation if user was dragging
                             if (draggingRef.current) e.preventDefault();
                           }}
+                          onPointerDown={() => setPressed(item.label)}
+                          onPointerUp={() => setPressed(null)}
+                          onPointerLeave={() => setPressed(null)}
                           draggable={false}
-                          className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                          className="group relative flex flex-col items-center gap-1.5 focus:outline-none"
                         >
+                          {/* Glow */}
                           <div
-                            className={`flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-all duration-300 group-hover:scale-110 group-active:scale-95 group-active:bg-[hsl(var(--sda-warm))] group-active:border-[hsl(var(--sda-warm))] group-active:shadow-[0_0_28px_6px_hsl(var(--sda-warm)/0.75)] group-active:ring-4 group-active:ring-[hsl(var(--sda-warm))]/60 group-focus-visible:shadow-[0_0_28px_6px_hsl(var(--sda-warm)/0.65)] group-focus-visible:ring-4 group-focus-visible:ring-[hsl(var(--sda-warm))]/55 ${
+                            className={`absolute -inset-2 rounded-2xl blur-xl transition-opacity duration-300 ${
+                              isActive || isPressed
+                                ? "opacity-90 bg-[hsl(var(--sda-warm))]/55"
+                                : "opacity-0 group-hover:opacity-60 bg-[hsl(var(--sda-warm))]/40"
+                            }`}
+                          />
+                          {/* Tile */}
+                          <div
+                            className={`relative flex h-16 w-16 items-center justify-center rounded-2xl backdrop-blur-md transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
                               isActive
-                                ? "scale-110 bg-[hsl(var(--sda-warm))] border-2 border-[hsl(var(--sda-warm))] ring-4 ring-[hsl(var(--sda-warm))]/35 shadow-[0_0_24px_4px_hsl(var(--sda-warm)/0.55)]"
-                                : "bg-white/95 border border-white/15 group-hover:bg-[hsl(var(--sda-warm))] group-hover:border-[hsl(var(--sda-warm))] group-hover:shadow-[0_0_20px_3px_hsl(var(--sda-warm)/0.45)]"
+                                ? "bg-gradient-to-br from-[hsl(var(--sda-warm))] to-[hsl(var(--sda-warm))]/80 ring-2 ring-[hsl(var(--sda-warm))] shadow-[0_8px_32px_-4px_hsl(var(--sda-warm)/0.6)]"
+                                : isPressed
+                                  ? "bg-gradient-to-br from-[hsl(var(--sda-warm))] to-[hsl(var(--sda-warm))]/80 ring-2 ring-[hsl(var(--sda-warm))] shadow-[0_8px_28px_-4px_hsl(var(--sda-warm)/0.55)]"
+                                  : "bg-white/10 ring-1 ring-white/20 group-hover:bg-white/15 group-hover:ring-[hsl(var(--sda-warm))]/60"
                             }`}
                           >
-                            <Icon className="h-7 w-7 text-[hsl(202,60%,12%)]" />
+                            <span
+                              className="text-3xl leading-none"
+                              role="img"
+                              aria-hidden="true"
+                              style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.25))" }}
+                            >
+                              {item.emoji}
+                            </span>
+                            {isActive && (
+                              <motion.span
+                                className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-[hsl(var(--sda-warm))] ring-2 ring-[hsl(202,60%,8%)]"
+                                animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+                                transition={{ duration: 1.6, repeat: Infinity }}
+                              />
+                            )}
                           </div>
+                          {/* Label */}
                           <span
-                            className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold backdrop-blur-sm ${
+                            className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wide backdrop-blur-md transition-colors ${
                               isActive
-                                ? "bg-[hsl(var(--sda-warm))] text-[hsl(202,60%,12%)] shadow-md"
-                                : "bg-[hsl(202,60%,8%)]/85 text-white/90"
+                                ? "bg-[hsl(var(--sda-warm))] text-[hsl(202,60%,12%)] shadow"
+                                : "bg-[hsl(202,60%,8%)]/80 text-white/90 ring-1 ring-white/10"
                             }`}
                           >
                             {item.label}
                           </span>
                         </Link>
                       </CounterRotated>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </motion.div>
 
               {/* Center "A" badge */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-[hsl(202,60%,10%)] ring-4 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-28 sm:w-28">
+                <motion.div
+                  className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-28 sm:w-28"
+                  animate={{ scale: [1, 1.04, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                >
                   <span className="font-serif text-5xl font-bold text-[hsl(var(--sda-warm))] sm:text-6xl">
                     A
                   </span>
-                  <span className="absolute -bottom-1 right-3 h-2.5 w-2.5 rounded-full bg-[hsl(var(--sda-warm))]" />
-                </div>
+                  {/* Orbiting micro-dot */}
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  >
+                    <span className="absolute left-1/2 -top-1 h-2 w-2 -translate-x-1/2 rounded-full bg-[hsl(var(--sda-warm))] shadow-[0_0_10px_hsl(var(--sda-warm))]" />
+                  </motion.div>
+                </motion.div>
               </div>
 
               {/* Mobile hint */}
-              <div className="md:hidden absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-white/50 pointer-events-none">
-                Drag to rotate
+              <div className="md:hidden absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-white/60 pointer-events-none">
+                <motion.span
+                  animate={{ x: [-3, 3, -3] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  ↻
+                </motion.span>
+                Swipe to rotate
               </div>
             </div>
           </div>
@@ -272,7 +333,6 @@ const HeroSection = () => {
   );
 };
 
-// Keeps children visually upright while parent rotates
 function CounterRotated({
   rotation,
   children,
