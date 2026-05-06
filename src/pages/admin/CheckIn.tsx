@@ -7,6 +7,17 @@ import { Scanner } from "@yudiel/react-qr-scanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   ArrowLeft,
@@ -16,7 +27,7 @@ import {
   Keyboard,
   Users,
   Loader2,
-  Download,
+  Mail,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -141,95 +152,68 @@ const CheckIn = () => {
     }
   };
 
+  // Email export dialog state
+  const [exportOpen, setExportOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const exportCsv = async () => {
-    if (!eventId || !event) return;
+  const [selectedTypeIds, setSelectedTypeIds] = useState<string[]>([]);
+  const [emailTo, setEmailTo] = useState("");
+  const { profile } = useAuth();
+
+  useEffect(() => {
+    if (profile?.email) setEmailTo((cur) => cur || profile.email!);
+  }, [profile?.email]);
+
+  const { data: ticketTypes } = useQuery({
+    queryKey: ["checkin-ticket-types", eventId],
+    enabled: !!eventId && exportOpen,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ticket_types")
+        .select("id, name")
+        .eq("event_id", eventId!)
+        .order("name");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const toggleType = (id: string) => {
+    setSelectedTypeIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const sendExport = async () => {
+    if (!eventId) return;
+    if (!emailTo.trim()) {
+      toast.error("Add a recipient email");
+      return;
+    }
     setExporting(true);
     try {
-      const { data: checkins, error } = await supabase
-        .from("event_checkins")
-        .select("scanned_at, ticket_id, scanned_by_user_id")
-        .eq("event_id", eventId)
-        .order("scanned_at", { ascending: true });
+      const { data, error } = await supabase.functions.invoke("export-checkins", {
+        body: {
+          event_id: eventId,
+          ticket_type_ids: selectedTypeIds.length ? selectedTypeIds : undefined,
+          email_to: emailTo.trim(),
+        },
+      });
       if (error) throw error;
-      if (!checkins || checkins.length === 0) {
-        toast.info("No check-ins to export yet.");
+      if (!data?.ok) {
+        toast.error(data?.reason ?? "Export failed");
         return;
       }
-
-      const ticketIds = checkins.map((c) => c.ticket_id);
-      const { data: tickets } = await supabase
-        .from("tickets")
-        .select("id, user_id, ticket_type_id")
-        .in("id", ticketIds);
-
-      const userIds = Array.from(new Set((tickets ?? []).map((t) => t.user_id)));
-      const typeIds = Array.from(
-        new Set((tickets ?? []).map((t) => t.ticket_type_id).filter(Boolean)),
-      );
-
-      const [{ data: profiles }, { data: types }] = await Promise.all([
-        userIds.length
-          ? supabase
-              .from("profiles")
-              .select("user_id, full_name, email, phone_number")
-              .in("user_id", userIds)
-          : Promise.resolve({ data: [] as any[] }),
-        typeIds.length
-          ? supabase
-              .from("ticket_types")
-              .select("id, name")
-              .in("id", typeIds as string[])
-          : Promise.resolve({ data: [] as any[] }),
-      ]);
-
-      const ticketMap = new Map((tickets ?? []).map((t) => [t.id, t]));
-      const profileMap = new Map(
-        (profiles ?? []).map((p: any) => [p.user_id, p]),
-      );
-      const typeMap = new Map((types ?? []).map((t: any) => [t.id, t]));
-
-      const escape = (v: unknown) => {
-        const s = v == null ? "" : String(v);
-        return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-      };
-
-      const headers = [
-        "Checked-in At",
-        "Attendee Name",
-        "Email",
-        "Phone",
-        "Ticket Type",
-        "Ticket ID",
-      ];
-      const rows = checkins.map((c) => {
-        const t = ticketMap.get(c.ticket_id);
-        const p = t ? profileMap.get(t.user_id) : null;
-        const ty = t?.ticket_type_id ? typeMap.get(t.ticket_type_id) : null;
-        return [
-          format(new Date(c.scanned_at), "yyyy-MM-dd HH:mm:ss"),
-          p?.full_name ?? "",
-          p?.email ?? "",
-          p?.phone_number ?? "",
-          ty?.name ?? "",
-          c.ticket_id,
-        ]
-          .map(escape)
-          .join(",");
-      });
-
-      const csv = [headers.join(","), ...rows].join("\n");
-      const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      const safe = event.title.replace(/[^a-z0-9-_]+/gi, "_").slice(0, 60);
-      a.href = url;
-      a.download = `${safe}_checkins_${format(new Date(), "yyyyMMdd_HHmm")}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast.success(`Exported ${checkins.length} check-ins`);
+      if (data.email_sent) {
+        toast.success(
+          `Sent to ${data.recipient}. The secure link expires in 24 hours.`,
+        );
+      } else if (data.download_url) {
+        toast.success("Export ready. Opening download…");
+        window.open(data.download_url, "_blank", "noopener,noreferrer");
+      } else {
+        toast.success("Export ready.");
+      }
+      setExportOpen(false);
     } catch (e: any) {
       toast.error(e?.message ?? "Export failed");
     } finally {
@@ -279,20 +263,86 @@ const CheckIn = () => {
           <span className="text-xs text-muted-foreground">
             Capacity {event.event_capacity}
           </span>
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-auto gap-1"
-            onClick={exportCsv}
-            disabled={exporting || !stats?.checkedIn}
-          >
-            {exporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            Export CSV
-          </Button>
+          <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-auto gap-1">
+                <Mail className="h-4 w-4" />
+                Email CSV
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Email check-in CSV</DialogTitle>
+                <DialogDescription>
+                  We'll generate a secure download link and email it to you. The link
+                  expires in 24 hours.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label htmlFor="export-email">Send to</Label>
+                  <Input
+                    id="export-email"
+                    type="email"
+                    value={emailTo}
+                    onChange={(e) => setEmailTo(e.target.value)}
+                    placeholder="you@example.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Ticket types</Label>
+                  <div className="max-h-44 overflow-y-auto rounded-md border border-border p-2 space-y-1">
+                    {!ticketTypes || ticketTypes.length === 0 ? (
+                      <p className="text-xs text-muted-foreground p-1">
+                        No ticket types — all check-ins will be exported.
+                      </p>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedTypeIds([])}
+                          className="text-xs text-primary hover:underline px-1"
+                        >
+                          {selectedTypeIds.length === 0 ? "All selected" : "Select all"}
+                        </button>
+                        {ticketTypes.map((tt) => (
+                          <label
+                            key={tt.id}
+                            className="flex items-center gap-2 rounded px-1 py-1 hover:bg-muted cursor-pointer"
+                          >
+                            <Checkbox
+                              checked={selectedTypeIds.includes(tt.id)}
+                              onCheckedChange={() => toggleType(tt.id)}
+                            />
+                            <span className="text-sm">{tt.name}</span>
+                          </label>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Leave empty to include all ticket types.
+                  </p>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setExportOpen(false)} disabled={exporting}>
+                  Cancel
+                </Button>
+                <Button onClick={sendExport} disabled={exporting} className="gap-1">
+                  {exporting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Mail className="h-4 w-4" />
+                  )}
+                  Send link
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
