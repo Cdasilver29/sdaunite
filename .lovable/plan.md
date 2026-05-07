@@ -1,78 +1,63 @@
-# Plan
+# Refine Hero Section
 
-## 1. Modern animated orbit UI (HeroSection)
+Three focused changes to `src/components/HeroSection.tsx`. No new dependencies, no backend work.
 
-Refresh the rotating category orbit on the homepage hero so it feels like a high-end SaaS landing. Keep the existing drag/scroll behavior and active-state highlighting — only the visuals change.
+## 1. Fix orbit overlap and resize to "medium"
 
-Changes in `src/components/HeroSection.tsx`:
-- Replace the flat Lucide icons inside each orbit chip with **real emoji glyphs** rendered in a circular tile, paired with the existing label. Each item gets a tasteful emoji that matches its meaning:
-  - Events 📅, Singles Spark 💞, Football League ⚽, Retreats 🌄, Camp Meeting ⛺, Streams 🎥, Fundraisers 🤝, Nature Hikes 🥾, Service Missions 🙌, Prayer & Worship 🙏, Music Concerts 🎶
-  - Emojis are rendered inside a glassy gold-bordered tile, sized for crisp display on retina, with `aria-label` retained for accessibility.
-- New visual treatment for the orbit:
-  - Soft animated radial gradient halo behind the ring (slow pulse, low opacity gold).
-  - Two concentric rings: outer dashed gold ring slowly counter-rotates; inner ring stays static. Adds depth without distracting.
-  - Each chip becomes a frosted-glass pill (backdrop-blur, subtle inner border, soft shadow). On hover/active it lifts, tile scales 1.08, and a warm gold glow ring appears.
-  - Currently active item gets a permanent gold ring + a small pulsing dot indicator.
-  - Center "A" badge gets a subtle breathing animation and an orbiting micro-dot for life.
-- Smoother motion: ease the auto-rotation, add a tiny inertia after drag release (already partially there), and a one-time entrance animation where chips fade/scale in along their arc on first paint.
-- Mobile: keep `touch-none` so swipe rotates without scroll-jacking; replace "Drag to rotate" hint with an animated chevron arc indicator.
+Current issue: 11 tiles at 64px on a 340–520px ring with radius 44% means each tile arc segment is ~28° while tiles span ~35–40°, so neighbours collide. The container is also oversized for desktop.
 
-No new dependencies — uses existing `framer-motion` and Tailwind tokens (`--sda-warm`, etc.). Religious-modesty constraint: emojis chosen are neutral activity/object glyphs, no faces with jewelry, no crosses.
+Fixes:
+- Reduce container size: `w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px]` (was up to 520px).
+- Shrink tiles: `h-12 w-12` (was `h-16 w-16`) and emoji/image inside scaled down accordingly.
+- Pull items slightly inward: `radiusPct = 42` and tighten halo/ring insets so labels don't clip.
+- Hide the small text label under each tile on the rotating ring (it was the main collision source). Show the label only for the **active** item and on hover via a tooltip-style pill that appears above the tile, counter-rotated. This removes 11 always-on label pills from the ring.
+- Center "A" badge: `h-20 w-20 sm:h-24 sm:w-24` (was 24/28) so it stays proportional.
 
-## 2. Secure emailed CSV download (replaces direct browser download)
+## 2. Replace emojis with real image tiles
 
-Today `CheckIn.tsx` builds a CSV in the browser and triggers an `<a download>`. Replace with a server-side flow that emails the organizer a signed, expiring link.
+Map each orbit item to an existing asset in `src/assets/`:
 
-### Backend
-
-- New Edge Function `export-checkins` (`supabase/functions/export-checkins/index.ts`), `verify_jwt = false` with manual JWT validation:
-  - Inputs: `event_id`, optional `ticket_type_ids: string[]`, optional `email_to` (defaults to caller's profile email).
-  - Auth check: load caller from JWT. Allow only if `auth.uid() = events.organizer_id` OR caller has role `admin` / `super_admin`. Otherwise 403. (Mirrors the QR check-in access rules.)
-  - Build CSV server-side using the service role:
-    - Pull every ticket for the event (optionally filtered by `ticket_type_id IN (...)`).
-    - Left-join with `event_checkins` (latest scan per ticket) to determine **scan outcome**:
-      - `checked_in` — has a row in `event_checkins`.
-      - `valid_not_scanned` — ticket_status `valid`, no check-in row.
-      - `cancelled` / `refunded` — from `tickets.ticket_status`.
-      - `already_checked_in_attempt` — if we add a lightweight scan-attempt log (see note below).
-    - Pull profile (name, email, phone) and ticket type name.
-    - Columns: `Ticket ID, Attendee Name, Email, Phone, Ticket Type, Ticket Status, Scan Outcome, Checked-in At, Scanned By`.
-  - Upload CSV to a **private** Storage bucket `checkin-exports` at `event_{id}/{timestamp}_{random}.csv`.
-  - Generate a Supabase **signed URL** valid for 24 hours.
-  - Send email via the existing Lovable Emails infra (transactional template `checkin-export-ready`) to the recipient containing: event title, filter summary (ticket types, row count), the signed download link, and an expiry note. Link opens the CSV directly — no login required, but the URL is unguessable and short-lived.
-  - Returns `{ ok: true, row_count, expires_at }`.
-
-### Database / storage
-
-- Migration: create private Storage bucket `checkin-exports` (no public read; only service role writes; access exclusively via signed URLs).
-- Migration: enable Lovable email infra if not already (`setup_email_infra`) and scaffold a `checkin-export-ready` transactional template using `scaffold_transactional_email` (branded with deep navy + warm gold).
-- No schema changes required for outcome tracking using only successful check-ins. **Optional** (recommended): add a `scan_attempts` table (`event_id, ticket_id NULL, raw_token_hash, outcome TEXT, scanned_by, created_at`) and have `verify-checkin` insert a row for every attempt (success and failure). This lets the CSV include `already_checked_in_attempt`, `bad_signature`, `wrong_event`, etc. We will add this table + RLS (organizers/admins SELECT) and update `verify-checkin` to log attempts.
-
-### Frontend (`src/pages/admin/CheckIn.tsx`)
-
-- Replace the inline `exportCsv` browser-download logic with a dialog: **"Email me a CSV"**.
-  - Multi-select `Ticket types` (fetched from `ticket_types` for the event; "All" by default).
-  - Optional override email field (prefilled with profile email).
-  - Submit calls `supabase.functions.invoke("export-checkins", { body: { event_id, ticket_type_ids, email_to } })`.
-  - On success: toast "Your export is on the way to {email}. The link expires in 24 hours." Close dialog.
-  - The button is hidden entirely unless `canAccess` is true (existing client-side check) — the server is the source of truth.
-
-## 3. Access hardening
-
-- Server-side check inside `export-checkins` is the real enforcement (organizer of event OR `admin`/`super_admin`). Returns 403 for everyone else, including `organizer` role users who don't own this event.
-- Storage bucket stays private; the signed URL is the only way to fetch the file.
-- Email link is single-purpose: it points to the signed Storage URL, not a re-download endpoint, so revoking access = deleting the object (we can later add a TTL cleanup job).
-
-## Technical summary
-
-| Area | Files |
+| Item | Image |
 |---|---|
-| Orbit visuals | `src/components/HeroSection.tsx` |
-| Edge function | `supabase/functions/export-checkins/index.ts` (new); update `supabase/functions/verify-checkin/index.ts` to log scan attempts |
-| Migrations | new private bucket `checkin-exports`; new `scan_attempts` table + RLS |
-| Email | scaffold transactional template `checkin-export-ready` (Lovable Emails) |
-| UI | `src/pages/admin/CheckIn.tsx` — replace download with email-dialog; add ticket-type multi-select |
+| Events | `flyer-social-fellowship.jpg` |
+| Singles Spark | `singles-spark-hero.jpg` |
+| Football League | `football-league-hero.jpg` |
+| Retreats | `retreat-nature.jpg` |
+| Camp Meeting | `flyer-spiritual-retreat.jpg` |
+| Streams | `worship-concert.jpg` |
+| Fundraisers | `flyer-fundraiser.jpg` |
+| Nature Hikes | `hero-youth-hike.jpg` |
+| Service Missions | `hero-service-mission.jpg` |
+| Prayer & Worship | `flyer-music-worship.jpg` |
+| Music Concerts | `singles-worship.jpg` |
 
-## Open question
+Tile rendering:
+- Replace the emoji `<span>` with `<img>` filling the rounded tile (`object-cover`, `rounded-2xl`, `loading="lazy"`, `draggable={false}`).
+- Add a subtle dark gradient overlay inside each tile for legibility against varied photos.
+- Active/pressed state: gold ring + warm glow stays the same; add a slight `brightness-110` on hover/active.
+- Keep accessible names via `aria-label` on the `<Link>` (already present); images get empty `alt=""`.
 
-For the "scan outcome" column: do you want it to reflect **per-ticket final state** (one row per ticket sold, showing whether it was checked in / never scanned / cancelled), or **per-scan-attempt** (one row per scan, including failed/duplicate scans)? The plan above supports both — the per-attempt view requires the optional `scan_attempts` table. I'll default to per-ticket plus the new `scan_attempts` table so both views are possible, unless you say otherwise.
+## 3. Modernize the right-side headline block
+
+Goals: tighter, more editorial, less "marketing block".
+
+- Replace the all-caps eyebrow with a small horizontal rule + label combo: a 32px gold bar followed by `Christ-Centered Community` in tracked uppercase. Aligns right on desktop, left on mobile.
+- Tighten headline: keep `Unite in Faith. / Grow Together.` but use `font-serif` (Noto Serif, per project memory) for `Grow Together.` to add editorial contrast against the sans-serif `Unite in Faith.`. Reduce max size to `lg:text-6xl` so it doesn't dwarf the smaller orbit.
+- Rotating subtitle: switch from `h-14 overflow-hidden` to a min-height container with cleaner crossfade (no vertical translate stutter), slightly larger line-height, and a max width of 360px for tidy ragged-right.
+- Buttons: keep current two-button layout, but:
+  - Primary becomes solid gold with subtle shadow on hover only.
+  - Secondary becomes a "ghost link" style with arrow icon (`Singles Spark →`) instead of an outlined button, which reads more modern.
+- Add a small meta row beneath the buttons on desktop: three pill chips like `1,200+ members  ·  60+ events  ·  24 churches` (static text for now) to give the hero density without clutter. Mobile hides the chips.
+
+## Technical notes
+
+- All changes localized to `src/components/HeroSection.tsx`.
+- Imports added: the 11 image assets from `@/assets/...`.
+- No router, data, or auth changes. URL-sync active highlight logic stays intact.
+- Drag/swipe behaviour, counter-rotation, halo, and dashed outer ring all preserved.
+- Mobile "Swipe to rotate" hint stays.
+
+## Out of scope
+
+- No changes to other hero variants, navbar, or downstream sections.
+- No new image uploads; we reuse existing assets.
