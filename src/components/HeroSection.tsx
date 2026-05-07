@@ -125,7 +125,7 @@ const HeroSection = () => {
           <div className="order-2 flex justify-center md:order-1">
             <div
               ref={orbitRef}
-              className="relative aspect-square w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] touch-none select-none cursor-grab active:cursor-grabbing"
+              className="relative aspect-square w-[320px] sm:w-[360px] md:w-[400px] lg:w-[440px] touch-none select-none cursor-grab active:cursor-grabbing"
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
@@ -153,7 +153,7 @@ const HeroSection = () => {
               >
                 {ORBIT_ITEMS.map((item, i) => {
                   const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
-                  const radiusPct = 42;
+                  const radiusPct = 44;
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const isActive = activeKey === item.label;
@@ -251,11 +251,11 @@ const HeroSection = () => {
               {/* Center "A" badge */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <motion.div
-                  className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-24 sm:w-24"
+                  className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-20 sm:w-20"
                   animate={{ scale: [1, 1.04, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <span className="font-serif text-4xl font-bold text-[hsl(var(--sda-warm))] sm:text-5xl">
+                  <span className="font-serif text-3xl font-bold text-[hsl(var(--sda-warm))] sm:text-4xl">
                     A
                   </span>
                   {/* Orbiting micro-dot */}
