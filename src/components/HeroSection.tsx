@@ -153,7 +153,7 @@ const HeroSection = () => {
               >
                 {ORBIT_ITEMS.map((item, i) => {
                   const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
-                  const radiusPct = 42;
+                  const radiusPct = 44;
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const isActive = activeKey === item.label;
