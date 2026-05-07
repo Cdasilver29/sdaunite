@@ -145,14 +145,6 @@ const HeroSection = () => {
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               />
 
-              {/* Outer counter-rotating dashed gold ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full border border-dashed border-[hsl(var(--sda-warm))]/40 pointer-events-none"
-                style={{ rotate: ringInverse }}
-              />
-              {/* Static inner rings */}
-              <div className="absolute inset-[12%] rounded-full border border-white/10 pointer-events-none" />
-              <div className="absolute inset-[28%] rounded-full bg-gradient-to-br from-white/[0.04] to-[hsl(var(--sda-warm))]/5 border border-white/5 pointer-events-none" />
 
               {/* Rotating ring with items */}
               <motion.div
