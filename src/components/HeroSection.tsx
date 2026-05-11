@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo } from "react";
 
+import ShaderBackground from "@/components/ShaderBackground";
+import LampGlow from "@/components/LampGlow";
 import imgEvents from "@/assets/flyer-social-fellowship.jpg";
 import imgSingles from "@/assets/singles-spark-hero.jpg";
 import imgFootball from "@/assets/football-league-hero.jpg";
@@ -110,14 +112,9 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative flex min-h-screen flex-col overflow-hidden bg-primary">
-      <img
-        src="/images/sda-hero.jpg"
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 bg-[hsl(202,60%,8%)]/75" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(202,60%,6%)]/90 via-[hsl(202,60%,8%)]/60 to-[hsl(202,60%,6%)]/75" />
+    <section className="relative flex min-h-screen flex-col overflow-hidden bg-[hsl(202,100%,12%)]">
+      <ShaderBackground />
+      <LampGlow intensity="medium" />
 
       <div className="relative z-10 flex flex-1 items-center px-4 pt-24 pb-16 md:px-8">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-12">

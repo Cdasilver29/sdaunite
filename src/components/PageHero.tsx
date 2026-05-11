@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import LampGlow from "@/components/LampGlow";
 
 interface CTA {
   label: string;
@@ -32,6 +33,9 @@ const PageHero = ({ label, title, titleAccent, subtitle, backgroundImage, ctas =
 
       {/* Clean dark overlay */}
       <div className="absolute inset-0 bg-black/60" />
+
+      {/* Soft lamp glow behind headline */}
+      <LampGlow intensity="soft" />
 
       {/* Content */}
       <div className="relative z-10 w-full px-4 py-16 md:py-20">
