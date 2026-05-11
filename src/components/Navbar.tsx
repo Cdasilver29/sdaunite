@@ -377,7 +377,7 @@ const Navbar = () => {
           </nav>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 
