@@ -1,8 +1,30 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, LogOut, User, ChevronDown, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { CATEGORIES } from "@/lib/events-data";
+
+// Adventist Unite logo mark — lightning-style chevron in warm gold
+function UniteLogoMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M18 3 L7 18 H14 L12 29 L25 13 H17 L20 3 Z"
+        fill="hsl(var(--sda-warm))"
+        stroke="hsl(var(--sda-warm))"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 type DropdownConfig = {
   label: string;
@@ -181,17 +203,21 @@ const Navbar = () => {
   );
 
   return (
-    <header
+    <motion.header
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[hsl(202,100%,18%)]/90 shadow-sm border-b border-white/5"
-          : "bg-transparent border-b border-white/10"
-      } backdrop-blur-md`}
+          ? "bg-[hsl(202,100%,14%)]/70 shadow-[0_4px_30px_-12px_hsl(202,100%,8%,0.6)] border-b border-white/10"
+          : "bg-[hsl(202,100%,14%)]/40 border-b border-white/5"
+      } backdrop-blur-xl backdrop-saturate-150`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
-        <Link to="/" className="flex items-center gap-1.5 shrink-0">
+        <Link to="/" className="flex items-center gap-2 shrink-0 group">
+          <UniteLogoMark className="h-6 w-6 transition-transform group-hover:scale-110 group-hover:rotate-[-6deg]" />
           <span className="text-base font-semibold tracking-tight text-white">
-            Adventist <span className="text-[hsl(var(--accent))]">Unite</span>
+            Adventist <span className="text-[hsl(var(--sda-warm))]">Unite</span>
           </span>
         </Link>
 
@@ -351,7 +377,7 @@ const Navbar = () => {
           </nav>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 
