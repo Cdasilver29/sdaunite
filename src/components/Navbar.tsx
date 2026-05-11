@@ -223,12 +223,20 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <Link
-              to="/auth/sign-in"
-              className="rounded-full border border-white/30 px-4 py-1.5 text-sm font-medium text-white transition-colors duration-200 hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--accent))]"
-            >
-              Sign In
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/auth/sign-in"
+                className="rounded-full px-4 py-1.5 text-sm font-medium text-white/85 transition-colors hover:text-[hsl(var(--accent))]"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/auth/sign-up"
+                className="rounded-full bg-[hsl(var(--sda-warm))] px-4 py-1.5 text-sm font-semibold text-[hsl(202,100%,14%)] shadow-[0_6px_20px_-6px_hsl(var(--sda-warm)/0.7)] transition-all hover:shadow-[0_10px_28px_-6px_hsl(var(--sda-warm)/0.9)] hover:-translate-y-0.5"
+              >
+                Join Fellowship
+              </Link>
+            </div>
           )}
         </div>
 
@@ -324,12 +332,20 @@ const Navbar = () => {
                   <LogOut className="h-4 w-4" /> Sign Out
                 </button>
               ) : (
-                <Link
-                  to="/auth/sign-in"
-                  className="block text-center rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--accent))] transition-colors"
-                >
-                  Sign In
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to="/auth/sign-in"
+                    className="block text-center rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--accent))] transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/auth/sign-up"
+                    className="block text-center rounded-full bg-[hsl(var(--sda-warm))] px-4 py-2 text-sm font-semibold text-[hsl(202,100%,14%)] hover:opacity-90 transition-opacity"
+                  >
+                    Join Fellowship
+                  </Link>
+                </div>
               )}
             </div>
           </nav>
