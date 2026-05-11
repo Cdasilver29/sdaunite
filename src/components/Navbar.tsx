@@ -1,8 +1,30 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, LogOut, User, ChevronDown, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { CATEGORIES } from "@/lib/events-data";
+
+// Adventist Unite logo mark — lightning-style chevron in warm gold
+function UniteLogoMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M18 3 L7 18 H14 L12 29 L25 13 H17 L20 3 Z"
+        fill="hsl(var(--sda-warm))"
+        stroke="hsl(var(--sda-warm))"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 type DropdownConfig = {
   label: string;
