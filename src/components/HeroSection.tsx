@@ -119,7 +119,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[hsl(202,60%,8%)]/75" />
       <div className="absolute inset-0 bg-gradient-to-r from-[hsl(202,60%,6%)]/90 via-[hsl(202,60%,8%)]/60 to-[hsl(202,60%,6%)]/75" />
 
-      <div className="relative z-10 flex flex-1 items-center px-4 pt-24 pb-16 md:px-8">
+      <div className="relative z-10 flex flex-1 items-center px-4 pt-8 pb-16 md:px-8">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-12">
           {/* LEFT: rotating orbit */}
           <div className="order-2 flex justify-center md:order-1">
