@@ -42,7 +42,7 @@ const sections = [
 const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
 
-    <div className="container py-12">
+    <div className="container pt-4 pb-12">
       <blockquote className="mx-auto max-w-2xl rounded-xl border border-accent/30 bg-accent/10 p-6 text-center">
         <p className="text-base italic text-foreground">
           "Whether you eat or drink or whatever you do, do it all for the glory of God."

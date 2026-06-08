@@ -125,7 +125,7 @@ const HeroSection = () => {
           <div className="order-2 flex justify-center md:order-1">
             <div
               ref={orbitRef}
-              className="relative mx-auto aspect-square w-[300px] sm:w-[340px] md:w-[380px] lg:w-[420px] touch-none select-none cursor-grab active:cursor-grabbing"
+              className="relative mx-auto aspect-square w-[260px] sm:w-[290px] md:w-[320px] lg:w-[360px] touch-none select-none cursor-grab active:cursor-grabbing"
               style={{ flex: "0 0 auto" }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
@@ -215,7 +215,7 @@ const HeroSection = () => {
 
                           {/* Tile with real image */}
                           <div
-                            className={`relative h-11 w-11 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
+                            className={`relative h-10 w-10 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
                               isActive
                                 ? "ring-2 ring-[hsl(var(--sda-warm))] shadow-[0_8px_32px_-4px_hsl(var(--sda-warm)/0.6)]"
                                 : isPressed

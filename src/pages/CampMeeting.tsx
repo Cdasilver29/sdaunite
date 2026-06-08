@@ -42,7 +42,7 @@ const CampMeeting = () => {
 
       {/* LIVE STREAM SECTION */}
       <section id="live" className="border-b border-border bg-card">
-        <div className="container py-12 md:py-16">
+        <div className="container pt-4 pb-12 md:pb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">

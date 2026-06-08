@@ -33,7 +33,7 @@ const Insider = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <section id="articles" className="container py-12">
+      <section id="articles" className="container pt-4 pb-12">
         <div className="flex flex-wrap gap-2 mb-10">
           {CATEGORIES.map((cat) => (
             <button

@@ -31,7 +31,7 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="container flex items-center justify-center py-12 md:py-16">
+      <div className="container flex items-center justify-center pt-4 pb-12 md:pb-16">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">
           {!sent && (
             <form onSubmit={handleReset} className="space-y-4">

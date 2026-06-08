@@ -74,7 +74,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="container py-10 md:py-16">
+      <div className="container pt-4 pb-10 md:pb-16">
         <div className="mx-auto max-w-2xl">
           {/* Profile heading moved here for a clean cover photo */}
           <div className="mb-6 text-center">

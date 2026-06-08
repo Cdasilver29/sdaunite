@@ -31,7 +31,7 @@ const About = () => (
   <div className="min-h-screen bg-background">
 
     {/* Mission */}
-    <section id="mission" className="py-16">
+    <section id="mission" className="pt-4 pb-16">
       <div className="container max-w-3xl">
         <h2 className="text-2xl font-bold text-foreground">Our Mission</h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">

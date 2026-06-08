@@ -13,7 +13,7 @@ const ServiceMission = () => {
     <div className="min-h-screen bg-background">
 
       {/* Why serve — quote section */}
-      <section className="border-b border-border bg-muted/30 py-16">
+      <section className="border-b border-border bg-muted/30 pt-4 pb-16">
         <div className="container max-w-3xl text-center">
           <blockquote>
             <p className="text-lg italic text-foreground/90">

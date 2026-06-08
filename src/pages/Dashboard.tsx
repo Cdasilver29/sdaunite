@@ -15,7 +15,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="container py-10">
+      <div className="container pt-4 pb-10">
         {isOrganizer && (
           <div className="mb-6 flex justify-end">
             <Button asChild className="bg-sda-gradient text-primary-foreground hover:opacity-90 gap-2">

@@ -40,7 +40,7 @@ const MyTickets = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <section className="py-12">
+      <section className="pt-4 pb-12">
         <div className="container max-w-3xl">
           {!user ? (
             <div className="rounded-xl border border-border bg-card p-10 text-center">
