@@ -119,13 +119,14 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[hsl(202,60%,8%)]/75" />
       <div className="absolute inset-0 bg-gradient-to-r from-[hsl(202,60%,6%)]/90 via-[hsl(202,60%,8%)]/60 to-[hsl(202,60%,6%)]/75" />
 
-      <div className="relative z-10 flex flex-1 items-center px-4 pt-24 pb-16 md:px-8">
+      <div className="relative z-10 flex flex-1 items-center px-4 pt-8 pb-16 md:px-8">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-12">
           {/* LEFT: rotating orbit */}
           <div className="order-2 flex justify-center md:order-1">
             <div
               ref={orbitRef}
-              className="relative aspect-square w-[320px] sm:w-[360px] md:w-[400px] lg:w-[440px] touch-none select-none cursor-grab active:cursor-grabbing"
+              className="relative mx-auto aspect-square w-[300px] sm:w-[340px] md:w-[380px] lg:w-[420px] touch-none select-none cursor-grab active:cursor-grabbing"
+              style={{ flex: "0 0 auto" }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerUp}
@@ -153,7 +154,7 @@ const HeroSection = () => {
               >
                 {ORBIT_ITEMS.map((item, i) => {
                   const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
-                  const radiusPct = 44;
+                  const radiusPct = 46;
                   const x = 50 + Math.cos(angle) * radiusPct;
                   const y = 50 + Math.sin(angle) * radiusPct;
                   const isActive = activeKey === item.label;
@@ -214,7 +215,7 @@ const HeroSection = () => {
 
                           {/* Tile with real image */}
                           <div
-                            className={`relative h-12 w-12 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
+                            className={`relative h-11 w-11 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
                               isActive
                                 ? "ring-2 ring-[hsl(var(--sda-warm))] shadow-[0_8px_32px_-4px_hsl(var(--sda-warm)/0.6)]"
                                 : isPressed
@@ -251,11 +252,11 @@ const HeroSection = () => {
               {/* Center "A" badge */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <motion.div
-                  className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-20 sm:w-20"
+                  className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-16 sm:w-16"
                   animate={{ scale: [1, 1.04, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <span className="font-serif text-3xl font-bold text-[hsl(var(--sda-warm))] sm:text-4xl">
+                  <span className="font-serif text-2xl font-bold text-[hsl(var(--sda-warm))] sm:text-3xl">
                     A
                   </span>
                   {/* Orbiting micro-dot */}

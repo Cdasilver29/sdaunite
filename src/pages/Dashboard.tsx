@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOrganizerEvents } from "@/hooks/useEvents";
-import PageHeader from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Calendar, Users, Eye, Edit, LayoutDashboard } from "lucide-react";
@@ -15,13 +14,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
-      <PageHeader
-        title={`Welcome, ${profile?.full_name || "Organizer"}`}
-        subtitle="Manage your events and registrations"
-        icon={<LayoutDashboard className="h-6 w-6 text-primary-foreground" />}
-      />
 
       <div className="container py-10">
         {isOrganizer && (

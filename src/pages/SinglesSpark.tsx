@@ -3,7 +3,6 @@ import { Calendar, MapPin, Users, Heart, BookOpen, Sparkles, Music, MessageCircl
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import PageHero from "@/components/PageHero";
 import singlesIcebreakers from "@/assets/singles-icebreakers.jpg";
 import singlesWorship from "@/assets/singles-worship.jpg";
 import singleSparkHero from "@/assets/singles-spark-hero.jpg";
@@ -54,17 +53,6 @@ const TESTIMONIALS = [
 const SinglesSpark = () => {
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Social & Fellowship"
-        title="Adventist Singles"
-        titleAccent="Spark."
-        subtitle="A Christ-centered gathering for SDA singles to connect, grow, and build lasting community through faith, fun, and fellowship"
-        backgroundImage={singleSparkHero}
-        ctas={[
-          { label: "Get Tickets", to: "#tickets" },
-          { label: "View Schedule", to: "#schedule", variant: "outline" },
-        ]}
-      />
 
       <div className="container py-10">
         <div className="grid gap-10 lg:grid-cols-3">

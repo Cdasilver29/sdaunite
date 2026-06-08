@@ -4,7 +4,6 @@ import { Play, Pause, Radio, Clock, Music, Heart, ExternalLink, X } from "lucide
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import PageHero from "@/components/PageHero";
 import AudioPlayer from "@/components/AudioPlayer";
 import CampMeetingDonation from "@/components/CampMeetingDonation";
 import { useCampSchedules, useCampTracks } from "@/hooks/useCampMeeting";
@@ -40,17 +39,6 @@ const CampMeeting = () => {
 
   return (
     <div className={`min-h-screen bg-background ${activeTrackIndex !== null ? "pb-16" : ""}`}>
-      <PageHero
-        label="Camp Meeting Music"
-        title="Worship Without"
-        titleAccent="Walls."
-        subtitle="Stream live camp meeting sessions or revisit your favorite worship moments from past gatherings"
-        backgroundImage="/images/camp-meeting-hero.jpg"
-        ctas={[
-          { label: "Watch Live", to: "#live", icon: <Radio className="h-4 w-4" /> },
-          { label: "Browse Library", to: "#library", variant: "outline", icon: <Music className="h-4 w-4" /> },
-        ]}
-      />
 
       {/* LIVE STREAM SECTION */}
       <section id="live" className="border-b border-border bg-card">

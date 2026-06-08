@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { ArrowRight } from "lucide-react";
-import PageHero from "@/components/PageHero";
 import { useState } from "react";
 
 const CATEGORIES = ["All", "Faith", "Service", "Retreats", "Youth Life"];
@@ -33,16 +32,6 @@ const Insider = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Stories & Insights"
-        title="Faith & Fellowship"
-        titleAccent="Insider."
-        subtitle="Stories, guides, and insights for your spiritual journey"
-        backgroundImage="/images/sda-about.jpg"
-        ctas={[
-          { label: "Read Articles", to: "#articles" },
-        ]}
-      />
 
       <section id="articles" className="container py-12">
         <div className="flex flex-wrap gap-2 mb-10">

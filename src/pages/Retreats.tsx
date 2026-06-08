@@ -6,7 +6,6 @@ import { MapPin, Calendar, Utensils, Bus, Home as HomeIcon } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import PageHero from "@/components/PageHero";
 
 const useRetreats = () =>
   useQuery({
@@ -27,14 +26,6 @@ const Retreats = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Escape & Reconnect"
-        title="Retreat"
-        titleAccent="Escapes."
-        subtitle="Unplug, reconnect with God, and experience fellowship in nature"
-        backgroundImage="/images/sda-retreats-hikes.jpg"
-        ctas={[{ label: "View Retreats", to: "#retreats" }]}
-      />
 
       <div className="container pt-8 pb-2">
         <h2 className="text-lg font-bold text-foreground">Upcoming Retreats</h2>

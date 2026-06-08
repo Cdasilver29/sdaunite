@@ -1,4 +1,3 @@
-import PageHero from "@/components/PageHero";
 import { Heart, BookOpen, Users, Globe } from "lucide-react";
 
 const VALUES = [
@@ -30,17 +29,6 @@ const VALUES = [
 
 const About = () => (
   <div className="min-h-screen bg-background">
-    <PageHero
-      label="Who We Are"
-      title="About SDA"
-      titleAccent="Unite."
-      subtitle="A Christ-centered platform connecting Adventist youth through fellowship, service, and spiritual growth"
-      backgroundImage="/images/sda-about.jpg"
-      ctas={[
-        { label: "Learn More", to: "#mission" },
-        { label: "Contact Us", to: "/contact", variant: "outline" },
-      ]}
-    />
 
     {/* Mission */}
     <section id="mission" className="py-16">

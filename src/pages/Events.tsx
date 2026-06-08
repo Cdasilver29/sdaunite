@@ -6,7 +6,6 @@ import { Search, Calendar, MapPin, Share2, Ticket, PlusCircle } from "lucide-rea
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import PageHero from "@/components/PageHero";
 import { getEventImageUrl } from "@/lib/event-image";
 import type { DbEvent } from "@/hooks/useEvents";
 import { motion } from "framer-motion";
@@ -132,20 +131,9 @@ const Events = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Discover Adventist Events"
-        title="Experience Every"
-        titleAccent="Moment."
-        subtitle="Find fellowship, service, and spiritual growth near you"
-        backgroundImage="/images/sda-hero.jpg"
-        ctas={[
-          { label: "Browse Events", to: "#events", icon: <Ticket className="h-4 w-4" /> },
-          { label: "Create Event", to: "/auth/sign-in", variant: "outline", icon: <PlusCircle className="h-4 w-4" /> },
-        ]}
-      />
 
       {/* Filter bar */}
-      <div id="events" className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
+      <div id="events" className="sticky top-16 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-2">
             {STATUS_FILTERS.map((s) => (

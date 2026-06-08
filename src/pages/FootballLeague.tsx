@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Calendar, MapPin, Users, Trophy, Shield, Star, Target, Swords } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import PageHero from "@/components/PageHero";
 import footballHero from "@/assets/football-league-hero.jpg";
 
 const TEAMS = [
@@ -24,17 +23,6 @@ const FIXTURES = [
 const FootballLeague = () => {
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Sports & Health"
-        title="Adventist Football"
-        titleAccent="League."
-        subtitle="Season 2026 — Glory to God on the Pitch"
-        backgroundImage={footballHero}
-        ctas={[
-          { label: "Register Team", to: "#register" },
-          { label: "View Standings", to: "#standings", variant: "outline" },
-        ]}
-      />
 
       <div className="container py-10">
         <div className="grid gap-10 lg:grid-cols-3">

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Play, Clock, Lock } from "lucide-react";
-import PageHero from "@/components/PageHero";
 import { useState } from "react";
 
 const TYPES = ["All", "sermon", "seminar", "concert", "retreat", "youth_program"];
@@ -39,14 +38,6 @@ const Streams = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Watch & Be Inspired"
-        title="Live Streams &"
-        titleAccent="Replays."
-        subtitle="Watch sermons, seminars, concerts, and youth programs on demand"
-        backgroundImage="/images/sda-hero.jpg"
-        ctas={[{ label: "Browse Streams", to: "#streams" }]}
-      />
 
       <section id="streams" className="container py-8">
         {/* Type filter pills */}
