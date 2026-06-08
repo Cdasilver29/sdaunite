@@ -252,11 +252,11 @@ const HeroSection = () => {
               {/* Center "A" badge */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <motion.div
-                  className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-20 sm:w-20"
+                  className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(202,60%,12%)] to-[hsl(202,60%,6%)] ring-2 ring-[hsl(var(--sda-warm))]/70 shadow-2xl sm:h-16 sm:w-16"
                   animate={{ scale: [1, 1.04, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <span className="font-serif text-3xl font-bold text-[hsl(var(--sda-warm))] sm:text-4xl">
+                  <span className="font-serif text-2xl font-bold text-[hsl(var(--sda-warm))] sm:text-3xl">
                     A
                   </span>
                   {/* Orbiting micro-dot */}
