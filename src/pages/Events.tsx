@@ -133,7 +133,7 @@ const Events = () => {
     <div className="min-h-screen bg-background">
 
       {/* Filter bar */}
-      <div id="events" className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
+      <div id="events" className="sticky top-16 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-2">
             {STATUS_FILTERS.map((s) => (
