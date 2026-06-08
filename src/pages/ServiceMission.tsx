@@ -1,4 +1,3 @@
-import PageHero from "@/components/PageHero";
 import EventCard from "@/components/EventCard";
 import { usePublishedEvents } from "@/hooks/useEvents";
 import { Heart } from "lucide-react";
@@ -12,16 +11,6 @@ const ServiceMission = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Put Faith Into Action"
-        title="Service &"
-        titleAccent="Mission."
-        subtitle="Hospital visits, children's home outreaches, community clean-ups, and more"
-        backgroundImage="/images/sda-service-mission.jpg"
-        ctas={[
-          { label: "View Opportunities", to: "#missions" },
-        ]}
-      />
 
       {/* Why serve — quote section */}
       <section className="border-b border-border bg-muted/30 py-16">

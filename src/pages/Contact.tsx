@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,13 +24,6 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Get In Touch"
-        title="Contact"
-        titleAccent="Us."
-        subtitle="Have a question, suggestion, or need support? We'd love to hear from you"
-        backgroundImage="/images/sda-about.jpg"
-      />
 
       <section className="py-16">
         <div className="container grid gap-12 lg:grid-cols-5">

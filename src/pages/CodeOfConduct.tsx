@@ -1,4 +1,3 @@
-import PageHero from "@/components/PageHero";
 import { Shirt, Heart, Shield, Sun } from "lucide-react";
 
 const sections = [
@@ -42,13 +41,6 @@ const sections = [
 
 const CodeOfConduct = () => (
   <div className="min-h-screen bg-background">
-    <PageHero
-      label="Our Standards"
-      title="Code of"
-      titleAccent="Conduct."
-      subtitle="All Adventist Unite events uphold Seventh-day Adventist values of modesty, simplicity, and Christian conduct"
-      backgroundImage="/images/sda-code-of-conduct.jpg"
-    />
 
     <div className="container py-12">
       <blockquote className="mx-auto max-w-2xl rounded-xl border border-accent/30 bg-accent/10 p-6 text-center">

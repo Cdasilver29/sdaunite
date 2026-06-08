@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Camera } from "lucide-react";
-import PageHero from "@/components/PageHero";
 
 const usePastEventsWithPhotos = () =>
   useQuery({
@@ -36,16 +35,6 @@ const Xperience = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHero
-        label="Relive the Moments"
-        title="The Adventist Unite"
-        titleAccent="Xperience."
-        subtitle="See what God did through our fellowship events"
-        backgroundImage="/images/sda-sports.jpg"
-        ctas={[
-          { label: "View Gallery", to: "#gallery" },
-        ]}
-      />
 
       <section id="gallery" className="container py-16">
         {isLoading ? (
