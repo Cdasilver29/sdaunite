@@ -125,7 +125,7 @@ const HeroSection = () => {
           <div className="order-2 flex justify-center md:order-1">
             <div
               ref={orbitRef}
-              className="relative mx-auto aspect-square w-[300px] sm:w-[340px] md:w-[380px] lg:w-[420px] touch-none select-none cursor-grab active:cursor-grabbing"
+              className="relative mx-auto aspect-square w-[260px] sm:w-[290px] md:w-[320px] lg:w-[360px] touch-none select-none cursor-grab active:cursor-grabbing"
               style={{ flex: "0 0 auto" }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
