@@ -215,7 +215,7 @@ const HeroSection = () => {
 
                           {/* Tile with real image */}
                           <div
-                            className={`relative h-12 w-12 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
+                            className={`relative h-11 w-11 overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 group-active:scale-95 ${
                               isActive
                                 ? "ring-2 ring-[hsl(var(--sda-warm))] shadow-[0_8px_32px_-4px_hsl(var(--sda-warm)/0.6)]"
                                 : isPressed
