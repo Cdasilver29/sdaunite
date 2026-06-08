@@ -1,5 +1,4 @@
 import { useAuth } from "@/contexts/AuthContext";
-import PageHeader from "@/components/PageHeader";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -40,12 +39,6 @@ const MyTickets = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
-      <PageHeader
-        title="My Tickets"
-        subtitle="Your event tickets and QR codes in one place."
-      />
 
       <section className="py-12">
         <div className="container max-w-3xl">

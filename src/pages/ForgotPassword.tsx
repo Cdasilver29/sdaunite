@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import PageHeader from "@/components/PageHeader";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -31,12 +30,6 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
-
-      <PageHeader
-        title="Reset Password"
-        subtitle={sent ? "Check your email for a reset link." : "Enter your email to receive a reset link."}
-      />
 
       <div className="container flex items-center justify-center py-12 md:py-16">
         <div className="w-full max-w-md space-y-6 rounded-2xl border border-border bg-card p-8 shadow-sda">

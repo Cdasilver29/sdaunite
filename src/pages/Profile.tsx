@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import ChurchCombobox from "@/components/ChurchCombobox";
-import PageHeader from "@/components/PageHeader";
 import { User, Phone, Mail, CheckCircle } from "lucide-react";
 import ProfilePhotoUpload from "@/components/ProfilePhotoUpload";
 
@@ -74,10 +73,6 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageHeader
-        backgroundImage="/images/sda-profile.jpg"
-        useProfileCover
-      />
 
       <div className="container py-10 md:py-16">
         <div className="mx-auto max-w-2xl">
