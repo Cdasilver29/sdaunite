@@ -1,63 +1,66 @@
-# Refine Hero Section
+## Goals
 
-Three focused changes to `src/components/HeroSection.tsx`. No new dependencies, no backend work.
+1. Fix the orbit so items travel on a true circle and the center "A" badge doesn't overlap them.
+2. Remove all decorative SVGs across the site so it doesn't look AI-generated.
+3. Remove the large hero/banner space (PageHero) on every page except the home page — pages should start right where the filter/segmented bar ("All / Upcoming / Past", "All Categories", search) sits.
 
-## 1. Fix orbit overlap and resize to "medium"
+---
 
-Current issue: 11 tiles at 64px on a 340–520px ring with radius 44% means each tile arc segment is ~28° while tiles span ~35–40°, so neighbours collide. The container is also oversized for desktop.
+## 1. Orbit fix (`src/components/HeroSection.tsx`)
+
+Root cause of the "not circular" look: the orbit container has `aspect-square` but the parent grid cell stretches, and the rotating ring uses percentage positioning inside a non-square box at some breakpoints, plus the center A badge (h-20 w-20) sits inside the same radius arc as the tiles (radius 44% of ~360px ≈ 79px from center, while A badge half-width is ~40px → tiles land ~40px away from A, too close → overlap on small sizes).
 
 Fixes:
-- Reduce container size: `w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px]` (was up to 520px).
-- Shrink tiles: `h-12 w-12` (was `h-16 w-16`) and emoji/image inside scaled down accordingly.
-- Pull items slightly inward: `radiusPct = 42` and tighten halo/ring insets so labels don't clip.
-- Hide the small text label under each tile on the rotating ring (it was the main collision source). Show the label only for the **active** item and on hover via a tooltip-style pill that appears above the tile, counter-rotated. This removes 11 always-on label pills from the ring.
-- Center "A" badge: `h-20 w-20 sm:h-24 sm:w-24` (was 24/28) so it stays proportional.
+- Force the orbit wrapper to a fixed square via inline width+height (not just aspect-square inside a grid) and `mx-auto`.
+- Increase ring radius from `44` → `46` so items sit further from center.
+- Shrink center A badge to `h-14 w-14 sm:h-16 sm:w-16` and reduce text to `text-2xl sm:text-3xl`.
+- Shrink orbit item tiles slightly (`h-11 w-11`) so hover scale doesn't cross into the center.
+- Keep counter-rotation so images stay upright; the ring rotation already drives circular motion — confirm no transform on the parent is squashing it.
 
-## 2. Replace emojis with real image tiles
+## 2. Remove decorative SVGs
 
-Map each orbit item to an existing asset in `src/assets/`:
+Scope: remove only **decorative inline SVGs** (background lines, dashed rings, ornamental shapes, hand-drawn arrows). **Keep functional icons from `lucide-react`** (Lucide ships as SVG but is the project's icon system per memory — removing them would break every button/nav). The rule "no SVGs" will be interpreted as "no AI-looking decorative SVG illustrations / background line art".
 
-| Item | Image |
-|---|---|
-| Events | `flyer-social-fellowship.jpg` |
-| Singles Spark | `singles-spark-hero.jpg` |
-| Football League | `football-league-hero.jpg` |
-| Retreats | `retreat-nature.jpg` |
-| Camp Meeting | `flyer-spiritual-retreat.jpg` |
-| Streams | `worship-concert.jpg` |
-| Fundraisers | `flyer-fundraiser.jpg` |
-| Nature Hikes | `hero-youth-hike.jpg` |
-| Service Missions | `hero-service-mission.jpg` |
-| Prayer & Worship | `flyer-music-worship.jpg` |
-| Music Concerts | `singles-worship.jpg` |
+Action:
+- Grep the codebase for raw `<svg>` JSX and `dangerouslySetInnerHTML` SVG blobs.
+- Remove decorative ones in components like `HeroSection`, `StatsSection`, `FeatureCards`, `WhySDAUnite`, `CategorySection`, `Footer`, `PageHero`, page hero/CTA sections.
+- Leave Lucide `<Icon />` usage intact.
 
-Tile rendering:
-- Replace the emoji `<span>` with `<img>` filling the rounded tile (`object-cover`, `rounded-2xl`, `loading="lazy"`, `draggable={false}`).
-- Add a subtle dark gradient overlay inside each tile for legibility against varied photos.
-- Active/pressed state: gold ring + warm glow stays the same; add a slight `brightness-110` on hover/active.
-- Keep accessible names via `aria-label` on the `<Link>` (already present); images get empty `alt=""`.
+I will list each file I touch in the implementation summary.
 
-## 3. Modernize the right-side headline block
+## 3. Remove PageHero space on all non-home pages
 
-Goals: tighter, more editorial, less "marketing block".
+The attached screenshot shows the Events page hero ("Discover Adventist Events / Experience Every Moment" + image band) — that's the `PageHero` component. The user wants pages to start at the filter/segmented bar instead.
 
-- Replace the all-caps eyebrow with a small horizontal rule + label combo: a 32px gold bar followed by `Christ-Centered Community` in tracked uppercase. Aligns right on desktop, left on mobile.
-- Tighten headline: keep `Unite in Faith. / Grow Together.` but use `font-serif` (Noto Serif, per project memory) for `Grow Together.` to add editorial contrast against the sans-serif `Unite in Faith.`. Reduce max size to `lg:text-6xl` so it doesn't dwarf the smaller orbit.
-- Rotating subtitle: switch from `h-14 overflow-hidden` to a min-height container with cleaner crossfade (no vertical translate stutter), slightly larger line-height, and a max width of 360px for tidy ragged-right.
-- Buttons: keep current two-button layout, but:
-  - Primary becomes solid gold with subtle shadow on hover only.
-  - Secondary becomes a "ghost link" style with arrow icon (`Singles Spark →`) instead of an outlined button, which reads more modern.
-- Add a small meta row beneath the buttons on desktop: three pill chips like `1,200+ members  ·  60+ events  ·  24 churches` (static text for now) to give the hero density without clutter. Mobile hides the chips.
+Approach:
+- Do **not** delete `PageHero.tsx` (other code may import it; leaving the component avoids breakage and preserves the option to reuse later).
+- In every page that currently renders `<PageHero ... />` *except* the home page (`Index.tsx` uses `HeroSection`, not `PageHero`), remove the `<PageHero>` usage.
+- Pages to edit (based on file tree — will confirm via grep): `Events.tsx`, `Retreats.tsx`, `Streams.tsx`, `SinglesSpark.tsx`, `FootballLeague.tsx`, `CampMeeting.tsx`, `Insider.tsx`, `Xperience.tsx`, `About.tsx`, `Contact.tsx`, `CodeOfConduct.tsx`, `ServiceMission.tsx`, `MyTickets.tsx`, `Dashboard.tsx`, `Profile.tsx`, and any others importing `PageHero`.
+- For each, replace the `<PageHero>` block with nothing (so the page content / filter bar becomes the first thing under the global Navbar). Keep top padding only enough to clear the fixed Navbar (e.g. `pt-20`) — no large hero band, no background image, no eyebrow/headline/subtitle.
 
-## Technical notes
+I will NOT touch:
+- `src/pages/Index.tsx` (home) — keeps `HeroSection` with the orbit.
+- `src/components/HeroSection.tsx` — only the orbit fix from section 1.
 
-- All changes localized to `src/components/HeroSection.tsx`.
-- Imports added: the 11 image assets from `@/assets/...`.
-- No router, data, or auth changes. URL-sync active highlight logic stays intact.
-- Drag/swipe behaviour, counter-rotation, halo, and dashed outer ring all preserved.
-- Mobile "Swipe to rotate" hint stays.
+## Technical details
+
+```text
+PageHero used → first child becomes filter bar
+┌───────────────────────────┐
+│  Navbar (sticky)          │
+├───────────────────────────┤
+│  [All] [Upcoming] [Past]  │ ← page now starts here
+│  [All Categories ▾] [🔍]  │
+├───────────────────────────┤
+│  event grid…              │
+```
+
+Orbit math after fix (440px container, radius 46%):
+- Tile center distance from origin = 0.46 × 220 = 101px
+- A badge radius = 32px → clearance = 69px ✓ (was ~40px, overlapping with tile half-width 24 + hover scale)
 
 ## Out of scope
 
-- No changes to other hero variants, navbar, or downstream sections.
-- No new image uploads; we reuse existing assets.
+- Lucide icons (kept, per project memory).
+- Logo/brand SVGs in `public/` if any (not decorative).
+- `PageHero.tsx` component file (left in place, just unused).
