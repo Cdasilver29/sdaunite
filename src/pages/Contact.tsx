@@ -25,7 +25,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <section className="py-16">
+      <section className="pt-4 pb-16">
         <div className="container grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2 space-y-8">
             <div className="flex gap-4">

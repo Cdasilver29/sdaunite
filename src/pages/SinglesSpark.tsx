@@ -54,7 +54,7 @@ const SinglesSpark = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="container py-10">
+      <div className="container pt-4 pb-10">
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-12">
             {/* Quick Info */}
