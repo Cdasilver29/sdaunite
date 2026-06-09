@@ -66,7 +66,7 @@ const DropdownMenu = ({
     <div className="relative" onMouseEnter={onEnter} onMouseLeave={onLeave}>
       <button
         className={`flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-          open ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+          open ? "text-white" : "text-white hover:text-[hsl(var(--accent))]"
         }`}
       >
         {config.label}
@@ -142,7 +142,7 @@ const Navbar = () => {
       <Link
         to="/"
         className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-          isActive("/") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+          isActive("/") ? "text-white" : "text-white hover:text-[hsl(var(--accent))]"
         }`}
       >
         Home
@@ -161,7 +161,7 @@ const Navbar = () => {
       <Link
         to="/contact"
         className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-          isActive("/contact") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+          isActive("/contact") ? "text-white" : "text-white hover:text-[hsl(var(--accent))]"
         }`}
       >
         Contact
@@ -171,7 +171,7 @@ const Navbar = () => {
         <Link
           to="/my-tickets"
           className={`px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded ${
-            isActive("/my-tickets") ? "text-white" : "text-white/70 hover:text-[hsl(var(--accent))]"
+            isActive("/my-tickets") ? "text-white" : "text-white hover:text-[hsl(var(--accent))]"
           }`}
         >
           My Tickets
@@ -214,7 +214,7 @@ const Navbar = () => {
               )}
               <Link
                 to="/profile"
-                className="flex items-center gap-1.5 text-sm font-medium text-white/70 hover:text-[hsl(var(--accent))] transition-colors"
+                className="flex items-center gap-1.5 text-sm font-medium text-white hover:text-[hsl(var(--accent))] transition-colors"
               >
                 <User className="h-3.5 w-3.5" />
                 {profile?.full_name || "Profile"}
