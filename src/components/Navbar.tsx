@@ -182,15 +182,13 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[hsl(202,100%,14%)] shadow-md border-b border-white/10 backdrop-blur-md"
-          : "bg-transparent border-b-0"
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-primary/20 bg-primary text-primary-foreground transition-shadow duration-300 ${
+        scrolled ? "shadow-md" : "shadow-none"
       }`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-1.5 shrink-0">
-          <span className="text-base font-semibold tracking-tight text-white">
+          <span className="text-base font-semibold tracking-tight text-white drop-shadow-sm">
             Adventist <span className="text-[hsl(var(--accent))]">Unite</span>
           </span>
         </Link>
