@@ -182,7 +182,7 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[hsl(202,100%,12%)]/96 transition-shadow duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-primary/20 bg-primary text-primary-foreground transition-shadow duration-300 ${
         scrolled ? "shadow-md" : "shadow-none"
       }`}
     >
