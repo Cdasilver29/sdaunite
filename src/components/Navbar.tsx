@@ -182,14 +182,14 @@ const Navbar = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 border-b-0 text-primary-foreground transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50 border-b-0 text-primary-foreground transition-all duration-500 [&_a]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] [&_button]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)] [&_span]:drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
       style={{
         WebkitBackdropFilter: "blur(24px) saturate(200%)",
         backdropFilter: "blur(24px) saturate(200%)",
         backgroundColor: scrolled
-          ? "hsla(202, 100%, 14%, 0.25)"
-          : "hsla(202, 100%, 14%, 0.05)",
-        boxShadow: scrolled ? "0 4px 24px -8px hsla(0, 0%, 0%, 0.15)" : "none",
+          ? "hsla(202, 100%, 12%, 0.55)"
+          : "hsla(202, 100%, 12%, 0.35)",
+        boxShadow: scrolled ? "0 4px 24px -8px hsla(0, 0%, 0%, 0.25)" : "none",
       }}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
